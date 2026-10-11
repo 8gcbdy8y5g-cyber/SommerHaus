@@ -1,0 +1,13 @@
+rules_version = '2';
+// Nur Bruno und Vanessa dürfen lesen und schreiben. Adressen klein schreiben.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function erlaubt() {
+      return request.auth != null
+        && request.auth.token.email in ['brunosommerfeld@web.de', 'vanessa_n19@web.de'];
+    }
+    match /{document=**} {
+      allow read, write: if erlaubt();
+    }
+  }
+}
