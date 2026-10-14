@@ -298,11 +298,24 @@ span.check{cursor:default}
 .sdel{width:36px;height:44px;border:0;background:none;color:var(--fg2);font-size:22px;line-height:1;cursor:pointer}
 .sdel:hover{color:var(--red)}
 .shopadd{display:flex;align-items:center;gap:6px;margin-top:6px;border-top:1px solid var(--sep);padding-top:6px}
-.shopadd input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;min-height:44px;padding-inline:12px 0}
+.shopadd input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;min-height:44px;padding-inline:6px 0}
 .shopadd input::placeholder{color:var(--accent);opacity:.9}
 .shopadd .rowcat{margin-inline:0}
 .shopadd .go{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;cursor:pointer}
 .shopadd .go:active{opacity:.6}
+.shopadd .go{width:36px;height:36px;background:var(--fill);color:var(--accent)}
+.vc-top{display:grid;justify-items:center;gap:10px;padding-block:6px 2px;text-align:center}
+.vc-mic{width:76px;height:76px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow)}
+.vc-mic.on{background:var(--red);animation:vcpulse 1.2s ease-in-out infinite}
+@keyframes vcpulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--red) 45%,transparent)}50%{box-shadow:0 0 0 14px color-mix(in srgb,var(--red) 0%,transparent)}}
+@media (prefers-reduced-motion:reduce){.vc-mic.on{animation:none}}
+.vc-state{margin:0;color:var(--fg2);font-size:15px;max-width:34ch}
+#vcText{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--fg);font:inherit;font-size:16px;padding-block:12px;resize:vertical;min-height:72px}
+.vc-row{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 12px 0 14px;border-top:1px solid var(--sep)}
+.vc-row:first-child{border-top:0}
+.vc-row input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);flex:none;margin:0}
+.vc-row .vc-name{flex:1;min-width:0;font-size:16px;overflow-wrap:anywhere}
+.vc-row.off .vc-name{color:var(--fg2);text-decoration:line-through}
 .shopdonehead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px}
 .shopdonehead button{border:0;background:none;color:var(--fg2);font-size:14px;font-weight:600;cursor:pointer;min-height:36px;padding:0 4px;display:inline-flex;align-items:center;gap:6px}
 .shopdonehead button:active{opacity:.6}
@@ -351,6 +364,7 @@ span.check{cursor:default}
     <div class="shop-head"><h2 id="shopTitle">Wocheneinkauf</h2><span class="count" id="shopCount"></span></div>
     <ul class="shoplist" id="shopList"></ul>
     <form class="shopadd" id="shopForm" autocomplete="off">
+      <button type="button" class="go" id="shopMic" aria-label="Einkauf diktieren"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></button>
       <input id="shop-in" maxlength="80" placeholder="Artikel hinzufügen" aria-label="Artikel" enterkeyhint="done">
       <select class="rowcat" id="shop-cat" aria-label="Kategorie"></select>
     </form>
@@ -501,6 +515,28 @@ span.check{cursor:default}
       </div>
     </div>
   </form>
+
+  <form class="sheet" id="voiceSheet" role="dialog" aria-modal="true" aria-labelledby="voiceTitle" autocomplete="off" hidden>
+    <div class="bar">
+      <button type="button" class="barbtn" data-act="close">Abbrechen</button>
+      <h2 id="voiceTitle">Einkauf diktieren</h2>
+      <button type="submit" class="barbtn strong" id="vcGo" disabled>Übernehmen</button>
+    </div>
+    <div style="overflow:auto;min-height:0">
+      <div class="sheet-in">
+        <div class="vc-top">
+          <button type="button" class="vc-mic" id="vcMic" aria-label="Aufnahme starten"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></button>
+          <p class="vc-state" id="vcState">Tippe aufs Mikrofon und sag, was ihr braucht.</p>
+        </div>
+        <div class="fgroup"><label class="frow text"><span class="sr">Gesprochener Text</span><textarea id="vcText" rows="3" placeholder="z. B. Milch, zwei Gurken, Brot und Kaffee"></textarea></label></div>
+        <p class="fnote" id="vcHint" style="margin-top:0">Du kannst den Text hier auch korrigieren oder mit dem Mikrofon der Tastatur diktieren.</p>
+        <div id="vcBox" hidden>
+          <p class="fhead" id="vcAsk" style="margin:0 0 6px 4px"></p>
+          <div class="fgroup" id="vcList"></div>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 
 <nav class="tabbar" role="tablist" aria-label="Bereich">
@@ -619,8 +655,11 @@ function personClass(x){
   return i>=0?'p'+(i%4):'';
 }
 function isOpen(t){return !(t.unit==='once'&&t.done);}
+/* Nicht abgehakte Aufgaben rutschen jeden Tag mit auf heute. Mülltermine bleiben auf ihrem Abfuhrtag. */
+function showDue(t,today){return (!t.icon&&t.due<today)?today:t.due;}
 function itemsOn(ds){
-  var t=S.tasks.filter(function(x){return x.due===ds&&isOpen(x);}).sort(byTitle);
+  var td=todayIso();
+  var t=S.tasks.filter(function(x){return showDue(x,td)===ds&&isOpen(x);}).sort(function(a,b){return (a.due<td?0:1)-(b.due<td?0:1)||byTitle(a,b);});
   var d=S.tasks.filter(function(x){return x.lastDone===ds;}).sort(byTitle);
   var e=S.events.filter(function(x){return x.date===ds;}).sort(function(a,b){
     var ta=a.time||'',tb=b.time||'';
@@ -632,6 +671,7 @@ function taskRow(t,today,o){
   o=o||{};
   var over=t.due<today,sub=[];
   if(o.rel)sub.push('<span class="'+(over?'neg':'')+'">'+relDue(t.due,today)+'</span>');
+  else if(over&&!o.right){var od=diffDays(t.due,today);sub.push('<span class="neg">seit '+od+(od===1?' Tag':' Tagen')+' offen</span>');}
   sub.push(esc(intervalLabel(t)));
   if(o.last&&t.lastDone)sub.push('zuletzt '+fmtShort.format(parse(t.lastDone)));
   var right='';
@@ -970,7 +1010,7 @@ function openSheet(kind,item,date){
   if(item&&kind==='task'&&item.icon&&BINS[item.icon])kind='bin';
   F.id=item?item.id:null;F.del=false;F.bin=item&&item.icon?item.icon:null;F.kind=null;
   $('btnDelete').textContent='Löschen';
-  $('namesForm').hidden=true;$('shopSheet').hidden=true;$('form').hidden=false;
+  $('namesForm').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('form').hidden=false;
   $('kindSeg').hidden=!!item;
   if(!item)fillTpl();
   setKind(kind);
@@ -1002,7 +1042,7 @@ function openSheet(kind,item,date){
   if(S.canWrite&&kind!=='bin'&&!$('nameField').hidden)setTimeout(function(){$('f-title').focus();},30);
 }
 function openNames(){
-  $('form').hidden=true;$('shopSheet').hidden=true;$('namesForm').hidden=false;
+  $('form').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('namesForm').hidden=false;
   $('f-names').value=S.members.join(', ');
   $('f-names').disabled=!S.canWrite;
   $('btnNamesSave').hidden=!S.canWrite;
@@ -1023,14 +1063,14 @@ function setShopKind(k){
 }
 function openShopSheet(){
   if(!S.canWrite)return;
-  $('form').hidden=true;$('namesForm').hidden=true;$('shopSheet').hidden=false;
+  $('form').hidden=true;$('namesForm').hidden=true;$('voiceSheet').hidden=true;$('shopSheet').hidden=false;
   $('ss-title').value='';$('ss-name').value='';
   $('ss-cat').innerHTML=catOptions('Sonstiges');ssManual=false;
   $('ss-list').innerHTML=allLists().map(function(l){return '<option value="'+esc(l.id)+'"'+(l.id===S.shopList?' selected':'')+'>'+esc(l.name)+'</option>';}).join('');
   $('scrim').hidden=false;
   setShopKind('item');
 }
-function closeSheet(){$('scrim').hidden=true;}
+function closeSheet(){$('scrim').hidden=true;if(window.__vcStop)window.__vcStop();}
 
 $('form').addEventListener('submit',function(ev){
   ev.preventDefault();
@@ -1087,6 +1127,91 @@ $('shopForm').addEventListener('submit',function(ev){
   $('shop-in').value='';shopManual=false;$('shop-cat').value='Sonstiges';
   db.collection('shopping').add({title:t,cat:c,list:S.shopList,done:false,created:Date.now()}).catch(fail);
   $('shop-in').focus();
+});
+/* Einkauf diktieren: Sprache -> Text -> einzelne Artikel -> bestätigen -> Liste */
+var VC_FILL={'und':1,'sowie':1,'noch':1,'auch':1,'bitte':1,'ich':1,'wir':1,'brauche':1,'brauchen':1,'benötige':1,'benötigen':1,'kaufen':1,'kauf':1,'kaufe':1,'mal':1,'dann':1,'außerdem':1,'oder':1,'haben':1,'müssen':1,'muss':1,'holen':1,'hol':1,'besorgen':1,'mitbringen':1,'nicht':0,'vergessen':1,'und.':1,'also':1,'ähm':1,'äh':1,'okay':1,'ok':1,'liste':1,'einkaufsliste':1,'auf':1,'die':1,'der':1,'das':1,'den':1,'dem':1,'für':1,'etwas':1};
+var VC_NUM=/^(\d+([,.]\d+)?|ein|eine|einen|einem|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|paar|halb|halbe|halben|viel|viele|mehrere)$/i;
+var VC_UNIT=/^(l|liter|ml|kg|kilo|g|gramm|pfund|packung|packungen|packerl|päckchen|pack|flasche|flaschen|dose|dosen|glas|gläser|stück|beutel|tüte|tüten|bund|becher|kiste|kisten|kasten|netz|schale|schalen|rolle|rollen|tafel|tafeln|riegel|sack|tube|tuben|portion|portionen)$/i;
+function parseSpeech(text){
+  var chunks=String(text||'').replace(/[!?;:]/g,',').split(/[,.\n]+|\s+(?:und|sowie|oder|außerdem|dann)\s+/i),out=[];
+  chunks.forEach(function(c){
+    var toks=c.trim().split(/\s+/).filter(function(w){return w&&!VC_FILL[w.toLowerCase()];}),cur=[];
+    toks.forEach(function(w,i){
+      cur.push(w);
+      var low=w.toLowerCase(),next=toks[i+1];
+      /* Zahlen, Mengen und kleingeschriebene Wörter (meist Eigenschaften wie "rote") gehören zum nächsten Wort */
+      var glue=next&&(VC_NUM.test(low)||VC_UNIT.test(low)||(w===low&&/^[a-zäöüß-]+$/.test(w)&&!CAT_KW.some(function(p){return low===p[0]||low===p[0]+'n'||low===p[0]+'s';})));
+      if(!glue){out.push(cur.join(' '));cur=[];}
+    });
+    if(cur.length)out.push(cur.join(' '));
+  });
+  var seen={};
+  return out.map(function(x){x=x.trim();return x.charAt(0).toUpperCase()+x.slice(1);}).filter(function(x){
+    var k=x.toLowerCase();if(!x||seen[k]||x.length<2)return false;seen[k]=1;return true;
+  });
+}
+var VC={rec:null,on:false,base:'',items:[]};
+function vcRender(){
+  var words=parseSpeech($('vcText').value),old={};
+  VC.items.forEach(function(it){old[it.t.toLowerCase()]=it;});
+  VC.items=words.map(function(w){var o=old[w.toLowerCase()];return o||{t:w,c:guessCat(w),on:true};});
+  var n=VC.items.filter(function(i){return i.on;}).length,L=curList();
+  $('vcBox').hidden=!VC.items.length;
+  $('vcGo').disabled=!n;
+  
+  $('vcAsk').textContent=n?(n===1?'Diesen Artikel':'Diese '+n+' Artikel')+' auf „'+L.name+'“ setzen?':'Nichts ausgewählt.';
+  $('vcList').innerHTML=VC.items.map(function(it,i){
+    return '<label class="vc-row'+(it.on?'':' off')+'"><input type="checkbox" data-vc="'+i+'"'+(it.on?' checked':'')+'><span class="vc-name">'+esc(it.t)+'</span><select class="rowcat" data-vcc="'+i+'" aria-label="Kategorie für '+esc(it.t)+'">'+catOptions(it.c)+'</select></label>';
+  }).join('');
+}
+function vcSet(on,msg){
+  VC.on=on;$('vcMic').classList.toggle('on',on);
+  $('vcMic').setAttribute('aria-label',on?'Aufnahme beenden':'Aufnahme starten');
+  $('vcState').textContent=msg||(on?'Ich höre zu … Tippe nochmal, wenn du fertig bist.':'Tippe aufs Mikrofon und sag, was ihr braucht.');
+}
+window.__vcStop=function(){if(VC.rec&&VC.on){try{VC.rec.stop();}catch(e){}}vcSet(false);};
+function vcStart(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){vcSet(false,'Die Spracherkennung geht in diesem Browser nicht direkt. Tippe ins Textfeld und nutze das Mikrofon der Tastatur.');$('vcText').focus();return;}
+  var r=new SR();VC.rec=r;
+  r.lang='de-DE';r.continuous=true;r.interimResults=true;
+  VC.base=$('vcText').value.trim();
+  r.onresult=function(ev){
+    var fin='',tmp='';
+    for(var i=0;i<ev.results.length;i++){var t=ev.results[i][0].transcript;if(ev.results[i].isFinal)fin+=t+', ';else tmp+=t;}
+    $('vcText').value=[VC.base,(fin+tmp).replace(/,\s*$/,'')].filter(Boolean).join(', ');
+    vcRender();
+  };
+  r.onerror=function(ev){
+    var m=ev.error==='not-allowed'||ev.error==='service-not-allowed'?'Kein Zugriff aufs Mikrofon. Erlaube es in den Einstellungen oder nutze das Mikrofon der Tastatur.':ev.error==='no-speech'?'Ich habe nichts gehört. Versuch es nochmal.':'Die Aufnahme hat nicht geklappt. Du kannst stattdessen das Mikrofon der Tastatur nutzen.';
+    vcSet(false,m);
+  };
+  r.onend=function(){if(VC.on)vcSet(false,VC.items.length?'Fertig. Prüf die Liste und tippe auf Übernehmen.':'');};
+  try{r.start();vcSet(true);}catch(e){vcSet(false,'Die Aufnahme ließ sich nicht starten. Nutze das Mikrofon der Tastatur.');}
+}
+$('shopMic').addEventListener('click',function(){
+  if(!S.canWrite)return;
+  $('form').hidden=true;$('namesForm').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=false;
+  $('vcText').value='';VC.items=[];vcRender();vcSet(false);
+  $('scrim').hidden=false;
+  vcStart();
+});
+$('vcMic').addEventListener('click',function(){if(VC.on)window.__vcStop();else vcStart();});
+$('vcText').addEventListener('input',vcRender);
+$('vcList').addEventListener('change',function(ev){
+  var t=ev.target;
+  if(t.dataset.vc!=null){VC.items[+t.dataset.vc].on=t.checked;vcRender();}
+  else if(t.dataset.vcc!=null){VC.items[+t.dataset.vcc].c=t.value;}
+});
+$('voiceSheet').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  if(!db||!S.canWrite)return;
+  window.__vcStop();
+  var pick=VC.items.filter(function(i){return i.on;});if(!pick.length)return;
+  var li=S.shopList,ln=curList().name,t0=Date.now();
+  Promise.all(pick.map(function(it,k){return db.collection('shopping').add({title:it.t,cat:it.c,list:li,done:false,created:t0+k});})).then(function(){
+    closeSheet();render();toast(pick.length+(pick.length===1?' Artikel steht':' Artikel stehen')+' auf „'+ln+'“.');
+  },fail);
 });
 $('shopSheet').addEventListener('submit',function(ev){
   ev.preventDefault();
