@@ -2255,8 +2255,8 @@ function renderReport(){
     nb+='<div class="lrow">'+pdot(r.who)+'<span class="lt">'+(r.ev?'<em>'+(r.time?esc(r.time)+' Uhr · ':'')+'</em>':'')+esc(r.title)+'</span><span class="lr">'+(r.ev?'Termin':esc(r.rec||''))+'</span></div>';
   });
   h+=renderRueckblick();
-  h+=renderRcSearch();
   h+=renderMonths();
+  h+=renderRcSearch();
   h+=rtile('','Nächste Woche · '+esc(dLabel(R.nf))+' bis '+esc(dLabel(R.nt)),nb||'<p class="empty" style="margin:0">Nichts eingetragen.</p>');
   h+='<section class="rtile rfoot"><div class="legend rleg">'+D.names.map(function(n){return '<span><i class="pd '+pcls(n)+'"></i>'+esc(n)+'</span>';}).join('')+'<span><i class="pd pcx"></i>ohne Zuordnung</span></div>'+
     '<p class="rnote">Bei Wiederholungen speichert SommerHaus nur den letzten Erledigungstag. Der Aufwand (Dauer) wird nicht erfasst.</p>'+'</section>';
