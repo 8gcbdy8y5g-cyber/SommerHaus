@@ -3280,6 +3280,22 @@ function setTheme(t,save){
   var sl=localStorage.getItem('sommerhaus-shoplist');if(sl)S.shopList=sl;
 }catch(e){}})();
 
+/* Einmalige Importe: importe.json neben der index.html. Jeder Import läuft nur einmal (Merker in settings/imports), feste IDs verhindern doppelte Einträge. */
+function runImports(){
+  if(!db||!S.canWrite||!window.fetch||location.protocol.indexOf('http')!==0)return;
+  fetch('importe.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(!d||!Array.isArray(d.imports)||!d.imports.length)return;
+    return db.doc('settings/imports').get().then(function(snap){
+      var done=(snap&&snap.data&&snap.data()||{}).done||{};
+      var todo=d.imports.filter(function(im){return im&&im.id&&!done[im.id]&&im.list&&im.list.id&&Array.isArray(im.items);});
+      return todo.reduce(function(p,im){return p.then(function(){
+        var t0=im.created||Date.now(),ps=[db.collection('shopLists').doc(im.list.id).set({name:im.list.name,created:t0})];
+        im.items.forEach(function(x,k){ps.push(db.collection('shopping').doc(im.list.id+'-'+(k<9?'0':'')+(k+1)).set({title:x.t,cat:CATS.indexOf(x.c)>=0?x.c:'Sonstiges',list:im.list.id,done:false,created:t0+k}));});
+        return Promise.all(ps).then(function(){done[im.id]=todayIso();return db.doc('settings/imports').set({done:done});}).then(function(){toast('Liste „'+im.list.name+'“ mit '+im.items.length+' Artikeln angelegt.');});
+      });},Promise.resolve());
+    });
+  }).catch(function(){});
+}
 function toItem(d){var o=Object.assign({},d.data()||{});o.id=d.id;return o;}
 
 /* Start */
@@ -3305,6 +3321,7 @@ render();
   db.collection('shopLists').onSnapshot(function(s){
     S.lists=s.docs.map(toItem);render();
   },onErr);
+  setTimeout(runImports,1500);
   db.collection('shopping').onSnapshot(function(s){
     S.shop=s.docs.map(toItem);render();
   },onErr);
