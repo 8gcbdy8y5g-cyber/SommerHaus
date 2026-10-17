@@ -404,6 +404,12 @@ span.check{cursor:default}
 .finish .fbtn.sec{background:var(--card);color:var(--fg);border:1px solid var(--sep)}
 .finish .fq{font-size:14px;line-height:1.4}
 .finish .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.finish .storebox{display:grid;gap:4px}
+.finish .storebox label{font-size:13px;font-weight:600;color:var(--fg2)}
+.finish .storebox input{width:100%;box-sizing:border-box;min-height:48px;border:1px solid var(--sep);border-radius:12px;background:var(--card);color:var(--fg);font-size:16px;padding:0 14px;outline:0}
+.finish .storebox input:focus{border-color:var(--accent)}
+.finish .storebox .sugg{padding:6px 0 0}
+.trips .shopname{color:var(--fg);font-weight:600}
 .finish .fmeta{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;color:var(--fg2)}
 .finish .fmeta button{border:0;background:none;color:var(--fg2);font-size:13px;font-weight:600;cursor:pointer;min-height:32px;padding:0 4px}
 .trips{margin:0;padding:0;list-style:none;display:grid;gap:8px}
@@ -700,7 +706,7 @@ function syncDur(){
 }
 
 var now0=new Date();
-var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],log:[],repWeek:'this',shopDoneOpen:false,finishAsk:false,tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
+var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],log:[],repWeek:'this',shopDoneOpen:false,finishAsk:false,finishStore:'',tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
 var db=null;
 
 var BINS={
@@ -942,6 +948,44 @@ function renderRhythm(L){
     list.map(function(x,i){return '<span class="pair"><button type="button" class="sg" data-act="rhyadd" data-i="'+i+'" title="zuletzt vor '+x.since+(x.since===1?' Tag':' Tagen')+' gekauft">+ '+esc(x.t)+'<i>'+rhEvery(x.every)+'</i></button><button type="button" class="sgx" data-act="rhyskip" data-i="'+i+'" aria-label="'+esc(x.t)+' vorerst nicht vorschlagen">×</button></span>';}).join('')+
     (list.length>1?'<button type="button" class="sg all" data-act="rhyall">Alle '+list.length+' hinzufügen</button>':'')+'</div>';
 }
+var STORES=["Edeka", "Rewe", "Lidl", "Aldi Süd", "Aldi Nord", "Kaufland", "Netto Marken-Discount", "Netto", "Penny", "Norma", "Globus", "Marktkauf", "Famila", "Combi", "Hit", "V-Markt", "Tegut", "Denns Biomarkt", "Alnatura", "Basic", "Metro", "Selgros", "Nah & Gut", "Edeka Center", "Edeka Neukauf", "Rewe Center", "Rossmann", "dm", "Müller", "Action", "Tedi", "Apotheke", "Wochenmarkt", "Bäckerei", "Metzgerei", "Getränkemarkt", "Hofladen", "Online-Lieferdienst"];
+function storeKey(x){return nrm(String(x||'')).replace(/[^a-z0-9]+/g,' ').trim();}
+function storeRecent(){
+  var out=[],seen={};
+  S.trips.slice().sort(function(a,b){return (b.at||0)-(a.at||0);}).forEach(function(t){
+    var n=String(t.store||'').trim(),k=storeKey(n);
+    if(n&&k&&!seen[k]){seen[k]=1;out.push(n);}
+  });
+  return out;
+}
+function storeCanon(v){
+  v=String(v||'').trim().replace(/\s+/g,' ').slice(0,40);
+  if(!v)return '';
+  var k=storeKey(v),all=storeRecent().concat(STORES);
+  for(var i=0;i<all.length;i++)if(storeKey(all[i])===k)return all[i];
+  return v;
+}
+function storeMatches(q){
+  var rec=storeRecent(),all=rec.concat(STORES.filter(function(n){return rec.every(function(r){return storeKey(r)!==storeKey(n);});}));
+  var k=storeKey(q);
+  if(!k)return rec.concat(['Edeka','Rewe','Lidl','Aldi Süd','Aldi Nord','Kaufland'].filter(function(n){return rec.every(function(r){return storeKey(r)!==storeKey(n);});})).slice(0,6);
+  var a=[],b=[],c=[];
+  all.forEach(function(n){
+    var nk=storeKey(n);
+    if(nk===k)return;
+    if(nk.indexOf(k)===0)a.push(n);
+    else if((' '+nk).indexOf(' '+k)>=0)b.push(n);
+    else if(nk.indexOf(k)>=0)c.push(n);
+  });
+  return a.concat(b,c).slice(0,6);
+}
+function storeSuggHtml(q){
+  var m=storeMatches(q),ql=String(q||'').trim().length;
+  return m.map(function(n,i){
+    var pre=ql&&storeKey(n).indexOf(storeKey(q))===0&&n.toLowerCase().indexOf(String(q).trim().toLowerCase())===0?'<b>'+esc(n.slice(0,ql))+'</b>'+esc(n.slice(ql)):esc(n);
+    return '<button type="button" class="sg" data-act="storepick" data-i="'+i+'">'+pre+'</button>';
+  }).join('');
+}
 function renderFinish(L,open,done){
   renderRhythm(L);
   var box=$('shopFinish');
@@ -952,6 +996,7 @@ function renderFinish(L,open,done){
     if(S.finishAsk){
       h+='<p class="fq"><b>Einkauf abschließen?</b> '+done.length+(done.length===1?' erledigter Artikel wird abgelegt':' erledigte Artikel werden abgelegt')+
         (open.length?', '+open.length+(open.length===1?' offener bleibt':' offene bleiben')+' für den nächsten Einkauf auf der Liste.':'. Die Liste ist danach leer.')+'</p>'+
+        '<div class="storebox"><label for="shopStore">Supermarkt</label><input type="text" id="shopStore" value="'+esc(S.finishStore)+'" placeholder="z. B. Aldi, Rewe, Lidl" autocomplete="off" autocapitalize="words" enterkeyhint="done" maxlength="40"><div class="sugg" id="storeSugg" role="group" aria-label="Supermarkt-Vorschläge">'+storeSuggHtml(S.finishStore)+'</div></div>'+
         '<div class="frow"><button type="button" class="fbtn sec" data-act="shopfinishno">Abbrechen</button><button type="button" class="fbtn" data-act="shopfinishgo">Ja, abschließen</button></div>';
     }else{
       h+='<button type="button" class="fbtn" data-act="shopfinish">Einkauf abgeschlossen</button>'+
@@ -964,12 +1009,14 @@ function renderFinish(L,open,done){
       '<button type="button" data-act="tripstoggle" aria-expanded="'+S.tripsOpen+'">'+(S.tripsOpen?'Verlauf ausblenden':'Verlauf')+'</button></div>';
     if(S.tripsOpen)h+='<ul class="trips">'+trips.slice(0,30).map(function(x,i){
       var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
-      return '<li><b>Einkauf '+(trips.length-i)+' · '+esc(x.date?fmtShort.format(parse(x.date)):'')+'</b> · '+(x.n||0)+(x.n===1?' Artikel':' Artikel')+
+      return '<li><b>Einkauf '+(trips.length-i)+' · '+esc(x.date?fmtShort.format(parse(x.date)):'')+'</b>'+(x.store?' · <span class="shopname">'+esc(x.store)+'</span>':'')+' · '+(x.n||0)+(x.n===1?' Artikel':' Artikel')+
         (x.carriedN?', '+x.carriedN+' übernommen':'')+(names?'<br>'+esc(names):'')+'</li>';
     }).join('')+'</ul>';
   }
+  var hadFocus=document.activeElement&&document.activeElement.id==='shopStore';
   box.className=h?'finish':'';
   box.innerHTML=h;
+  if(hadFocus){var si=$('shopStore');if(si){si.focus();try{si.setSelectionRange(si.value.length,si.value.length);}catch(e){}}}
 }
 var WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
 var REC={day:['täglich','alle %n Tage'],week:['wöchentlich','alle %n Wochen'],month:['monatlich','alle %n Monate']};
@@ -1056,7 +1103,7 @@ function buildReport(){
     L.push(plural(D.trips.length,'Einkauf','Einkäufe')+' abgeschlossen, insgesamt '+plural(D.items,'Artikel','Artikel')+' ('+(D.items/D.trips.length).toFixed(1).replace('.',',')+' pro Einkauf).');
     D.trips.forEach(function(x,i){
       var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
-      L.push('- '+(D.trips.length>1?(i+1)+'. ':'')+dLabel(x.date)+': '+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?', '+plural(x.carriedN,'Artikel','Artikel')+' übernommen':'')+(names?' ('+names+')':''));
+      L.push('- '+(D.trips.length>1?(i+1)+'. ':'')+dLabel(x.date)+(x.store?', '+x.store:'')+': '+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?', '+plural(x.carriedN,'Artikel','Artikel')+' übernommen':'')+(names?' ('+names+')':''));
     });
     if(D.multi.length)L.push('Mehrfach gekauft: '+D.multi.map(function(k){return k.t+' ('+k.n+'x)';}).join(', ')+'.');
     if(D.wait!=null)L.push('Ein Artikel stand im Schnitt '+D.wait.toFixed(1).replace('.',',')+' Tage auf der Liste, bis er abgehakt wurde.');
@@ -1115,7 +1162,7 @@ function renderReport(){
   if(D.trips.length){
     eb+=D.trips.map(function(x){
       var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
-      return '<div class="trow"><div class="tmain"><div class="zline"><b>'+esc(dShort(x.date))+'</b><span>'+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?' · '+x.carriedN+' übernommen':'')+'</span></div>'+(names?'<div class="tnames">'+esc(names)+'</div>':'')+'</div></div>';
+      return '<div class="trow"><div class="tmain"><div class="zline"><b>'+esc(dShort(x.date))+(x.store?' · '+esc(x.store):'')+'</b><span>'+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?' · '+x.carriedN+' übernommen':'')+'</span></div>'+(names?'<div class="tnames">'+esc(names)+'</div>':'')+'</div></div>';
     }).join('');
     if(D.multi.length)eb+='<div class="chips" style="margin-top:10px">'+D.multi.map(function(k){return '<span class="rchip">'+esc(k.t)+'<i>'+k.n+'×</i></span>';}).join('')+'</div><p class="rnote">Mehrfach gekauft</p>';
     if(D.wait!=null)eb+='<p class="rnote">Ein Artikel stand im Schnitt '+D.wait.toFixed(1).replace('.',',')+' Tage auf der Liste, bis er abgehakt wurde.</p>';
@@ -1559,6 +1606,17 @@ function sugPick(key,i,input,sel,setManual,box){
 $('shop-in').addEventListener('input',function(){sugRender($('shopSugg'),this,'shop');});
 $('shop-in').addEventListener('focus',function(){if(this.value)sugRender($('shopSugg'),this,'shop');});
 $('shopSugg').addEventListener('mousedown',function(ev){ev.preventDefault();});
+$('shopFinish').addEventListener('input',function(ev){
+  if(ev.target.id!=='shopStore')return;
+  S.finishStore=ev.target.value;
+  var sg=$('storeSugg');if(sg)sg.innerHTML=storeSuggHtml(S.finishStore);
+});
+$('shopFinish').addEventListener('keydown',function(ev){
+  if(ev.target.id!=='shopStore'||ev.key!=='Enter')return;
+  ev.preventDefault();
+  var go=$('shopFinish').querySelector('[data-act="shopfinishgo"]');if(go)go.click();
+});
+$('shopFinish').addEventListener('mousedown',function(ev){if(ev.target.closest&&ev.target.closest('#storeSugg'))ev.preventDefault();});
 $('shopSugg').addEventListener('click',function(ev){
   if(sugFixClick(ev,$('shopSugg'),$('shop-in'),$('shop-cat')))return;
   var b=ev.target.closest('.sg');if(!b)return;
@@ -1822,7 +1880,12 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'shopfinish':if(S.canWrite){S.finishAsk=true;renderShop();}break;
-    case 'shopfinishno':S.finishAsk=false;renderShop();break;
+    case 'shopfinishno':S.finishAsk=false;S.finishStore='';renderShop();break;
+    case 'storepick':{
+      var sm=storeMatches(S.finishStore)[+el.dataset.i];
+      if(sm){S.finishStore=sm;renderShop();var si2=$('shopStore');if(si2)si2.focus();}
+      break;
+    }
     case 'tripstoggle':S.tripsOpen=!S.tripsOpen;renderShop();break;
     case 'shopfinishgo':{
       if(!db||!S.canWrite)break;
@@ -1833,11 +1896,12 @@ document.addEventListener('click',function(ev){
       var trip={list:fl.id,listName:fl.name,at:Date.now(),date:todayIso(),n:fdone.length,
         items:fdone.map(function(x){return {t:x.title,c:effCat(x)||'',cr:x.created||0,d:x.doneAt||0};}),
         carriedN:fopen.length,carried:fopen.map(function(x){return x.title;})};
-      S.finishAsk=false;
+      var fstore=storeCanon(S.finishStore);if(fstore)trip.store=fstore;
+      S.finishAsk=false;S.finishStore='';
       db.collection('shopTrips').add(trip).then(function(){
         return Promise.all(fdone.map(function(x){return db.collection('shopping').doc(x.id).delete();}));
       }).then(function(){
-        toast('Einkauf abgeschlossen'+(fopen.length?'. '+fopen.length+(fopen.length===1?' Artikel bleibt':' Artikel bleiben')+' auf der Liste.':'.'));
+        toast('Einkauf'+(fstore?' bei '+fstore:'')+' abgeschlossen'+(fopen.length?'. '+fopen.length+(fopen.length===1?' Artikel bleibt':' Artikel bleiben')+' auf der Liste.':'.'));
       },fail);
       renderShop();
       break;
@@ -1853,7 +1917,7 @@ document.addEventListener('click',function(ev){
       render();window.scrollTo(0,0);break;
     case 'shopkind':setShopKind(el.dataset.k);break;
     case 'shoplist':
-      S.shopList=el.dataset.l;S.delList=false;S.finishAsk=false;
+      S.shopList=el.dataset.l;S.delList=false;S.finishAsk=false;S.finishStore='';
       try{localStorage.setItem('sommerhaus-shoplist',S.shopList);}catch(e){}
       renderShop();break;
     case 'shoplistdel':{
