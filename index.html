@@ -346,14 +346,58 @@ span.check{cursor:default}
 .listchips::-webkit-scrollbar{display:none}
 .listchips button{flex:none;border:0;border-radius:999px;background:var(--fill);color:var(--fg);font-weight:600;font-size:14px;min-height:36px;padding:0 16px;cursor:pointer;white-space:nowrap}
 .listchips button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.rgrid{display:grid;gap:12px}
+@media(min-width:760px){.rgrid{grid-template-columns:1fr 1fr;align-items:start}.rgrid .rhero,.rgrid .rfoot{grid-column:1/-1}}
+.pc0{--pc:var(--m0)}.pc1{--pc:var(--m1)}.pc2{--pc:var(--m2)}.pc3{--pc:var(--m3)}.pcx{--pc:var(--fg2)}
+.rtile{background:var(--card);border-radius:20px;padding:16px;min-width:0}
+.rtile h3{margin:0 0 10px;font-size:15px;font-weight:700;letter-spacing:.01em}
+.rtile.warn{box-shadow:inset 4px 0 0 var(--red)}
+.rtile .rsub{margin:-6px 0 12px;font-size:13px;color:var(--fg2)}
+.rtile .empty.ok{color:var(--green)}
+.rnote{margin:8px 0 0;font-size:12.5px;line-height:1.4;color:var(--fg2)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kpi{background:var(--fill);border-radius:14px;padding:10px 6px;text-align:center;display:grid;gap:2px}
+.kpi b{font-size:24px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:11.5px;color:var(--fg2);line-height:1.2}
+.kpi.bad b{color:var(--red)}
+.sbar{display:flex;height:14px;border-radius:999px;overflow:hidden;gap:2px;margin-bottom:12px;padding:0}
+.sbar span{background:var(--pc);min-width:6px}
+.prow{padding:10px 0;border-top:1px solid var(--sep)}
+.prow:first-of-type{border-top:0;padding-top:0}
+.phead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.phead .pn{margin-left:auto;font-size:13px;color:var(--fg2)}
+.pb{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:var(--pc);color:var(--on-m);flex:none}
+.pb.sm{width:24px;height:24px;font-size:12px}
+.pb.pcx{background:var(--fill);color:var(--fg2)}
+.pd{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pc);flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.rchip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 11px;font-size:13px;line-height:1.2;background:color-mix(in srgb,var(--pc,var(--fg2)) 16%,transparent);color:var(--fg);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pc,var(--fg2)) 40%,transparent)}
+.rchip i{font-style:normal;font-size:11.5px;color:var(--fg2)}
+.rchip .bd{width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 1px var(--sep)}
+.zrow,.trow{display:flex;gap:10px;align-items:flex-start;padding:7px 0}
+.zmain,.tmain{flex:1;min-width:0}
+.zline{display:flex;justify-content:space-between;gap:8px;font-size:14px}
+.zline span{color:var(--fg2);font-size:13px}
+.prog{height:8px;border-radius:999px;background:var(--fill);margin-top:6px;overflow:hidden}
+.prog span{display:block;height:100%;background:var(--pc);border-radius:999px}
+.tnames{font-size:12.5px;color:var(--fg2);margin-top:2px;line-height:1.35}
+.lrow{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14px}
+.lrow .lt{flex:1;min-width:0}.lrow .lt em{font-style:normal;color:var(--fg2)}
+.lrow .lr{font-size:12.5px;color:var(--fg2);white-space:nowrap}
+.warn .lrow .lr{color:var(--red);font-weight:600}
+.dayh{margin-top:10px;font-size:12.5px;font-weight:700;color:var(--fg2)}
+.dayh:first-child{margin-top:0}
+.rleg{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;margin-bottom:6px}
+.rleg span{display:inline-flex;align-items:center;gap:6px}
+.rtile.rfoot .ract{margin-top:14px}
 .rep h2{margin:0 0 10px}
-.rep .seg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
-.rep .seg2 button{min-height:40px;border:0;border-radius:10px;background:var(--fill);color:var(--fg);font-size:14px;font-weight:600;cursor:pointer}
-.rep .seg2 button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.seg2 button{min-height:40px;border:0;border-radius:10px;background:var(--fill);color:var(--fg);font-size:14px;font-weight:600;cursor:pointer}
+.seg2 button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
 .rep pre{margin:0;white-space:pre-wrap;word-break:break-word;font:400 14px/1.5 -apple-system,system-ui,sans-serif;color:var(--fg)}
-.rep .ract{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-.rep .ract button{min-height:46px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;cursor:pointer}
-.rep .ract button.sec{background:var(--card);color:var(--fg);border:1px solid var(--sep)}
+.ract{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.ract button{min-height:46px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;cursor:pointer}
+.ract button.sec{background:var(--card);color:var(--fg);border:1px solid var(--sep)}
 .finish{margin-top:16px;border-top:1px solid var(--sep);padding-top:14px;display:grid;gap:10px}
 .finish .fbtn{min-height:48px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;cursor:pointer;padding:0 16px}
 .finish .fbtn:active{opacity:.8}
@@ -412,7 +456,7 @@ span.check{cursor:default}
   </section>
   </div>
   <div id="moreView" hidden>
-    <section class="panel rep" id="report" aria-label="Wochenbericht"></section>
+    <div class="rgrid" id="report" aria-label="Wochenbericht"></div>
   </div>
 </div>
 
@@ -656,7 +700,7 @@ function syncDur(){
 }
 
 var now0=new Date();
-var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],repWeek:'this',shopDoneOpen:false,finishAsk:false,tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
+var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],log:[],repWeek:'this',shopDoneOpen:false,finishAsk:false,tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
 var db=null;
 
 var BINS={
@@ -927,89 +971,172 @@ var WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
 var REC={day:['täglich','alle %n Tage'],week:['wöchentlich','alle %n Wochen'],month:['monatlich','alle %n Monate']};
 function recText(t){var r=REC[t.unit];if(!r||!t.every)return '';return +t.every===1?r[0]:r[1].replace('%n',t.every);}
 function dLabel(ds){return fmtShort.format(parse(ds));}
+function dShort(ds){return WD[parse(ds).getDay()]+', '+parse(ds).getDate()+'.'+(parse(ds).getMonth()+1)+'.';}
 function whoTxt(w){return w&&String(w).trim()?String(w).trim():'';}
 function plural(n,a,b){return n+' '+(n===1?a:b);}
+function meName(){
+  var e=String((($('shWho')||{}).textContent)||'').toLowerCase().split('@')[0];
+  if(!e)return '';
+  var m=S.members.find(function(n){var k=nrm(n).trim();return k.length>1&&e.indexOf(k)===0;});
+  return m||'';
+}
+function pcls(name){var i=name?S.members.indexOf(name):-1;return i>=0?'pc'+(i%4):'pcx';}
 function repRange(){
   var today=todayIso(),mon=weekStartIso(today);
   if(S.repWeek==='last')mon=addDays(mon,-7);
   return {from:mon,to:addDays(mon,6),nf:addDays(mon,7),nt:addDays(mon,13),today:today};
 }
+function repData(){
+  var R=repRange(),D={R:R};
+  var ev=[],seen={};
+  S.log.filter(function(x){return x.date>=R.from&&x.date<=R.to;}).sort(function(a,b){return (a.at||0)-(b.at||0);}).forEach(function(x){
+    ev.push({title:x.title,date:x.date,by:whoTxt(x.by),who:whoTxt(x.who),bin:x.bin||''});seen[x.title+'|'+x.date]=1;
+  });
+  S.tasks.forEach(function(t){
+    if(t.lastDone&&t.lastDone>=R.from&&t.lastDone<=R.to&&!seen[t.title+'|'+t.lastDone])ev.push({title:t.title,date:t.lastDone,by:'',who:whoTxt(t.who),bin:t.icon||''});
+  });
+  ev.sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:a.title.localeCompare(b.title,'de');});
+  D.done=ev;
+  D.over=S.tasks.filter(function(t){return isOpen(t)&&t.due&&t.due<R.today;}).sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:byTitle(a,b);}).map(function(t){return {title:t.title,due:t.due,who:whoTxt(t.who),days:Math.round((parse(R.today)-parse(t.due))/864e5),bin:t.icon||''};});
+  var rows=[];
+  S.tasks.filter(function(t){return isOpen(t)&&t.due>=R.nf&&t.due<=R.nt;}).forEach(function(t){rows.push({k:t.due+'0',date:t.due,title:t.title,who:whoTxt(t.who),rec:recText(t),bin:t.icon||'',ev:false});});
+  S.events.filter(function(e){return e.date>=R.nf&&e.date<=R.nt;}).forEach(function(e){rows.push({k:e.date+'1'+(e.time||''),date:e.date,title:e.title,who:whoTxt(e.who),time:e.time||'',ev:true});});
+  rows.sort(function(a,b){return a.k<b.k?-1:a.k>b.k?1:0;});
+  D.next=rows;
+  var trips=S.trips.filter(function(x){return x.date>=R.from&&x.date<=R.to;}).sort(function(a,b){return (a.at||0)-(b.at||0);});
+  D.trips=trips;
+  D.items=trips.reduce(function(a,x){return a+(x.n||0);},0);
+  var cnt={};trips.forEach(function(x){(x.items||[]).forEach(function(y){var k=String(y.t||'').trim();if(k)cnt[k]=(cnt[k]||0)+1;});});
+  D.multi=Object.keys(cnt).filter(function(k){return cnt[k]>1;}).sort(function(a,b){return cnt[b]-cnt[a];}).map(function(k){return {t:k,n:cnt[k]};});
+  var waits=[];trips.forEach(function(x){(x.items||[]).forEach(function(y){if(y.cr&&y.d&&y.d>=y.cr)waits.push((y.d-y.cr)/864e5);});});
+  D.wait=waits.length?waits.reduce(function(a,b){return a+b;},0)/waits.length:null;
+  D.tripsAll=S.trips.length;
+  var lastT=S.trips.slice().sort(function(a,b){return (b.at||0)-(a.at||0);})[0];D.lastTrip=lastT?lastT.date:'';
+  D.onList=S.shop.filter(function(x){return !x.done;}).map(function(x){return x.title;});
+  D.rhy=rhythmDue(curList());
+  // Personen
+  var names=S.members.slice();
+  function add(n){if(n&&names.indexOf(n)<0)names.push(n);}
+  ev.forEach(function(e){add(e.by);add(e.who);});D.over.forEach(function(o){add(o.who);});rows.forEach(function(r){add(r.who);});
+  D.names=names;
+  D.assignedOpen=function(n){return S.tasks.filter(function(t){return isOpen(t)&&t.due&&t.due<=R.to&&whoTxt(t.who)===n;}).length;};
+  return D;
+}
 function buildReport(){
-  var R=repRange(),L=[];
-  var tasks=S.tasks,evs=S.events;
-  var done=tasks.filter(function(t){return t.lastDone&&t.lastDone>=R.from&&t.lastDone<=R.to;}).sort(function(a,b){return a.lastDone<b.lastDone?-1:a.lastDone>b.lastDone?1:byTitle(a,b);});
-  var over=tasks.filter(function(t){return isOpen(t)&&t.due&&t.due<R.today;}).sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:byTitle(a,b);});
-  var next=tasks.filter(function(t){return isOpen(t)&&t.due>=R.nf&&t.due<=R.nt;}).sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:byTitle(a,b);});
-  var nev=evs.filter(function(e){return e.date>=R.nf&&e.date<=R.nt;}).sort(function(a,b){var x=a.date+(a.time||''),y=b.date+(b.time||'');return x<y?-1:x>y?1:0;});
+  var D=repData(),R=D.R,L=[];
   L.push('Wochenbericht '+dLabel(R.from)+' bis '+dLabel(R.to));
   if(R.today<=R.to)L.push('(Stand heute, '+dLabel(R.today)+'; die Woche läuft noch)');
   L.push('');
-  L.push('ERLEDIGT ('+done.length+')');
-  if(!done.length)L.push('Keine Aufgabe abgehakt.');
-  done.forEach(function(t){
-    var w=whoTxt(t.who);
-    L.push('- '+dLabel(t.lastDone)+': '+t.title+(t.icon?' (rausgestellt)':'')+(w?' (zugeordnet an '+w+')':''));
+  L.push('ERLEDIGT ('+D.done.length+')');
+  if(!D.done.length)L.push('Keine Aufgabe abgehakt.');
+  D.done.forEach(function(e){
+    L.push('- '+dLabel(e.date)+': '+e.title+(e.bin?' (rausgestellt)':'')+(e.by?' (erledigt von '+e.by+')':e.who?' (zugeordnet an '+e.who+')':''));
   });
+  L.push('');
+  L.push('WER HAT WAS GEMACHT');
+  var any=false;
+  D.names.forEach(function(n){var m=D.done.filter(function(e){return e.by===n;});if(m.length){any=true;L.push('- '+n+': '+m.length+' ('+m.map(function(e){return e.title;}).join(', ')+')');}});
+  var un=D.done.filter(function(e){return !e.by;});
+  if(un.length){L.push('- Ohne Angabe, wer abgehakt hat: '+un.length+' ('+un.map(function(e){return e.title;}).join(', ')+')');}
+  if(!D.done.length)L.push('- keine');
+  L.push('Wer abgehakt hat, speichert SommerHaus erst seit dem Update. Ältere Einträge haben keine Angabe.');
   L.push('');
   L.push('NOCH OFFEN UND ÜBERFÄLLIG');
-  if(!over.length)L.push('Nichts überfällig.');
-  over.forEach(function(t){
-    var days=Math.round((parse(R.today)-parse(t.due))/864e5),w=whoTxt(t.who);
-    L.push('- '+t.title+' (fällig '+dLabel(t.due)+', '+plural(days,'Tag','Tage')+' offen)'+(w?' (zugeordnet an '+w+')':''));
-  });
+  if(!D.over.length)L.push('Nichts überfällig.');
+  D.over.forEach(function(o){L.push('- '+o.title+' (fällig '+dLabel(o.due)+', '+plural(o.days,'Tag','Tage')+' offen)'+(o.who?' (zugeordnet an '+o.who+')':''));});
   L.push('Die App speichert keinen Verlauf, Verspätungen lassen sich im Nachhinein nicht prüfen.');
   L.push('');
-  function split(list){
-    var m={},order=[];
-    list.forEach(function(t){var w=whoTxt(t.who)||'Niemandem zugeordnet';if(!m[w]){m[w]=[];order.push(w);}m[w].push(t.title);});
-    order.sort(function(a,b){return a==='Niemandem zugeordnet'?1:b==='Niemandem zugeordnet'?-1:0;});
-    return order.map(function(w){return '- '+w+': '+m[w].length+' ('+m[w].join(', ')+')';});
-  }
-  L.push('AUFTEILUNG NACH ZUORDNUNG');
-  L.push('Erledigt in dieser Woche:');
-  if(done.length){split(done).forEach(function(x){L.push(x);});var nz=done.filter(function(t){return !whoTxt(t.who);}).length;L.push(nz+' von '+done.length+' Aufgaben waren niemandem zugeordnet.');}else L.push('- keine');
-  L.push('Geplant für nächste Woche:');
-  if(next.length){split(next).forEach(function(x){L.push(x);});var nn=next.filter(function(t){return !whoTxt(t.who);}).length;L.push(nn+' von '+next.length+' Aufgaben sind niemandem zugeordnet.');}else L.push('- keine');
-  L.push('Die Zahlen zeigen nur die Zuordnung, nicht wer tatsächlich erledigt hat. Der Aufwand (Dauer) ist nicht erfasst.');
-  L.push('');
-  var trips=S.trips.filter(function(x){return x.date>=R.from&&x.date<=R.to;}).sort(function(a,b){return (a.at||0)-(b.at||0);});
   L.push('EINKÄUFE');
-  if(!trips.length)L.push('Kein Einkauf abgeschlossen.');
+  if(!D.trips.length)L.push('Kein Einkauf abgeschlossen.');
   else{
-    var tot=trips.reduce(function(a,x){return a+(x.n||0);},0);
-    L.push(plural(trips.length,'Einkauf','Einkäufe')+' abgeschlossen, insgesamt '+plural(tot,'Artikel','Artikel')+' ('+(tot/trips.length).toFixed(1).replace('.',',')+' pro Einkauf).');
-    trips.forEach(function(x,i){
+    L.push(plural(D.trips.length,'Einkauf','Einkäufe')+' abgeschlossen, insgesamt '+plural(D.items,'Artikel','Artikel')+' ('+(D.items/D.trips.length).toFixed(1).replace('.',',')+' pro Einkauf).');
+    D.trips.forEach(function(x,i){
       var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
-      L.push('- '+(trips.length>1?(i+1)+'. ':'')+dLabel(x.date)+': '+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?', '+plural(x.carriedN,'Artikel','Artikel')+' in den nächsten Einkauf übernommen':'')+(names?' ('+names+')':''));
+      L.push('- '+(D.trips.length>1?(i+1)+'. ':'')+dLabel(x.date)+': '+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?', '+plural(x.carriedN,'Artikel','Artikel')+' übernommen':'')+(names?' ('+names+')':''));
     });
-    var cnt={};trips.forEach(function(x){(x.items||[]).forEach(function(y){var k=String(y.t||'').trim();if(k)cnt[k]=(cnt[k]||0)+1;});});
-    var mult=Object.keys(cnt).filter(function(k){return cnt[k]>1;}).sort(function(a,b){return cnt[b]-cnt[a];});
-    if(mult.length)L.push('Mehrfach gekauft: '+mult.map(function(k){return k+' ('+cnt[k]+'x)';}).join(', ')+'.');
-    var waits=[];trips.forEach(function(x){(x.items||[]).forEach(function(y){if(y.cr&&y.d&&y.d>=y.cr)waits.push((y.d-y.cr)/864e5);});});
-    if(waits.length){var av=waits.reduce(function(a,b){return a+b;},0)/waits.length;L.push('Ein Artikel stand im Schnitt '+av.toFixed(1).replace('.',',')+' Tage auf der Liste, bis er abgehakt wurde.');}
+    if(D.multi.length)L.push('Mehrfach gekauft: '+D.multi.map(function(k){return k.t+' ('+k.n+'x)';}).join(', ')+'.');
+    if(D.wait!=null)L.push('Ein Artikel stand im Schnitt '+D.wait.toFixed(1).replace('.',',')+' Tage auf der Liste, bis er abgehakt wurde.');
   }
-  var allT=S.trips.slice().sort(function(a,b){return (b.at||0)-(a.at||0);});
-  if(allT.length)L.push('Insgesamt bisher: '+plural(allT.length,'Einkauf','Einkäufe')+', der letzte am '+dLabel(allT[0].date)+'.');
-  var onList=S.shop.filter(function(x){return !x.done;});
-  if(onList.length)L.push('Aktuell offen auf der Liste: '+onList.length+' ('+onList.slice(0,12).map(function(x){return x.title;}).join(', ')+(onList.length>12?', …':'')+').');
+  if(D.tripsAll)L.push('Insgesamt bisher: '+plural(D.tripsAll,'Einkauf','Einkäufe')+', der letzte am '+dLabel(D.lastTrip)+'.');
+  if(D.onList.length)L.push('Aktuell offen auf der Liste: '+D.onList.length+' ('+D.onList.slice(0,12).join(', ')+(D.onList.length>12?', …':'')+').');
+  if(D.rhy.length)L.push('Laut Rhythmus bald fällig: '+D.rhy.map(function(x){return x.t+' ('+rhEvery(x.every)+')';}).join(', ')+'.');
   L.push('');
   L.push('NÄCHSTE WOCHE ('+dLabel(R.nf)+' bis '+dLabel(R.nt)+')');
-  var rows=[];
-  next.forEach(function(t){var w=whoTxt(t.who),r=recText(t);rows.push({k:t.due+'0',s:'- '+dLabel(t.due)+': '+t.title+(r?' ('+r+')':'')+(w?' (zugeordnet an '+w+')':'')});});
-  nev.forEach(function(e){var w=whoTxt(e.who);rows.push({k:e.date+'1'+(e.time||''),s:'- '+dLabel(e.date)+(e.time?', '+e.time+' Uhr':'')+': Termin '+e.title+(w?' ('+w+')':'')});});
-  rows.sort(function(a,b){return a.k<b.k?-1:a.k>b.k?1:0;});
-  if(!rows.length)L.push('Nichts eingetragen.');
-  rows.forEach(function(r){L.push(r.s);});
+  if(!D.next.length)L.push('Nichts eingetragen.');
+  D.next.forEach(function(r){
+    L.push('- '+dLabel(r.date)+(r.ev&&r.time?', '+r.time+' Uhr':'')+': '+(r.ev?'Termin ':'')+r.title+(r.rec?' ('+r.rec+')':'')+(r.who?' (zugeordnet an '+r.who+')':''));
+  });
   L.push('');
-  L.push('Bei wiederkehrenden Aufgaben speichert SommerHaus nur den letzten Erledigungstag. Wurde etwas zweimal abgehakt, steht es nur einmal da.');
+  L.push('Bei wiederkehrenden Aufgaben und Terminen steht nur das, was eingetragen ist. Der Aufwand (Dauer) wird nicht erfasst.');
   return L.join('\n').replace(/\.\.(?=\n|$)/g,'.');
 }
+function rtile(cls,h,body){return '<section class="rtile'+(cls?' '+cls:'')+'"><h3>'+h+'</h3>'+body+'</section>';}
+function pdot(name){return '<i class="pd '+pcls(name)+'" title="'+esc(name||'ohne Zuordnung')+'"></i>';}
+function pbadge(name,sm){return name?'<span class="pb '+pcls(name)+(sm?' sm':'')+'" title="'+esc(name)+'">'+esc(name.trim().charAt(0).toUpperCase())+'</span>':'';}
 function renderReport(){
   var box=$('report');if(!box)return;
-  if(S.loading){box.innerHTML='<h2>Wochenbericht</h2><p class="empty">Lädt …</p>';return;}
-  box.innerHTML='<h2>Wochenbericht</h2><div class="seg2"><button type="button" data-act="repweek" data-wk="this" aria-pressed="'+(S.repWeek==='this')+'">Diese Woche</button><button type="button" data-act="repweek" data-wk="last" aria-pressed="'+(S.repWeek==='last')+'">Letzte Woche</button></div>'+
-    '<pre id="repText">'+esc(buildReport())+'</pre>'+
-    '<div class="ract"><button type="button" data-act="repmail">Per Mail senden</button><button type="button" class="sec" data-act="repcopy">Kopieren</button></div>';
+  if(S.loading){box.innerHTML='<section class="rtile"><h3>Wochenbericht</h3><p class="empty">Lädt …</p></section>';return;}
+  var D=repData(),R=D.R,h='';
+  var nUn=D.done.filter(function(e){return !e.by;}).length;
+  h+='<section class="rtile rhero"><h3>Wochenbericht</h3><p class="rsub">'+esc(dLabel(R.from))+' bis '+esc(dLabel(R.to))+(R.today<=R.to?' · läuft noch':'')+'</p>'+
+    '<div class="seg2"><button type="button" data-act="repweek" data-wk="this" aria-pressed="'+(S.repWeek==='this')+'">Diese Woche</button><button type="button" data-act="repweek" data-wk="last" aria-pressed="'+(S.repWeek==='last')+'">Letzte Woche</button></div>'+
+    '<div class="kpis"><div class="kpi"><b>'+D.done.length+'</b><span>erledigt</span></div><div class="kpi'+(D.over.length?' bad':'')+'"><b>'+D.over.length+'</b><span>überfällig</span></div><div class="kpi"><b>'+D.trips.length+'</b><span>'+(D.trips.length===1?'Einkauf':'Einkäufe')+'</span></div><div class="kpi"><b>'+D.items+'</b><span>Artikel gekauft</span></div></div></section>';
+  // Wer hat was gemacht
+  var body='';
+  if(!D.done.length)body='<p class="empty" style="margin:0">Diese Woche wurde noch nichts abgehakt.</p>';
+  else{
+    var segs=D.names.map(function(n){return {n:n,l:D.done.filter(function(e){return e.by===n;})};}).filter(function(g){return g.l.length;});
+    if(nUn)segs.push({n:'',l:D.done.filter(function(e){return !e.by;})});
+    body+='<div class="sbar" role="img" aria-label="Verteilung der erledigten Aufgaben">'+segs.map(function(g){return '<span class="'+pcls(g.n)+'" style="flex:'+g.l.length+'"></span>';}).join('')+'</div>';
+    body+=segs.map(function(g){
+      return '<div class="prow"><div class="phead">'+(g.n?pbadge(g.n):'<span class="pb pcx">?</span>')+'<b>'+esc(g.n||'Ohne Angabe')+'</b><span class="pn">'+g.l.length+' von '+D.done.length+'</span></div><div class="chips">'+
+        g.l.map(function(e){return '<span class="rchip '+pcls(g.n)+'">'+esc(e.title)+(e.bin?' ↗':'')+'<i>'+esc(dShort(e.date))+'</i></span>';}).join('')+'</div></div>';
+    }).join('');
+    if(nUn)body+='<p class="rnote">„Ohne Angabe“: wer abgehakt hat, speichert SommerHaus erst seit diesem Update. Ab jetzt steht es dabei.</p>';
+  }
+  h+=rtile('','Wer hat was gemacht',body);
+  // Zuständigkeit
+  var zr='';
+  D.names.forEach(function(n){
+    var dn=D.done.filter(function(e){return e.who===n;}).length,op=D.assignedOpen(n),tot=dn+op;
+    zr+='<div class="zrow">'+pbadge(n,true)+'<div class="zmain"><div class="zline"><b>'+esc(n)+'</b><span>'+(tot?dn+' von '+tot+' erledigt':'nichts zugeordnet')+'</span></div><div class="prog '+pcls(n)+'"><span style="width:'+(tot?Math.round(dn/tot*100):0)+'%"></span></div></div></div>';
+  });
+  var dnN=D.done.filter(function(e){return !e.who;}).length,opN=S.tasks.filter(function(t){return isOpen(t)&&t.due&&t.due<=R.to&&!whoTxt(t.who);}).length;
+  zr+='<div class="zrow"><span class="pb pcx sm">–</span><div class="zmain"><div class="zline"><b>Niemandem zugeordnet</b><span>'+(dnN+opN?dnN+' von '+(dnN+opN)+' erledigt':'nichts')+'</span></div><div class="prog pcx"><span style="width:'+(dnN+opN?Math.round(dnN/(dnN+opN)*100):0)+'%"></span></div></div></div>';
+  h+=rtile('','Zuständigkeit und Stand',zr+'<p class="rnote">Zählt Aufgaben bis Wochenende: erledigt gegenüber noch offen. Zugeordnet heißt zuständig, nicht erledigt von.</p>');
+  // Überfällig
+  h+=rtile('warn','Überfällig',D.over.length?D.over.map(function(o){return '<div class="lrow">'+pdot(o.who)+'<span class="lt">'+esc(o.title)+'</span><span class="lr">'+plural(o.days,'Tag','Tage')+'</span></div>';}).join(''):'<p class="empty ok" style="margin:0">Nichts überfällig.</p>');
+  // Einkäufe
+  var eb='';
+  if(D.trips.length){
+    eb+=D.trips.map(function(x){
+      var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
+      return '<div class="trow"><div class="tmain"><div class="zline"><b>'+esc(dShort(x.date))+'</b><span>'+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?' · '+x.carriedN+' übernommen':'')+'</span></div>'+(names?'<div class="tnames">'+esc(names)+'</div>':'')+'</div></div>';
+    }).join('');
+    if(D.multi.length)eb+='<div class="chips" style="margin-top:10px">'+D.multi.map(function(k){return '<span class="rchip">'+esc(k.t)+'<i>'+k.n+'×</i></span>';}).join('')+'</div><p class="rnote">Mehrfach gekauft</p>';
+    if(D.wait!=null)eb+='<p class="rnote">Ein Artikel stand im Schnitt '+D.wait.toFixed(1).replace('.',',')+' Tage auf der Liste, bis er abgehakt wurde.</p>';
+  }else eb='<p class="empty" style="margin:0">Kein Einkauf abgeschlossen.</p>';
+  if(D.rhy.length)eb+='<p class="rnote" style="margin-top:12px">Bald fällig laut Rhythmus</p><div class="chips">'+D.rhy.map(function(x){return '<span class="rchip">'+esc(x.t)+'<i>'+rhEvery(x.every)+'</i></span>';}).join('')+'</div>';
+  if(D.tripsAll)eb+='<p class="rnote">Insgesamt bisher '+plural(D.tripsAll,'Einkauf','Einkäufe')+', der letzte am '+esc(dLabel(D.lastTrip)).replace(/\.$/,'')+'.</p>';
+  h+=rtile('','Einkäufe',eb);
+  // Mülltonnen
+  var bins=D.done.filter(function(e){return e.bin;}),nbins=D.next.filter(function(r){return r.bin;});
+  if(bins.length||nbins.length){
+    var bc={yellow:'var(--yellow)',black:'var(--fg)',blue:'var(--blue)'};
+    h+=rtile('','Mülltonnen',(bins.length?'<p class="rnote" style="margin:0 0 6px">Rausgestellt</p><div class="chips">'+bins.map(function(e){return '<span class="rchip"><i class="bd" style="background:'+(bc[e.bin]||'var(--fg2)')+'"></i>'+esc(e.title)+'<i>'+esc(dShort(e.date))+'</i></span>';}).join('')+'</div>':'')+
+      (nbins.length?'<p class="rnote" style="margin:10px 0 6px">Nächste Woche</p><div class="chips">'+nbins.map(function(r){return '<span class="rchip"><i class="bd" style="background:'+(bc[r.bin]||'var(--fg2)')+'"></i>'+esc(r.title)+'<i>'+esc(dShort(r.date))+'</i></span>';}).join('')+'</div>':''));
+  }
+  // Nächste Woche
+  var nb='',cur='';
+  D.next.forEach(function(r){
+    if(r.date!==cur){cur=r.date;nb+='<div class="dayh">'+esc(fmtLong.format(parse(r.date)))+'</div>';}
+    nb+='<div class="lrow">'+pdot(r.who)+'<span class="lt">'+(r.ev?'<em>'+(r.time?esc(r.time)+' Uhr · ':'')+'</em>':'')+esc(r.title)+'</span><span class="lr">'+(r.ev?'Termin':esc(r.rec||''))+'</span></div>';
+  });
+  h+=rtile('','Nächste Woche · '+esc(dLabel(R.nf))+' bis '+esc(dLabel(R.nt)),nb||'<p class="empty" style="margin:0">Nichts eingetragen.</p>');
+  h+='<section class="rtile rfoot"><div class="legend rleg">'+D.names.map(function(n){return '<span><i class="pd '+pcls(n)+'"></i>'+esc(n)+'</span>';}).join('')+'<span><i class="pd pcx"></i>ohne Zuordnung</span></div>'+
+    '<p class="rnote">Bei Wiederholungen speichert SommerHaus nur den letzten Erledigungstag. Der Aufwand (Dauer) wird nicht erfasst.</p>'+
+    '<div class="ract"><button type="button" data-act="repmail">Per Mail senden</button><button type="button" class="sec" data-act="repcopy">Kopieren</button></div></section>';
+  box.innerHTML=h;
 }
 function weekStartIso(ds){var d=parse(ds),k=(d.getDay()+6)%7;return addDays(ds,-k);}
 function renderDay(today){
@@ -1095,6 +1222,11 @@ function showBanner(msg){var b=$('banner');b.textContent=msg;b.hidden=false;}
 
 /* Aktionen */
 var busy={};
+function logDone(t,today){
+  try{return db.collection('doneLog').add({title:t.title,date:today,at:Date.now(),by:meName(),who:t.who||'',bin:t.icon||'',tid:t.id||''}).then(function(r){return r&&r.id;},function(){return null;});}
+  catch(e){return Promise.resolve(null);}
+}
+function unlogDone(lp){lp.then(function(id){if(id)db.collection('doneLog').doc(id).delete().catch(function(){});});}
 function doneTask(id){
   var t=S.tasks.find(function(x){return x.id===id;});
   if(!t||!db||!S.canWrite||busy[id])return Promise.resolve();
@@ -1104,12 +1236,14 @@ function doneTask(id){
   if(t.unit==='once'||!t.every){
     var oldLast2=t.lastDone||'',wasDone=!!t.done;
     p=ref.update({done:true,lastDone:today}).then(function(){
-      toast('Erledigt: '+t.title,function(){ref.update({done:wasDone,lastDone:oldLast2}).catch(fail);});
+      var lp=logDone(t,today);
+      toast('Erledigt: '+t.title,function(){ref.update({done:wasDone,lastDone:oldLast2}).catch(fail);unlogDone(lp);});
     },fail);
   }else{
     var nd=nextDue(t,today),oldDue=t.due,oldLast=t.lastDone||'';
     p=ref.update({due:nd,lastDone:today}).then(function(){
-      toast(t.title+' erledigt. Wieder fällig am '+fmtShort.format(parse(nd))+'.',function(){ref.update({due:oldDue,lastDone:oldLast}).catch(fail);});
+      var lp=logDone(t,today);
+      toast(t.title+' erledigt. Wieder fällig am '+fmtShort.format(parse(nd))+'.',function(){ref.update({due:oldDue,lastDone:oldLast}).catch(fail);unlogDone(lp);});
     },fail);
   }
   return p.then(function(){delete busy[id];});
@@ -1839,6 +1973,9 @@ render();
   },onErr);
   db.collection('shopping').onSnapshot(function(s){
     S.shop=s.docs.map(toItem);render();
+  },onErr);
+  db.collection('doneLog').onSnapshot(function(s){
+    S.log=s.docs.map(toItem);render();
   },onErr);
   db.collection('shopTrips').onSnapshot(function(s){
     S.trips=s.docs.map(toItem);render();
