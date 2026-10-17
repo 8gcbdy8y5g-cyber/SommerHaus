@@ -436,6 +436,81 @@ span.check{cursor:default}
 .rfoldh .chev{flex:none;color:var(--fg2);transition:transform .15s}
 .rfoldh .chev.open{transform:rotate(90deg)}
 .rfoldb{margin-top:10px}
+.rb-switch{grid-column:1/-1}
+.rb{position:relative;overflow:hidden}
+.rb h4{margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2)}
+.rb-kick{margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.rb-ok{margin:0;font-size:14px;color:var(--green);font-weight:600}
+.rb-stuck,.rb-done{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.rb-stuck li,.rb-done li{display:flex;align-items:center;gap:8px;font-size:14px;min-width:0}
+.rb-stuck li span,.rb-done li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rb-stuck li em{font-style:normal;font-size:12px;color:var(--red);font-weight:600;white-space:nowrap}
+.rb-done li em{font-style:normal;font-size:12px;color:var(--fg2);white-space:nowrap}
+.rb li .bin{width:1.1em;height:1.1em;vertical-align:-.2em;margin-right:.2em}
+.rb-stores{display:grid;gap:8px}
+.rb-st{display:grid;grid-template-columns:minmax(0,7.5em) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.rb-stn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rb-stb{height:10px;border-radius:999px;background:var(--fill);overflow:hidden}
+.rb-stb i{display:block;height:100%;border-radius:999px;background:var(--accent)}
+.rb-stv{font-variant-numeric:tabular-nums;font-weight:600}
+/* A */
+.rbA{background:linear-gradient(180deg,var(--card),color-mix(in srgb,var(--accent) 5%,var(--card)));border:1px solid color-mix(in srgb,var(--accent) 18%,transparent)}
+.rtile .rbA-head{margin:0;font-size:26px;line-height:1.18;font-weight:400;letter-spacing:-.01em;text-wrap:balance}
+.rbA-lede{margin:10px 0 0;font-size:15.5px;line-height:1.45;color:var(--fg2);text-wrap:pretty}
+.rbA-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;padding-top:16px;border-top:1px solid var(--sep)}
+.rbA-shop{margin-top:16px;padding-top:16px;border-top:1px solid var(--sep)}
+.rbA-shop .rbA-lede{margin:0 0 10px}
+.rbA-shoph{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer}
+.rbA-shoph>span{flex:1;min-width:0;display:grid}
+.rbA-shoph .rbA-lede{display:block;margin:0;font-size:15.5px;line-height:1.45;color:var(--fg2)}
+.rbA-shoph .chev{flex:none;color:var(--fg2);transition:transform .15s}
+.rbA-shoph .chev.open{transform:rotate(90deg)}
+.rbA-shoph[aria-expanded="true"]{margin-bottom:8px}
+.rbA-trips{list-style:none;margin:0;padding:0;display:grid}
+.rbA-trips li+li{border-top:1px solid var(--sep)}
+.rbA-trips button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;color:var(--fg);font:inherit;text-align:left;padding:9px 0;cursor:pointer;min-height:44px}
+.rbA-trips button:active{opacity:.6}
+.rbA-td{flex:none;width:5.6em;font-size:13px;color:var(--fg2);font-variant-numeric:tabular-nums}
+.rbA-ts{flex:1;min-width:0;display:grid;font-size:14.5px;font-weight:600}
+.rbA-ts i{font-style:normal;font-weight:400;font-size:12.5px;color:var(--fg2)}
+.rbA-ta{flex:none;font-weight:700;font-variant-numeric:tabular-nums}
+.rbA-sub{margin-top:12px}
+@media (max-width:420px){.rbA-cols{grid-template-columns:1fr}}
+/* B */
+.rbB-top{display:flex;align-items:center;gap:16px}
+.rbB-ring{width:118px;height:118px;flex:none}
+.rbB-pct{font-size:27px;font-weight:700;fill:var(--fg);font-variant-numeric:tabular-nums}
+.rbB-sub{font-size:10px;font-weight:600;fill:var(--fg2);letter-spacing:.08em}
+.rbB-facts{flex:1;min-width:0;display:grid;gap:8px}
+.rbB-facts div{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px;min-width:0}
+.rbB-facts b{font-size:22px;font-variant-numeric:tabular-nums;min-width:2.2ch}
+.rbB-facts b.ok{color:var(--green)}.rbB-facts b.bad{color:var(--red)}
+.rbB-facts span{flex:1 1 7em;font-size:13px;line-height:1.3;color:var(--fg2)}
+.rbB-h{margin-top:16px!important}
+/* C */
+.rtile .rbC-head{margin:0 0 14px;font-size:19px;line-height:1.25;font-weight:500;text-wrap:balance}
+.rbC-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.rbC-day{display:grid;justify-items:center;gap:4px;padding:8px 2px;border-radius:14px;background:var(--fill);min-width:0}
+.rbC-day.today{background:color-mix(in srgb,var(--accent) 14%,var(--card));box-shadow:inset 0 0 0 1.5px var(--accent)}
+.rbC-day.fut{opacity:.45}
+.rbC-wd{font-size:11px;font-weight:700;color:var(--fg2);text-transform:uppercase}
+.rbC-dn{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.rbC-dots{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;min-height:24px;align-content:flex-start;max-width:34px}
+.rbC-dots .pd{width:8px;height:8px}
+.rbC-dots b{font-size:10px;color:var(--fg2)}
+.rbC-bar{height:58px;width:14px;display:flex;align-items:flex-end;border-bottom:1px solid var(--sep)}
+.rbC-bar i{display:block;width:100%;border-radius:5px 5px 0 0;background:var(--accent)}
+.rbC-amt{font-size:10.5px;color:var(--fg2);font-variant-numeric:tabular-nums;min-height:13px;white-space:nowrap}
+.rbC-leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12px;color:var(--fg2)}
+.rbC-leg span{display:inline-flex;align-items:center;gap:5px}
+.rbC-legbar{display:inline-block;width:8px;height:12px;border-radius:3px 3px 0 0;background:var(--accent)}
+.rbC-foot{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;padding-top:14px;border-top:1px solid var(--sep)}
+.rbC-money{margin:0;font-size:14px;line-height:1.45}
+@media (max-width:420px){.rbC-foot{grid-template-columns:1fr}}
+/* Suche */
+.rcs-in{display:flex;align-items:center;gap:8px;background:var(--fill);border-radius:12px;padding:0 12px;color:var(--fg2)}
+.rcs-in input{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;font-size:16px;color:var(--fg);min-height:44px}
+.rcs-list{margin-top:10px;background:var(--bg)}
 .rfoldbar{margin-top:10px;cursor:pointer}
 .rfoldbar .sbar{margin:0}
 .rchip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 11px;font-size:13px;line-height:1.2;background:color-mix(in srgb,var(--pc,var(--fg2)) 16%,transparent);color:var(--fg);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pc,var(--fg2)) 40%,transparent)}
@@ -1051,7 +1126,7 @@ function rhythmDue(L){
   var today=todayIso(),by={};
   S.trips.forEach(function(tr){
     if((tr.list||DEF_LIST.id)!==L.id||!tr.date)return;
-    (tr.items||[]).forEach(function(y){
+    (tr.items||[]).forEach(function(y){if(y.g)return;
       var k=nrm(String(y.t||'').trim());if(!k)return;
       var o=by[k]||(by[k]={t:y.t,c:y.c,dates:{},last:''});
       o.dates[tr.date]=1;
@@ -1312,8 +1387,19 @@ function rcShare(){
 function rcSaveFor(tid,pend){
   var t=S.trips.find(function(x){return x.id===tid;});if(!t||!db)return Promise.resolve();
   return db.collection('receipts').add({img:pend.data,w:pend.w,h:pend.h,at:Date.now(),date:t.date||todayIso(),store:t.store||'',trip:tid}).then(function(ref){
-    return db.collection('shopTrips').doc(tid).update({receipt:ref.id});
-  }).then(function(){toast('Kassenzettel gespeichert.');},fail);
+    var rid=ref.id;
+    ocrRun(pend.data).then(function(text){
+      if(!text)return;
+      db.collection('receipts').doc(rid).update({text:text}).catch(function(){});
+      var up={rtext:String(text).slice(0,4000)},t2=S.trips.find(function(x){return x.id===tid;})||{},r=parseReceipt(text);
+      if(!(t2.amount>0)&&r.total)up.amount=r.total;
+      var lab2=rcSumLabel(t2.store);
+      if(!(t2.items&&t2.items.length)&&lab2&&(r.total||r.items.length)){up.items=[{t:lab2,c:'Sonstiges',p:r.total||r.items.reduce(function(a,x){return a+x.p;},0),r:1,g:1}];up.n=1;}
+      else if(!(t2.items&&t2.items.length)&&r.items.length){up.items=r.items.map(function(o){return {t:o.t,c:guessCat(o.t),p:o.p,r:1};});up.n=up.items.length;}
+      db.collection('shopTrips').doc(tid).update(up).catch(function(){});
+    }).catch(function(){});
+    return db.collection('shopTrips').doc(tid).update({receipt:rid});
+  }).then(function(){toast('Kassenzettel gespeichert, ich lese ihn im Hintergrund.');},fail);
 }
 function rcClick(ev){
   var b=ev.target.closest('[data-rc]');
@@ -1420,6 +1506,7 @@ function rcOcrStart(){
     var r=parseReceipt(text),open=S.shop.filter(function(x){return !x.done&&listOf(x)===curList().id;}),used={};
     r.items.forEach(function(it){var mt=rcpMatch(it.t,open.filter(function(x){return !used[x.id];}));it.on=true;if(mt){it.m=mt.id;it.mt=mt.title;used[mt.id]=1;}});
     p.text=text;p.ocr={state:'done',items:r.items,total:r.total};
+    if(!String(S.finishStore||'').trim()){var ds=rcDetectStore(text);if(ds)S.finishStore=ds;}
     if(r.total&&!String(S.finishAmt||'').trim())S.finishAmt=String(r.total.toFixed(2)).replace('.',',');
     renderShop();
   },function(){if(RC.pending!==p)return;p.ocr={state:'err'};renderShop();});
@@ -1429,6 +1516,8 @@ function rcOcrHtml(){
   var o=p.ocr;
   if(o.state==='busy')return '<p class="ocrmsg" id="rcOcrMsg">'+esc(o.msg||'Kassenzettel wird gelesen …')+'</p>';
   if(o.state==='err')return '<p class="ocrmsg">Den Kassenzettel konnte ich nicht lesen. Prüfe die Internetverbindung oder trag die Artikel von Hand ein. <button type="button" class="linkbtn" data-act="rcocr">Nochmal versuchen</button></p>';
+  var g=rcOcrSummary(p);
+  if(g)return '<div class="ocrbox"><p class="ocrhead"><b>Ein Gesamtposten: '+esc(g.t)+'</b>'+(g.p?' · '+esc(fmtEur(g.p)):'')+'</p><p class="rnote" style="margin:0">Beim '+esc(g.t==='Bäcker'||g.t==='Metzger'?g.t:'Einkauf hier')+' liste ich nicht jedes Teil einzeln auf, der Bon zählt als ein Posten.</p></div>';
   if(!o.items.length)return '<p class="ocrmsg">Auf dem Kassenzettel habe ich keine Artikel erkannt.'+(o.total?' Die Summe ('+esc(fmtEur(o.total))+') habe ich übernommen.':'')+'</p>';
   var on=o.items.filter(function(x){return x.on;}).length,mt=o.items.filter(function(x){return x.on&&x.m;}).length;
   return '<div class="ocrbox"><p class="ocrhead"><b>'+plural(o.items.length,'Artikel','Artikel')+' erkannt</b>'+(o.total?' · Summe '+esc(fmtEur(o.total)):'')+'</p>'+
@@ -1436,12 +1525,32 @@ function rcOcrHtml(){
       return '<li><label><input type="checkbox" data-ocr="'+i+'"'+(x.on?' checked':'')+'><span class="on">'+esc(x.t)+(x.m?'<i>auf der Liste: '+esc(x.mt)+'</i>':'')+'</span><span class="op">'+esc(fmtEur(x.p))+'</span></label></li>';
     }).join('')+'</ul><p class="rnote">'+on+' werden als gekauft gespeichert'+(mt?', '+mt+' davon hake ich auf der Liste ab':'')+'. Falsch erkannte Zeilen einfach abwählen.</p></div>';
 }
-function rcOcrItems(p){return p&&p.ocr&&p.ocr.state==='done'?p.ocr.items.filter(function(x){return x.on;}):[];}
+/* Bei Bäcker, Metzger & Co. wird der Bon nicht einzeln aufgelistet, sondern als ein Gesamtposten gespeichert. */
+var RC_SUM_STORES={'backerei':'Bäcker','backer':'Bäcker','metzgerei':'Metzger','metzger':'Metzger','fleischerei':'Metzger','tankstelle':'Tankstelle','wochenmarkt':'Wochenmarkt','hofladen':'Hofladen','apotheke':'Apotheke','kiosk':'Kiosk','cafe':'Café','konditorei':'Bäcker'};
+function rcSumLabel(store){var k=nrm(String(store||'')).trim();if(!k)return '';for(var key in RC_SUM_STORES){if(k.indexOf(key)>=0)return RC_SUM_STORES[key];}return '';}
+function rcDetectStore(text){
+  var head=nrm(String(text||'').split(/\n/).slice(0,6).join(' '));
+  if(/backerei|backhaus|backstube|konditorei/.test(head))return 'Bäckerei';
+  if(/metzgerei|fleischerei/.test(head))return 'Metzgerei';
+  var all=storeRecent().concat(STORES);
+  for(var i=0;i<all.length;i++){var k=storeKey(all[i]);if(k.length>=3&&(' '+head.replace(/[^a-z0-9]+/g,' ')+' ').indexOf(' '+k+' ')>=0)return all[i];}
+  return '';
+}
+function rcOcrSummary(p){
+  var lab=rcSumLabel(S.finishStore);if(!lab||!p||!p.ocr||p.ocr.state!=='done')return null;
+  var sum=p.ocr.total||p.ocr.items.reduce(function(a,x){return a+(x.p||0);},0);
+  return {t:lab,p:Math.round(sum*100)/100,on:true,g:1};
+}
+function rcOcrItems(p){
+  if(!(p&&p.ocr&&p.ocr.state==='done'))return [];
+  var g=rcOcrSummary(p);if(g)return g.p>0?[g]:[];
+  return p.ocr.items.filter(function(x){return x.on;});
+}
 function rcSaveTrip(trip,pend){
   if(!pend)return db.collection('shopTrips').add(trip);
   var rid='';
   return db.collection('receipts').add({img:pend.data,w:pend.w,h:pend.h,at:Date.now(),date:trip.date,store:trip.store||'',text:pend.text||''}).then(function(ref){
-    rid=ref.id;trip.receipt=rid;return db.collection('shopTrips').add(trip);
+    rid=ref.id;trip.receipt=rid;if(pend.text)trip.rtext=String(pend.text).slice(0,4000);return db.collection('shopTrips').add(trip);
   }).then(function(tref){if(tref&&tref.id)db.collection('receipts').doc(rid).update({trip:tref.id}).catch(function(){});return tref;});
 }
 /* ---------- Einkäufe im Wochenbericht: Liste, Details, Kassenzettel, Löschen ---------- */
@@ -1587,7 +1696,7 @@ function ofFor(item){return (OFFERS?OFFERS.offers:[]).filter(function(o){return 
 function ofOpenItems(){var seen={},out=[];S.shop.forEach(function(x){if(x.done)return;var k=nrm(String(x.title||'').trim());if(!k||seen[k])return;seen[k]=1;out.push(x.title);});return out;}
 function ofFrequent(){
   var cnt={},name={};
-  S.trips.forEach(function(t){var seen={};(t.items||[]).forEach(function(y){var k=nrm(String(y.t||'').trim());if(!k||seen[k])return;seen[k]=1;cnt[k]=(cnt[k]||0)+1;name[k]=y.t;});});
+  S.trips.forEach(function(t){var seen={};(t.items||[]).forEach(function(y){if(y.g)return;var k=nrm(String(y.t||'').trim());if(!k||seen[k])return;seen[k]=1;cnt[k]=(cnt[k]||0)+1;name[k]=y.t;});});
   var open={};ofOpenItems().forEach(function(t){open[nrm(t.trim())]=1;});
   return Object.keys(cnt).filter(function(k){return cnt[k]>=2&&!open[k];}).sort(function(a,b){return cnt[b]-cnt[a];}).map(function(k){return {t:name[k],n:cnt[k]};});
 }
@@ -1862,6 +1971,129 @@ function buildReport(){
 function rtile(cls,h,body){return '<section class="rtile'+(cls?' '+cls:'')+'"><h3>'+h+'</h3>'+body+'</section>';}
 function pdot(name){return '<i class="pd '+pcls(name)+'" title="'+esc(name||'ohne Zuordnung')+'"></i>';}
 function pbadge(name,sm){return name?'<span class="pb '+pcls(name)+(sm?' sm':'')+'" title="'+esc(name)+'">'+esc(name.trim().charAt(0).toUpperCase())+'</span>':'';}
+/* ---------- Wochenrückblick (drei Gestaltungen zur Auswahl) und Kassenzettel-Suche ---------- */
+var RB_NUM=['keine','eine','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn','elf','zwölf'];
+function rbWord(n,cap){var w=n<RB_NUM.length?RB_NUM[n]:String(n);return cap?w.charAt(0).toUpperCase()+w.slice(1):w;}
+function rbData(){
+  var D=repData(),R=D.R,today=R.today,end=R.to<today?R.to:today;
+  var stuck=S.tasks.filter(function(t){return isOpen(t)&&t.due&&t.due<=end&&!(t.due===today&&R.to>=today);})
+    .sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:byTitle(a,b);})
+    .map(function(t){return {title:t.title,due:t.due,who:whoTxt(t.who),days:Math.max(0,Math.round((parse(end)-parse(t.due))/864e5)),bin:t.icon||''};});
+  var pf=addDays(R.from,-7),pt=addDays(R.from,-1),prev=S.trips.filter(function(x){return x.date>=pf&&x.date<=pt&&x.amount>0;}).reduce(function(a,x){return a+x.amount;},0);
+  var days=[];for(var i=0;i<7;i++){var ds=addDays(R.from,i);days.push({ds:ds,done:D.done.filter(function(e){return e.date===ds;}),spend:D.trips.filter(function(x){return x.date===ds&&x.amount>0;}).reduce(function(a,x){return a+x.amount;},0),trips:D.trips.filter(function(x){return x.date===ds;}).length});}
+  var big=D.trips.filter(function(x){return x.amount>0;}).sort(function(a,b){return b.amount-a.amount;})[0]||null;
+  return {D:D,R:R,today:today,stuck:stuck,prev:prev,days:days,big:big,kw:isoWeek(parse(R.from)),total:D.done.length+stuck.length,receipts:D.trips.filter(function(x){return x.receipt;}).length};
+}
+function rbDelta(sum,prev){
+  if(!prev||!sum)return '';
+  var d=sum-prev,abs=Math.abs(d);
+  if(abs<0.5)return 'genauso viel wie letzte Woche';
+  return fmtEur(abs)+(d<0?' weniger':' mehr')+' als letzte Woche';
+}
+function rbHeadline(B){
+  var n=B.D.done.length,s=B.stuck.length;
+  if(!n&&!s)return 'Eine ruhige Woche, es stand nichts an.';
+  if(!s)return rbWord(n,true)+(n===1?' Aufgabe':' Aufgaben')+' geschafft, nichts ist liegen geblieben.';
+  if(!n)return 'Noch nichts abgehakt, '+rbWord(s)+(s===1?' Aufgabe wartet':' Aufgaben warten')+'.';
+  return rbWord(n,true)+(n===1?' Aufgabe':' Aufgaben')+' geschafft, '+rbWord(s)+(s===1?' ist':' sind')+' liegen geblieben.';
+}
+function rbMoneyLine(B){
+  var sp=B.D.spend,t=B.D.trips.length;
+  if(!t)return 'Diese Woche wurde kein Einkauf abgeschlossen.';
+  if(!sp.n)return plural(t,'Einkauf','Einkäufe')+', aber ohne eingetragenen Betrag.';
+  var dl=rbDelta(sp.sum,B.prev);
+  return 'Für '+plural(t,'Einkauf','Einkäufe')+' gingen '+fmtEur(sp.sum)+' raus'+(dl?', '+dl:'')+'.';
+}
+function rbStuckList(B,max){
+  if(!B.stuck.length)return '<p class="rb-ok">Nichts hängt. Stark.</p>';
+  return '<ul class="rb-stuck">'+B.stuck.slice(0,max||6).map(function(t){return '<li>'+pdot(t.who)+'<span>'+binIcon(t.bin)+esc(t.title)+'</span><em>'+(t.days?'seit '+plural(t.days,'Tag','Tagen'):'heute')+'</em></li>';}).join('')+'</ul>'+(B.stuck.length>(max||6)?'<p class="rnote">+ '+(B.stuck.length-(max||6))+' weitere</p>':'');
+}
+function rbDoneList(B,max){
+  var l=B.D.done.slice().sort(function(a,b){return a.date<b.date?1:-1;});
+  if(!l.length)return '<p class="rnote">Noch nichts abgehakt.</p>';
+  return '<ul class="rb-done">'+l.slice(0,max||6).map(function(e){return '<li>'+pdot(e.by||e.who)+'<span>'+binIcon(e.bin)+esc(e.title)+'</span><em>'+esc(WD[parse(e.date).getDay()])+'</em></li>';}).join('')+'</ul>'+(l.length>(max||6)?'<p class="rnote">+ '+(l.length-(max||6))+' weitere</p>':'');
+}
+function rbStores(B){
+  var bs=B.D.spend.byStore;if(!bs.length)return '';
+  var mx=bs[0].sum||1;
+  return '<div class="rb-stores">'+bs.slice(0,5).map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/mx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';
+}
+/* A: Wochenbrief, ruhig und typografisch */
+function rbA(B){
+  var sp=B.D.spend,tr=B.D.trips.slice().sort(function(a,b){return (a.at||0)-(b.at||0);});
+  var so=!!S.rbShopOpen&&tr.length;
+  var shop='<div class="rbA-shop">'+(tr.length?'<button type="button" class="rbA-shoph" data-act="rbshop" aria-expanded="'+so+'"><span><h4>Einkäufe</h4><span class="rbA-lede">'+esc(rbMoneyLine(B))+'</span></span><svg class="chev'+(so?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>':'<h4>Einkäufe</h4><p class="rbA-lede">'+esc(rbMoneyLine(B))+'</p>');
+  if(so){
+    shop+='<ul class="rbA-trips">'+tr.map(function(x){
+      return '<li><button type="button" data-act="tripsheet" data-t="'+esc(x.id)+'"><span class="rbA-td">'+esc(dShort(x.date||''))+'</span><span class="rbA-ts">'+esc(x.store||'ohne Laden')+'<i>'+esc(x.spont?'spontan':plural(x.n||0,'Artikel','Artikel'))+'</i></span>'+(x.receipt?'<span class="tl-rc">'+RC_ICON+'</span>':'')+'<span class="rbA-ta">'+(x.amount?esc(fmtEur(x.amount)):'–')+'</span></button></li>';
+    }).join('')+'</ul>';
+    if(sp.byStore.length>1&&sp.byStore.length<sp.n)shop+='<div class="rbA-sub"><h4>Nach Laden</h4>'+rbStores(B)+'</div>';
+    if(sp.missing)shop+='<p class="rnote">Bei '+plural(sp.missing,'Einkauf','Einkäufen')+' fehlt der Betrag.</p>';
+  }
+  shop+='</div>';
+  return '<section class="rtile rb rbA"><p class="rb-kick">Wochenrückblick · KW '+B.kw+'</p>'+
+    '<h3 class="rbA-head">'+esc(rbHeadline(B))+'</h3>'+shop+
+    '<div class="rbA-cols"><div><h4>Geschafft</h4>'+rbDoneList(B,5)+'</div><div><h4>Hängt noch</h4>'+rbStuckList(B,5)+'</div></div>'+
+    '</section>';
+}
+/* B: Bilanz mit Ring */
+function rbB(B){
+  var n=B.D.done.length,s=B.stuck.length,tot=n+s,pct=tot?Math.round(n/tot*100):100,sp=B.D.spend;
+  var r=52,c=2*Math.PI*r,len=c*pct/100;
+  var ring='<svg class="rbB-ring" viewBox="0 0 132 132" role="img" aria-label="'+pct+' Prozent erledigt"><circle cx="66" cy="66" r="'+r+'" fill="none" stroke="var(--fill)" stroke-width="14"/>'+
+    (tot?'<circle cx="66" cy="66" r="'+r+'" fill="none" stroke="var(--green)" stroke-width="14" stroke-linecap="round" stroke-dasharray="'+len.toFixed(1)+' '+c.toFixed(1)+'" transform="rotate(-90 66 66)"/>':'')+
+    '<text x="66" y="70" text-anchor="middle" class="rbB-pct">'+pct+' %</text><text x="66" y="86" text-anchor="middle" class="rbB-sub">ERLEDIGT</text></svg>';
+  return '<section class="rtile rb rbB"><p class="rb-kick">Wochenbilanz · KW '+B.kw+'</p>'+
+    '<div class="rbB-top">'+ring+'<div class="rbB-facts">'+
+      '<div><b class="ok">'+n+'</b><span>abgehakt</span></div>'+
+      '<div><b class="'+(s?'bad':'')+'">'+s+'</b><span>hängen geblieben</span></div>'+
+      '<div><b>'+(sp.n?esc(fmtEur(sp.sum)):'–')+'</b><span>Einkauf'+(B.prev&&sp.n?' · '+esc(rbDelta(sp.sum,B.prev).replace(' als letzte Woche',' als Vorwoche')):'')+'</span></div>'+
+    '</div></div>'+
+    (s?'<h4 class="rbB-h">Hängt noch</h4>'+rbStuckList(B,6):'<p class="rb-ok">Alles erledigt, was fällig war.</p>')+
+    (sp.n?'<h4 class="rbB-h">Wohin das Geld ging</h4>'+rbStores(B):'')+
+    '</section>';
+}
+/* C: Wochenstreifen Mo bis So */
+function rbC(B){
+  var mxs=Math.max.apply(null,B.days.map(function(d){return d.spend;}).concat([1]));
+  var cols=B.days.map(function(d){
+    var p=parse(d.ds),isT=d.ds===B.today,fut=d.ds>B.today;
+    var dots=d.done.slice(0,6).map(function(e){return '<i class="pd '+pcls(e.by||e.who)+'" title="'+esc(e.title)+'"></i>';}).join('')+(d.done.length>6?'<b>+'+(d.done.length-6)+'</b>':'');
+    var bh=d.spend?Math.max(6,Math.round(d.spend/mxs*56)):0;
+    return '<div class="rbC-day'+(isT?' today':'')+(fut?' fut':'')+'"><span class="rbC-wd">'+WD[p.getDay()]+'</span><span class="rbC-dn">'+p.getDate()+'</span>'+
+      '<div class="rbC-dots">'+dots+'</div><div class="rbC-bar">'+(bh?'<i style="height:'+bh+'px"></i>':'')+'</div><span class="rbC-amt">'+(d.spend?esc(fmtEur(d.spend).replace(/,\d\d\s€/,' €')):'')+'</span></div>';
+  }).join('');
+  return '<section class="rtile rb rbC"><p class="rb-kick">Deine Woche · KW '+B.kw+'</p><h3 class="rbC-head">'+esc(rbHeadline(B))+'</h3>'+
+    '<div class="rbC-strip" role="img" aria-label="Erledigte Aufgaben und Ausgaben je Tag">'+cols+'</div>'+
+    '<div class="rbC-leg"><span><i class="pd pcx"></i> Punkt = erledigte Aufgabe</span><span><i class="rbC-legbar"></i> Balken = Einkauf</span></div>'+
+    '<div class="rbC-foot"><div><h4>Hängt noch</h4>'+rbStuckList(B,4)+'</div><div><h4>Einkauf</h4><p class="rbC-money">'+esc(rbMoneyLine(B))+'</p></div></div>'+
+    '</section>';
+}
+function renderRueckblick(){
+  var B=rbData();
+  return rbA(B);
+}
+/* Kassenzettel-Suche: Laden, Datum, Artikel und gelesener Bontext */
+function rcHay(t){return nrm([t.store||'',t.date||'',t.date?fmtLong.format(parse(t.date)):'',t.date?fmtMonth.format(parse(t.date)):'',(t.items||[]).map(function(y){return y.t;}).join(' '),t.rtext||'',t.amount?fmtEur(t.amount):''].join(' '));}
+var RC_SYN={lampe:['leuchte','lampe','birne','led'],leuchte:['leuchte','lampe','led'],klopapier:['toilettenpapier','klopapier','toil'],toilettenpapier:['toilettenpapier','klopapier'],handy:['smartphone','handy'],kabel:['kabel','adapter','ladekabel'],batterie:['batterie','akku','mignon'],shirt:['shirt','t-shirt'],hose:['hose','jeans'],schuhe:['schuh','sneaker'],topf:['topf','pfanne'],spielzeug:['spiel','spielzeug']};
+function rcSearch(q){
+  var toks=nrm(q).split(/\s+/).filter(function(x){return x.length>1;});
+  if(!toks.length)return [];
+  return S.trips.filter(function(t){var h=rcHay(t);return toks.every(function(k){var al=[k,k.replace(/(en|n|e|s)$/,'')].concat(RC_SYN[k]||RC_SYN[k.replace(/(en|n|e|s)$/,'')]||[]);return al.some(function(a){return a.length>1&&h.indexOf(nrm(a))>=0;});});})
+    .sort(function(a,b){return (b.at||0)-(a.at||0);});
+}
+function rcSearchRows(){
+  var q=S.rcQ||'',l=rcSearch(q);
+  if(!q.trim())return '<p class="rnote" style="margin:6px 2px 0">Sucht in Laden, Datum, Artikeln und im Text der fotografierten Kassenzettel.</p>';
+  if(!l.length)return '<p class="rnote" style="margin:6px 2px 0">Nichts gefunden. Probier einen kürzeren Begriff oder nur den Laden.</p>';
+  return '<ul class="tlist rcs-list">'+l.slice(0,20).map(function(t){
+    var hit=(t.items||[]).map(function(y){return y.t;}).filter(function(n){return nrm(q).split(/\s+/).some(function(k){return k.length>1&&nrm(n).indexOf(k)>=0;});}).slice(0,3).join(', ');
+    return '<li><button type="button" data-act="tripsheet" data-t="'+esc(t.id)+'"><span class="tl-main"><b>'+esc(dShort(t.date||''))+(t.store?' · '+esc(t.store):'')+'</b><span>'+esc(hit||(t.receipt?'Treffer im Kassenzettel':tripLine(t)))+'</span></span>'+(t.receipt?'<span class="tl-rc">'+RC_ICON+'</span>':'')+(t.amount?'<span class="tl-amt">'+esc(fmtEur(t.amount))+'</span>':'')+'</button></li>';
+  }).join('')+'</ul>';
+}
+function renderRcSearch(){
+  return '<section class="rtile rcs"><h3>Kassenzettel suchen</h3><div class="rcs-in"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" id="rcQ" value="'+esc(S.rcQ||'')+'" placeholder="z. B. Lampe Aldi" autocomplete="off" enterkeyhint="search" aria-label="Kassenzettel suchen"></div><div id="rcRes">'+rcSearchRows()+'</div></section>';
+}
 function renderReport(){
   var box=$('report');if(!box)return;
   if(S.loading){box.innerHTML='<section class="rtile"><h3>Wochenbericht</h3><p class="empty">Lädt …</p></section>';return;}
@@ -1870,26 +2102,6 @@ function renderReport(){
   h+='<section class="rtile rhero"><h3>Wochenbericht</h3><p class="rsub">'+esc(dLabel(R.from))+' bis '+esc(dLabel(R.to))+(R.today<=R.to?' · läuft noch':'')+'</p>'+
     '<div class="seg2"><button type="button" data-act="repweek" data-wk="this" aria-pressed="'+(S.repWeek==='this')+'">Diese Woche</button><button type="button" data-act="repweek" data-wk="last" aria-pressed="'+(S.repWeek==='last')+'">Letzte Woche</button></div>'+
     '<div class="kpis"><button type="button" class="kpi kbtn" data-act="kpi" data-m="done" aria-label="Erledigte Aufgaben ansehen"><b>'+D.done.length+'</b><span>erledigt ›</span></button><button type="button" class="kpi kbtn'+(D.over.length?' bad':'')+'" data-act="kpi" data-m="over" aria-label="Überfällige Aufgaben ansehen"><b>'+D.over.length+'</b><span>überfällig ›</span></button><button type="button" class="kpi kbtn" data-act="tripsheet" aria-label="Einkäufe ansehen"><b>'+D.trips.length+'</b><span>'+(D.trips.length===1?'Einkauf':'Einkäufe')+' ›</span></button><button type="button" class="kpi kbtn" data-act="kpi" data-m="items" aria-label="Gekaufte Artikel ansehen"><b>'+D.items+'</b><span>Artikel ›</span></button></div></section>';
-  // Wer hat was gemacht
-  var body='';
-  if(!D.done.length)body='<p class="empty" style="margin:0">Diese Woche wurde noch nichts abgehakt.</p>';
-  else{
-    var segs=D.names.map(function(n){return {n:n,l:D.done.filter(function(e){return e.by===n;})};}).filter(function(g){return g.l.length;});
-    if(nUn)segs.push({n:'',l:D.done.filter(function(e){return !e.by;})});
-    var wbar='<div class="sbar" role="img" aria-label="Verteilung der erledigten Aufgaben">'+segs.map(function(g){return '<span class="'+pcls(g.n)+'" style="flex:'+g.l.length+'"></span>';}).join('')+'</div>';
-    var wsum=segs.map(function(g){return (g.n||'Ohne Angabe')+' '+g.l.length;}).join(' · ');
-    body+=segs.map(function(g){
-      return '<div class="prow"><div class="phead">'+(g.n?pbadge(g.n):'<span class="pb pcx">?</span>')+'<b>'+esc(g.n||'Ohne Angabe')+'</b><span class="pn">'+g.l.length+' von '+D.done.length+'</span></div><div class="rchips">'+
-        g.l.map(function(e){return '<span class="rchip '+pcls(g.n)+'">'+esc(e.title)+(e.bin?' ↗':'')+'<i>'+esc(dShort(e.date))+'</i></span>';}).join('')+'</div></div>';
-    }).join('');
-    if(nUn)body+='<p class="rnote">„Ohne Angabe“: wer abgehakt hat, speichert SommerHaus erst seit diesem Update. Ab jetzt steht es dabei.</p>';
-  }
-  if(!D.done.length)h+=rtile('','Wer hat was gemacht',body);
-  else{
-    var wo=!!S.repWhoOpen;
-    h+='<section class="rtile rfold'+(wo?' open':'')+'"><button type="button" class="rfoldh" data-act="repwho" aria-expanded="'+wo+'"><h3>Wer hat was gemacht</h3><span class="rfs">'+esc(wsum)+'</span><svg class="chev'+(wo?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'+
-      '<div class="rfoldbar" data-act="repwho">'+wbar+'</div>'+(wo?'<div class="rfoldb">'+body+'</div>':'')+'</section>';
-  }
   // Einkäufe
   var eb='';
   if(D.trips.length){
@@ -1908,17 +2120,20 @@ function renderReport(){
   if(D.rhy.length)eb+='<p class="rnote" style="margin-top:12px">Bald fällig laut Rhythmus</p><div class="rchips">'+D.rhy.map(function(x){return '<span class="rchip">'+esc(x.t)+'<i>'+rhEvery(x.every)+'</i></span>';}).join('')+'</div>';
   if(D.tripsAll)eb+='<p class="rnote">Insgesamt bisher '+plural(D.tripsAll,'Einkauf','Einkäufe')+', der letzte am '+esc(dLabel(D.lastTrip)).replace(/\.$/,'')+'.</p>';
   var shSum=D.trips.length?plural(D.trips.length,'Einkauf','Einkäufe')+(D.spend.n?' · '+fmtEur(D.spend.sum):''):'kein Einkauf';
-  h+='<section class="rtile rfold'+(S.repShopOpen?' open':'')+'"><button type="button" class="rfoldh" data-act="repshop" aria-expanded="'+S.repShopOpen+'"><h3>Einkäufe</h3><span class="rfs">'+esc(shSum)+'</span><svg class="chev'+(S.repShopOpen?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'+(S.repShopOpen?'<div class="rfoldb">'+eb+'</div>':'')+'</section>';
   // Nächste Woche
   var nb='',cur='';
   D.next.forEach(function(r){
     if(r.date!==cur){cur=r.date;nb+='<div class="dayh">'+esc(fmtLong.format(parse(r.date)))+'</div>';}
     nb+='<div class="lrow">'+pdot(r.who)+'<span class="lt">'+(r.ev?'<em>'+(r.time?esc(r.time)+' Uhr · ':'')+'</em>':'')+esc(r.title)+'</span><span class="lr">'+(r.ev?'Termin':esc(r.rec||''))+'</span></div>';
   });
+  h+=renderRueckblick();
+  h+=renderRcSearch();
   h+=rtile('','Nächste Woche · '+esc(dLabel(R.nf))+' bis '+esc(dLabel(R.nt)),nb||'<p class="empty" style="margin:0">Nichts eingetragen.</p>');
   h+='<section class="rtile rfoot"><div class="legend rleg">'+D.names.map(function(n){return '<span><i class="pd '+pcls(n)+'"></i>'+esc(n)+'</span>';}).join('')+'<span><i class="pd pcx"></i>ohne Zuordnung</span></div>'+
     '<p class="rnote">Bei Wiederholungen speichert SommerHaus nur den letzten Erledigungstag. Der Aufwand (Dauer) wird nicht erfasst.</p>'+'</section>';
+  var rqF=document.activeElement&&document.activeElement.id==='rcQ';
   box.innerHTML=h;
+  if(rqF){var qi=$('rcQ');if(qi){qi.focus();try{qi.setSelectionRange(qi.value.length,qi.value.length);}catch(e){}}}
 }
 function weekStartIso(ds){var d=parse(ds),k=(d.getDay()+6)%7;return addDays(ds,-k);}
 function renderDay(today){
@@ -2351,10 +2566,11 @@ $('rcFile').addEventListener('change',function(ev){rcOnFile(ev.target.files&&ev.
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&$('rcv')&&!$('rcv').hidden)rcShow(false);});
 $('shopFinish').addEventListener('input',function(ev){
   var id=ev.target.id;
-  if(id==='shopStore'){S.finishStore=ev.target.value;var sg=$('storeSugg');if(sg)sg.innerHTML=storeSuggHtml(S.finishStore);}
+  if(id==='shopStore'){var wasSum=!!rcSumLabel(S.finishStore);S.finishStore=ev.target.value;var sg=$('storeSugg');if(sg)sg.innerHTML=storeSuggHtml(S.finishStore);if(RC.pending&&RC.pending.ocr&&RC.pending.ocr.state==='done'&&wasSum!==!!rcSumLabel(S.finishStore))renderShop();}
   else if(id==='shopAmt'){S.finishAmt=ev.target.value;if(S.finishErr){S.finishErr='';var fe=$('shopFinish').querySelector('.ferr');if(fe)fe.remove();}}
   else if(id==='shopDate'){S.spontDate=ev.target.value;}
 });
+$('report').addEventListener('input',function(ev){if(ev.target.id!=='rcQ')return;S.rcQ=ev.target.value;var r=$('rcRes');if(r)r.innerHTML=rcSearchRows();});
 $('shopList').addEventListener('input',function(ev){if(ev.target.id==='shopEditIn')S.shopEditVal=ev.target.value;});
 $('shopList').addEventListener('keydown',function(ev){
   if(ev.target.id!=='shopEditIn')return;
@@ -2647,7 +2863,7 @@ document.addEventListener('click',function(ev){
       var sd=S.spontDate||todayIso();if(sd>todayIso())sd=todayIso();
       var sl=curList(),sst=storeCanon(S.finishStore);
       var socr=rcOcrItems(RC.pending),sdel=[];
-      var strip={list:sl.id,listName:sl.name,at:sd===todayIso()?Date.now():parse(sd).getTime()+43200000,date:sd,n:socr.length,items:socr.map(function(o){if(o.m)sdel.push(o.m);return {t:o.mt||o.t,c:guessCat(o.mt||o.t),p:o.p,r:1};}),carriedN:0,carried:[],spont:true};
+      var strip={list:sl.id,listName:sl.name,at:sd===todayIso()?Date.now():parse(sd).getTime()+43200000,date:sd,n:socr.length,items:socr.map(function(o){if(o.m)sdel.push(o.m);var it={t:o.mt||o.t,c:o.g?'Sonstiges':guessCat(o.mt||o.t),p:o.p,r:1};if(o.g)it.g=1;return it;}),carriedN:0,carried:[],spont:true};
       if(sa)strip.amount=sa;
       if(sst)strip.store=sst;
       var spend=RC.pending;
@@ -2704,7 +2920,7 @@ document.addEventListener('click',function(ev){
       var fdone=fmine.filter(function(x){return x.done||fmatch[x.id];}),fopen=fmine.filter(function(x){return !x.done&&!fmatch[x.id];});
       if(!fdone.length&&!focr.length){S.finishErr=RC.pending&&RC.pending.ocr&&RC.pending.ocr.state==='busy'?'Einen Moment, der Kassenzettel wird noch gelesen.':'Hake gekaufte Artikel ab oder fotografiere den Kassenzettel.';renderShop();break;}
       var trip={list:fl.id,listName:fl.name,at:Date.now(),date:todayIso(),n:fdone.length,
-        items:fdone.map(function(x){var o=focr.find(function(y){return y.m===x.id;});var it={t:x.title,c:effCat(x)||'',cr:x.created||0,d:x.doneAt||Date.now()};if(o)it.p=o.p;return it;}).concat(focr.filter(function(o){return !o.m;}).map(function(o){return {t:o.t,c:guessCat(o.t),p:o.p,r:1};})),
+        items:fdone.map(function(x){var o=focr.find(function(y){return y.m===x.id;});var it={t:x.title,c:effCat(x)||'',cr:x.created||0,d:x.doneAt||Date.now()};if(o)it.p=o.p;return it;}).concat(focr.filter(function(o){return !o.m;}).map(function(o){var it={t:o.t,c:o.g?'Sonstiges':guessCat(o.t),p:o.p,r:1};if(o.g)it.g=1;return it;})),
         carriedN:fopen.length,carried:fopen.map(function(x){return x.title;})};
       var fstore=storeCanon(S.finishStore);if(fstore)trip.store=fstore;
       trip.n=trip.items.length;
@@ -2722,6 +2938,8 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'shopdonetoggle':S.shopDoneOpen=!S.shopDoneOpen;renderShop();break;
+    case 'rbshop':S.rbShopOpen=!S.rbShopOpen;renderReport();break;
+    case 'rbvar':S.rbVariant=el.dataset.v;renderReport();break;
     case 'repwho':S.repWhoOpen=!S.repWhoOpen;renderReport();break;
     case 'repshop':S.repShopOpen=!S.repShopOpen;renderReport();break;
     case 'daytoggle':S.dayOpen=!S.dayOpen;try{localStorage.setItem('sommerhaus-dayopen',S.dayOpen?'1':'0');}catch(e){}render();break;
