@@ -1,0 +1,162 @@
+{
+ "week": "Mo., 19. Okt. bis Sa., 24. Okt. 2026",
+ "updated": "17.10.2026",
+ "note": "Preise laut Prospekt, ohne Gewähr. Nicht jedes Angebot gilt in jeder Filiale. Quelle: rabatt-kompass.de, Stand 17.10.2026. Für diese Woche waren noch nicht alle Prospekte als Text verfügbar, die Liste ist deshalb unvollständig.",
+ "offers": [
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Weihenstephan Butter oder Die Streichzarte",
+   "price": 0.99,
+   "item": "Butter",
+   "kw": [
+    "butter"
+   ]
+  },
+  {
+   "store": "Globus",
+   "product": "Jeden Tag Butter",
+   "price": 1.11,
+   "item": "Butter",
+   "kw": [
+    "butter"
+   ]
+  },
+  {
+   "store": "Netto",
+   "product": "Hemme Frische Vollmilch 3,7 % oder Frischmilch 1,8 %",
+   "price": 1.19,
+   "item": "Milch",
+   "kw": [
+    "milch"
+   ]
+  },
+  {
+   "store": "Lidl",
+   "product": "Bioland Frische Vollmilch",
+   "price": 1.35,
+   "item": "Milch",
+   "kw": [
+    "milch"
+   ]
+  },
+  {
+   "store": "Kaufland",
+   "product": "Landliebe frische Weidemilch",
+   "price": 1.49,
+   "item": "Milch",
+   "kw": [
+    "milch"
+   ]
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Bananen",
+   "price": 1,
+   "item": "Bananen",
+   "kw": [
+    "banane"
+   ]
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Chiquita Bananen",
+   "price": 1.99,
+   "item": "Bananen",
+   "kw": [
+    "banane"
+   ]
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Landfreude Frische Eier",
+   "price": 2.49,
+   "item": "Eier",
+   "kw": [
+    "eier"
+   ]
+  },
+  {
+   "store": "Globus",
+   "product": "Globus 10 frische Eier",
+   "price": 2.89,
+   "item": "Eier",
+   "kw": [
+    "eier"
+   ]
+  },
+  {
+   "store": "Netto",
+   "product": "Freilandeier, 15er-Pack",
+   "price": 3.99,
+   "item": "Eier",
+   "kw": [
+    "eier"
+   ]
+  },
+  {
+   "store": "Netto",
+   "product": "Deutsche Äpfel Elstar, neue Ernte",
+   "price": 1.59,
+   "item": "Äpfel",
+   "kw": [
+    "apfel",
+    "äpfel"
+   ]
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Hackfleisch gemischt",
+   "price": 3.33,
+   "item": "Hackfleisch",
+   "kw": [
+    "hackfleisch",
+    "hack"
+   ]
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Purland Hackfleisch gemischt",
+   "price": 3.49,
+   "item": "Hackfleisch",
+   "kw": [
+    "hackfleisch",
+    "hack"
+   ]
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Toilettenpapier Super Soft",
+   "price": 4.85,
+   "item": "Toilettenpapier",
+   "kw": [
+    "toilettenpapier",
+    "klopapier"
+   ],
+   "valid": "bis 31.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Taschentücher",
+   "price": 2.75,
+   "item": "Taschentücher",
+   "kw": [
+    "taschentucher",
+    "taschentuch"
+   ],
+   "valid": "bis 31.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Orangensaft",
+   "price": 1.39,
+   "item": "Orangensaft",
+   "kw": [
+    "orangensaft"
+   ],
+   "valid": "bis 31.10."
+  }
+ ],
+ "validFrom": "2026-10-19",
+ "validTo": "2026-10-24",
+ "source": "rabatt-kompass.de"
+}
