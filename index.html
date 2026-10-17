@@ -1511,6 +1511,10 @@ function ofRow(o,showAdd){
     '<span class="ofp">'+esc(ofPrice(o.price))+'</span>'+
     (showAdd&&S.canWrite?'<button type="button" class="ofadd" data-act="ofadd" data-item="'+esc(o.item)+'" aria-label="'+esc(o.item)+' auf die Einkaufsliste">+</button>':'')+'</div>';
 }
+function ofFold(key,title,sum,body){
+  var o=!!(S.ofOpen&&S.ofOpen[key]);
+  return '<section class="rtile rfold'+(o?' open':'')+'"><button type="button" class="rfoldh" data-act="offold" data-k="'+key+'" aria-expanded="'+o+'"><h3>'+title+'</h3><span class="rfs">'+esc(sum)+'</span><svg class="chev'+(o?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'+(o?'<div class="rfoldb">'+body+'</div>':'')+'</section>';
+}
 function renderOffers(){
   var box=$('offers');if(!box)return;
   if(!OFFERS){box.innerHTML='<section class="rtile"><h3>Angebote</h3><p class="empty">Für diese Woche liegen noch keine Angebote vor.</p></section>';return;}
@@ -1529,16 +1533,16 @@ function renderOffers(){
   else lb=hits.map(function(x){
     return '<div class="ofgrp"><div class="ofhead"><b>'+esc(x.t)+'</b><span>am günstigsten bei '+esc(x.l[0].store)+'</span></div>'+x.l.slice(0,3).map(function(o){return ofRow(o,false);}).join('')+(x.l.length>3?'<p class="rnote">+ '+(x.l.length-3)+' weitere Angebote</p>':'')+'</div>';
   }).join('');
-  h+=rtile('','Für eure Einkaufsliste',lb);
+  h+=ofFold('list','Für eure Einkaufsliste',hits.length?plural(hits.length,'Treffer','Treffer'):'keine Treffer',lb);
   // Oft gekauft
   if(freq.length){
-    h+=rtile('','Kauft ihr oft, ist im Angebot',freq.map(function(x){
+    h+=ofFold('freq','Kauft ihr oft',plural(freq.length,'Angebot','Angebote'),freq.map(function(x){
       return '<div class="ofgrp"><div class="ofhead"><b>'+esc(x.t)+'</b><span>'+x.n+'× gekauft</span></div>'+ofRow(x.l[0],true)+'</div>';
     }).join('')+'<p class="rnote">Mit + kommt der Artikel auf die Einkaufsliste.</p>');
   }
   // Wo lohnt es sich
   if(ranking.length){
-    h+=rtile('','Wo es sich diese Woche lohnt',ranking.map(function(r,i){
+    h+=ofFold('where','Wo es sich lohnt',ofShort(ranking[0].s),ranking.map(function(r,i){
       return '<div class="lrow"><span class="ofrank">'+(i+1)+'</span><span class="lt"><b>'+esc(r.s)+'</b><br><small>'+esc(r.items.join(', '))+'</small></span><span class="lr">'+plural(r.n,'Treffer','Treffer')+'</span></div>';
     }).join('')+'<p class="rnote">Gezählt wird, wo der jeweils günstigste Preis für eure Artikel liegt.</p>');
   }
@@ -1547,7 +1551,7 @@ function renderOffers(){
   var ab=Object.keys(by).sort().map(function(s){
     return '<div class="ofgrp"><div class="ofhead"><b>'+esc(s)+'</b><span>'+plural(by[s].length,'Angebot','Angebote')+'</span></div>'+by[s].sort(function(a,b){return a.product.localeCompare(b.product,'de');}).map(function(o){return ofRow(o,true);}).join('')+'</div>';
   }).join('');
-  h+='<section class="rtile rfold'+(S.ofAllOpen?' open':'')+'"><button type="button" class="rfoldh" data-act="ofall" aria-expanded="'+!!S.ofAllOpen+'"><h3>Alle Angebote</h3><span class="rfs">'+OFFERS.offers.length+' Angebote</span><svg class="chev'+(S.ofAllOpen?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'+(S.ofAllOpen?'<div class="rfoldb">'+ab+'</div>':'')+'</section>';
+  h+=ofFold('all','Alle Angebote',plural(OFFERS.offers.length,'Angebot','Angebote'),ab);
   h+='<section class="rtile rfoot"><p class="rnote" style="margin:0">'+esc(OFFERS.note||'')+'</p></section>';
   box.innerHTML=h;
 }
@@ -2527,7 +2531,7 @@ document.addEventListener('click',function(ev){
     case 'tripsheet':openTrips(el.dataset.t);break;
     case 'kpi':openKpi(el.dataset.m);break;
     case 'ofgo':S.tab='offers';try{localStorage.setItem('sommerhaus-tab',S.tab);}catch(e){}render();window.scrollTo(0,0);break;
-    case 'ofall':S.ofAllOpen=!S.ofAllOpen;renderOffers();break;
+    case 'offold':S.ofOpen=S.ofOpen||{};S.ofOpen[el.dataset.k]=!S.ofOpen[el.dataset.k];renderOffers();break;
     case 'ofadd':{
       if(!db||!S.canWrite)break;
       var oi=el.dataset.item,ok=nrm(oi);
