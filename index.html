@@ -311,6 +311,12 @@ span.check{cursor:default}
 .sg b{font-weight:700;color:var(--accent)}
 .sg i{font-style:normal;font-size:12px;color:var(--fg2);margin-left:6px}
 .sg:active{opacity:.6}
+.rhyhead{margin-top:14px;font-size:13px;font-weight:600;color:var(--fg2)}
+.rhy{display:flex;flex-wrap:wrap;gap:6px;padding-top:8px}
+.rhy .pair{display:inline-flex;align-items:center;background:var(--fill);border-radius:999px}
+.rhy .pair .sg{background:none;padding:0 6px 0 14px}
+.rhy .pair .sgx{border:0;background:none;color:var(--fg2);font-size:16px;min-width:32px;min-height:36px;cursor:pointer;padding:0 8px 0 2px}
+.rhy .sg.all{background:var(--accent);color:var(--on-accent)}
 .sg.fix{background:var(--accent);color:var(--on-accent)}
 .fixq{flex:none;align-self:center;font-size:15px;font-weight:500;margin-right:2px}
 .shopadd .go{width:36px;height:36px;background:var(--fill);color:var(--accent)}
@@ -340,6 +346,25 @@ span.check{cursor:default}
 .listchips::-webkit-scrollbar{display:none}
 .listchips button{flex:none;border:0;border-radius:999px;background:var(--fill);color:var(--fg);font-weight:600;font-size:14px;min-height:36px;padding:0 16px;cursor:pointer;white-space:nowrap}
 .listchips button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.rep h2{margin:0 0 10px}
+.rep .seg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.rep .seg2 button{min-height:40px;border:0;border-radius:10px;background:var(--fill);color:var(--fg);font-size:14px;font-weight:600;cursor:pointer}
+.rep .seg2 button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
+.rep pre{margin:0;white-space:pre-wrap;word-break:break-word;font:400 14px/1.5 -apple-system,system-ui,sans-serif;color:var(--fg)}
+.rep .ract{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.rep .ract button{min-height:46px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;cursor:pointer}
+.rep .ract button.sec{background:var(--card);color:var(--fg);border:1px solid var(--sep)}
+.finish{margin-top:16px;border-top:1px solid var(--sep);padding-top:14px;display:grid;gap:10px}
+.finish .fbtn{min-height:48px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;cursor:pointer;padding:0 16px}
+.finish .fbtn:active{opacity:.8}
+.finish .fbtn.sec{background:var(--card);color:var(--fg);border:1px solid var(--sep)}
+.finish .fq{font-size:14px;line-height:1.4}
+.finish .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.finish .fmeta{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;color:var(--fg2)}
+.finish .fmeta button{border:0;background:none;color:var(--fg2);font-size:13px;font-weight:600;cursor:pointer;min-height:32px;padding:0 4px}
+.trips{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.trips li{font-size:13px;line-height:1.35;color:var(--fg2)}
+.trips b{color:var(--fg);font-weight:600}
 .listdel{margin-top:16px;border:0;background:none;color:var(--red);font-size:14px;font-weight:600;cursor:pointer;min-height:36px;padding:0 4px}
 .toast{position:fixed;z-index:60;left:50%;transform:translateX(-50%);top:calc(12px + env(safe-area-inset-top,0px));max-width:calc(100% - 32px);background:var(--toast-bg);color:var(--toast-fg);border-radius:16px;padding:12px 16px;display:flex;gap:16px;align-items:center;box-shadow:var(--shadow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:15px}
 .toast button{background:none;border:0;color:inherit;font-weight:700;cursor:pointer;white-space:nowrap;text-decoration:underline}
@@ -380,16 +405,14 @@ span.check{cursor:default}
       <select class="rowcat" id="shop-cat" aria-label="Kategorie"></select>
     </form>
     <div class="sugg" id="shopSugg" role="group" aria-label="Vorschläge" hidden></div>
+    <div id="shopRhy"></div>
+    <div id="shopFinish"></div>
     <div id="shopDone"></div>
     <div id="shopListDel"></div>
   </section>
   </div>
   <div id="moreView" hidden>
-    <section class="panel" style="text-align:center;padding-block:40px">
-      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--fg2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><path d="M16.75 14v5.5M14 16.75h5.5"/></svg>
-      <h2 style="margin-top:12px">Hier ist noch Platz</h2>
-      <p class="empty" style="max-width:34ch;margin:8px auto 0">Dieser Bereich ist für die nächste Erweiterung von SommerHaus reserviert.</p>
-    </section>
+    <section class="panel rep" id="report" aria-label="Wochenbericht"></section>
   </div>
 </div>
 
@@ -633,7 +656,7 @@ function syncDur(){
 }
 
 var now0=new Date();
-var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],shopDoneOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
+var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],repWeek:'this',shopDoneOpen:false,finishAsk:false,tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
 var db=null;
 
 var BINS={
@@ -828,7 +851,167 @@ function renderShop(){
     if(S.shopDoneOpen)h+='<ul class="shoplist">'+done.map(shopRow).join('')+'</ul>';
   }
   $('shopDone').innerHTML=h;
+  renderFinish(L,open,done);
 }
+function daysBetween(a,b){return Math.round((parse(b)-parse(a))/864e5);}
+function rhEvery(n){return n===7?'wöchentlich':n%7===0?'alle '+(n/7)+' Wochen':'alle '+n+' Tage';}
+function rhSkipLoad(){try{return JSON.parse(localStorage.getItem('sommerhaus-rhy-skip')||'{}')||{};}catch(e){return {};}}
+function rhythmDue(L){
+  var today=todayIso(),by={};
+  S.trips.forEach(function(tr){
+    if((tr.list||DEF_LIST.id)!==L.id||!tr.date)return;
+    (tr.items||[]).forEach(function(y){
+      var k=nrm(String(y.t||'').trim());if(!k)return;
+      var o=by[k]||(by[k]={t:y.t,c:y.c,dates:{},last:''});
+      o.dates[tr.date]=1;
+      if(tr.date>=o.last){o.last=tr.date;o.t=y.t;if(y.c)o.c=y.c;}
+    });
+  });
+  var onList={};
+  S.shop.forEach(function(x){if(listOf(x)===L.id)onList[nrm(String(x.title||'').trim())]=1;});
+  var skip=rhSkipLoad(),out=[];
+  Object.keys(by).forEach(function(k){
+    var o=by[k],ds=Object.keys(o.dates).sort();
+    if(ds.length<2||onList[k])return;
+    var gaps=[];for(var i=1;i<ds.length;i++)gaps.push(daysBetween(ds[i-1],ds[i]));
+    gaps.sort(function(a,b){return a-b;});
+    var m=gaps.length%2?gaps[(gaps.length-1)/2]:Math.round((gaps[gaps.length/2-1]+gaps[gaps.length/2])/2);
+    if(m<3)return;
+    var since=daysBetween(o.last,today);
+    if(since<Math.max(1,m-2))return;
+    if(skip[k]&&daysBetween(skip[k],today)<3)return;
+    out.push({k:k,t:o.t,c:o.c,every:m,since:since,n:ds.length,r:since/m});
+  });
+  out.sort(function(a,b){return b.r-a.r||b.n-a.n||a.t.localeCompare(b.t,'de');});
+  return out.slice(0,8);
+}
+function renderRhythm(L){
+  var box=$('shopRhy');if(!box)return;
+  var list=S.canWrite?rhythmDue(L):[];
+  S.rhy=list;
+  if(!list.length){box.innerHTML='';return;}
+  box.innerHTML='<div class="rhyhead">Laut deinem Rhythmus fällig</div><div class="rhy">'+
+    list.map(function(x,i){return '<span class="pair"><button type="button" class="sg" data-act="rhyadd" data-i="'+i+'" title="zuletzt vor '+x.since+(x.since===1?' Tag':' Tagen')+' gekauft">+ '+esc(x.t)+'<i>'+rhEvery(x.every)+'</i></button><button type="button" class="sgx" data-act="rhyskip" data-i="'+i+'" aria-label="'+esc(x.t)+' vorerst nicht vorschlagen">×</button></span>';}).join('')+
+    (list.length>1?'<button type="button" class="sg all" data-act="rhyall">Alle '+list.length+' hinzufügen</button>':'')+'</div>';
+}
+function renderFinish(L,open,done){
+  renderRhythm(L);
+  var box=$('shopFinish');
+  var trips=S.trips.filter(function(x){return (x.list||DEF_LIST.id)===L.id;}).sort(function(a,b){return (b.at||0)-(a.at||0);});
+  if(!done.length)S.finishAsk=false;
+  var h='';
+  if(S.canWrite&&done.length){
+    if(S.finishAsk){
+      h+='<p class="fq"><b>Einkauf abschließen?</b> '+done.length+(done.length===1?' erledigter Artikel wird abgelegt':' erledigte Artikel werden abgelegt')+
+        (open.length?', '+open.length+(open.length===1?' offener bleibt':' offene bleiben')+' für den nächsten Einkauf auf der Liste.':'. Die Liste ist danach leer.')+'</p>'+
+        '<div class="frow"><button type="button" class="fbtn sec" data-act="shopfinishno">Abbrechen</button><button type="button" class="fbtn" data-act="shopfinishgo">Ja, abschließen</button></div>';
+    }else{
+      h+='<button type="button" class="fbtn" data-act="shopfinish">Einkauf abgeschlossen</button>'+
+        '<span class="fmeta">'+done.length+' erledigt'+(open.length?' · '+open.length+' wandern in den nächsten Einkauf':'')+'</span>';
+    }
+  }
+  if(trips.length){
+    var wk=weekStartIso(todayIso()),nw=trips.filter(function(x){return (x.date||'')>=wk;}).length;
+    h+='<div class="fmeta"><span>'+trips.length+(trips.length===1?' Einkauf':' Einkäufe')+' abgeschlossen · '+nw+' diese Woche</span>'+
+      '<button type="button" data-act="tripstoggle" aria-expanded="'+S.tripsOpen+'">'+(S.tripsOpen?'Verlauf ausblenden':'Verlauf')+'</button></div>';
+    if(S.tripsOpen)h+='<ul class="trips">'+trips.slice(0,30).map(function(x,i){
+      var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
+      return '<li><b>Einkauf '+(trips.length-i)+' · '+esc(x.date?fmtShort.format(parse(x.date)):'')+'</b> · '+(x.n||0)+(x.n===1?' Artikel':' Artikel')+
+        (x.carriedN?', '+x.carriedN+' übernommen':'')+(names?'<br>'+esc(names):'')+'</li>';
+    }).join('')+'</ul>';
+  }
+  box.className=h?'finish':'';
+  box.innerHTML=h;
+}
+var WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+var REC={day:['täglich','alle %n Tage'],week:['wöchentlich','alle %n Wochen'],month:['monatlich','alle %n Monate']};
+function recText(t){var r=REC[t.unit];if(!r||!t.every)return '';return +t.every===1?r[0]:r[1].replace('%n',t.every);}
+function dLabel(ds){return fmtShort.format(parse(ds));}
+function whoTxt(w){return w&&String(w).trim()?String(w).trim():'';}
+function plural(n,a,b){return n+' '+(n===1?a:b);}
+function repRange(){
+  var today=todayIso(),mon=weekStartIso(today);
+  if(S.repWeek==='last')mon=addDays(mon,-7);
+  return {from:mon,to:addDays(mon,6),nf:addDays(mon,7),nt:addDays(mon,13),today:today};
+}
+function buildReport(){
+  var R=repRange(),L=[];
+  var tasks=S.tasks,evs=S.events;
+  var done=tasks.filter(function(t){return t.lastDone&&t.lastDone>=R.from&&t.lastDone<=R.to;}).sort(function(a,b){return a.lastDone<b.lastDone?-1:a.lastDone>b.lastDone?1:byTitle(a,b);});
+  var over=tasks.filter(function(t){return isOpen(t)&&t.due&&t.due<R.today;}).sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:byTitle(a,b);});
+  var next=tasks.filter(function(t){return isOpen(t)&&t.due>=R.nf&&t.due<=R.nt;}).sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:byTitle(a,b);});
+  var nev=evs.filter(function(e){return e.date>=R.nf&&e.date<=R.nt;}).sort(function(a,b){var x=a.date+(a.time||''),y=b.date+(b.time||'');return x<y?-1:x>y?1:0;});
+  L.push('Wochenbericht '+dLabel(R.from)+' bis '+dLabel(R.to));
+  if(R.today<=R.to)L.push('(Stand heute, '+dLabel(R.today)+'; die Woche läuft noch)');
+  L.push('');
+  L.push('ERLEDIGT ('+done.length+')');
+  if(!done.length)L.push('Keine Aufgabe abgehakt.');
+  done.forEach(function(t){
+    var w=whoTxt(t.who);
+    L.push('- '+dLabel(t.lastDone)+': '+t.title+(t.icon?' (rausgestellt)':'')+(w?' (zugeordnet an '+w+')':''));
+  });
+  L.push('');
+  L.push('NOCH OFFEN UND ÜBERFÄLLIG');
+  if(!over.length)L.push('Nichts überfällig.');
+  over.forEach(function(t){
+    var days=Math.round((parse(R.today)-parse(t.due))/864e5),w=whoTxt(t.who);
+    L.push('- '+t.title+' (fällig '+dLabel(t.due)+', '+plural(days,'Tag','Tage')+' offen)'+(w?' (zugeordnet an '+w+')':''));
+  });
+  L.push('Die App speichert keinen Verlauf, Verspätungen lassen sich im Nachhinein nicht prüfen.');
+  L.push('');
+  function split(list){
+    var m={},order=[];
+    list.forEach(function(t){var w=whoTxt(t.who)||'Niemandem zugeordnet';if(!m[w]){m[w]=[];order.push(w);}m[w].push(t.title);});
+    order.sort(function(a,b){return a==='Niemandem zugeordnet'?1:b==='Niemandem zugeordnet'?-1:0;});
+    return order.map(function(w){return '- '+w+': '+m[w].length+' ('+m[w].join(', ')+')';});
+  }
+  L.push('AUFTEILUNG NACH ZUORDNUNG');
+  L.push('Erledigt in dieser Woche:');
+  if(done.length){split(done).forEach(function(x){L.push(x);});var nz=done.filter(function(t){return !whoTxt(t.who);}).length;L.push(nz+' von '+done.length+' Aufgaben waren niemandem zugeordnet.');}else L.push('- keine');
+  L.push('Geplant für nächste Woche:');
+  if(next.length){split(next).forEach(function(x){L.push(x);});var nn=next.filter(function(t){return !whoTxt(t.who);}).length;L.push(nn+' von '+next.length+' Aufgaben sind niemandem zugeordnet.');}else L.push('- keine');
+  L.push('Die Zahlen zeigen nur die Zuordnung, nicht wer tatsächlich erledigt hat. Der Aufwand (Dauer) ist nicht erfasst.');
+  L.push('');
+  var trips=S.trips.filter(function(x){return x.date>=R.from&&x.date<=R.to;}).sort(function(a,b){return (a.at||0)-(b.at||0);});
+  L.push('EINKÄUFE');
+  if(!trips.length)L.push('Kein Einkauf abgeschlossen.');
+  else{
+    var tot=trips.reduce(function(a,x){return a+(x.n||0);},0);
+    L.push(plural(trips.length,'Einkauf','Einkäufe')+' abgeschlossen, insgesamt '+plural(tot,'Artikel','Artikel')+' ('+(tot/trips.length).toFixed(1).replace('.',',')+' pro Einkauf).');
+    trips.forEach(function(x,i){
+      var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
+      L.push('- '+(trips.length>1?(i+1)+'. ':'')+dLabel(x.date)+': '+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?', '+plural(x.carriedN,'Artikel','Artikel')+' in den nächsten Einkauf übernommen':'')+(names?' ('+names+')':''));
+    });
+    var cnt={};trips.forEach(function(x){(x.items||[]).forEach(function(y){var k=String(y.t||'').trim();if(k)cnt[k]=(cnt[k]||0)+1;});});
+    var mult=Object.keys(cnt).filter(function(k){return cnt[k]>1;}).sort(function(a,b){return cnt[b]-cnt[a];});
+    if(mult.length)L.push('Mehrfach gekauft: '+mult.map(function(k){return k+' ('+cnt[k]+'x)';}).join(', ')+'.');
+    var waits=[];trips.forEach(function(x){(x.items||[]).forEach(function(y){if(y.cr&&y.d&&y.d>=y.cr)waits.push((y.d-y.cr)/864e5);});});
+    if(waits.length){var av=waits.reduce(function(a,b){return a+b;},0)/waits.length;L.push('Ein Artikel stand im Schnitt '+av.toFixed(1).replace('.',',')+' Tage auf der Liste, bis er abgehakt wurde.');}
+  }
+  var allT=S.trips.slice().sort(function(a,b){return (b.at||0)-(a.at||0);});
+  if(allT.length)L.push('Insgesamt bisher: '+plural(allT.length,'Einkauf','Einkäufe')+', der letzte am '+dLabel(allT[0].date)+'.');
+  var onList=S.shop.filter(function(x){return !x.done;});
+  if(onList.length)L.push('Aktuell offen auf der Liste: '+onList.length+' ('+onList.slice(0,12).map(function(x){return x.title;}).join(', ')+(onList.length>12?', …':'')+').');
+  L.push('');
+  L.push('NÄCHSTE WOCHE ('+dLabel(R.nf)+' bis '+dLabel(R.nt)+')');
+  var rows=[];
+  next.forEach(function(t){var w=whoTxt(t.who),r=recText(t);rows.push({k:t.due+'0',s:'- '+dLabel(t.due)+': '+t.title+(r?' ('+r+')':'')+(w?' (zugeordnet an '+w+')':'')});});
+  nev.forEach(function(e){var w=whoTxt(e.who);rows.push({k:e.date+'1'+(e.time||''),s:'- '+dLabel(e.date)+(e.time?', '+e.time+' Uhr':'')+': Termin '+e.title+(w?' ('+w+')':'')});});
+  rows.sort(function(a,b){return a.k<b.k?-1:a.k>b.k?1:0;});
+  if(!rows.length)L.push('Nichts eingetragen.');
+  rows.forEach(function(r){L.push(r.s);});
+  L.push('');
+  L.push('Bei wiederkehrenden Aufgaben speichert SommerHaus nur den letzten Erledigungstag. Wurde etwas zweimal abgehakt, steht es nur einmal da.');
+  return L.join('\n').replace(/\.\.(?=\n|$)/g,'.');
+}
+function renderReport(){
+  var box=$('report');if(!box)return;
+  if(S.loading){box.innerHTML='<h2>Wochenbericht</h2><p class="empty">Lädt …</p>';return;}
+  box.innerHTML='<h2>Wochenbericht</h2><div class="seg2"><button type="button" data-act="repweek" data-wk="this" aria-pressed="'+(S.repWeek==='this')+'">Diese Woche</button><button type="button" data-act="repweek" data-wk="last" aria-pressed="'+(S.repWeek==='last')+'">Letzte Woche</button></div>'+
+    '<pre id="repText">'+esc(buildReport())+'</pre>'+
+    '<div class="ract"><button type="button" data-act="repmail">Per Mail senden</button><button type="button" class="sec" data-act="repcopy">Kopieren</button></div>';
+}
+function weekStartIso(ds){var d=parse(ds),k=(d.getDay()+6)%7;return addDays(ds,-k);}
 function renderDay(today){
   var ds=S.selected,it=itemsOn(ds);
   var done=S.tasks.filter(function(t){return t.lastDone===ds;});
@@ -894,6 +1077,7 @@ function render(){
   if(S.view==='cal'){renderDay(today);renderCal(today);}
   else renderList(today);
   renderShop();
+  if(S.tab==='more')renderReport();
 }
 
 /* Toast */
@@ -1477,6 +1661,49 @@ document.addEventListener('click',function(ev){
       Promise.all(gone.map(function(x){return db.collection('shopping').doc(x.id).delete();})).then(function(){toast(gone.length+(gone.length===1?' Artikel gelöscht.':' Artikel gelöscht.'));},fail);
       break;
     }
+    case 'repweek':S.repWeek=el.dataset.wk;renderReport();break;
+    case 'repmail':{var rr=repRange();location.href='mailto:?subject='+encodeURIComponent('SommerHaus Wochenbericht '+dLabel(rr.from)+' bis '+dLabel(rr.to))+'&body='+encodeURIComponent(buildReport());break;}
+    case 'repcopy':{var tx=buildReport();var ok=function(){toast('Bericht kopiert.');};
+      if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(tx).then(ok,function(){toast('Kopieren nicht möglich.');});
+      else{var ta=document.createElement('textarea');ta.value=tx;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok();}catch(e){toast('Kopieren nicht möglich.');}ta.remove();}
+      break;}
+    case 'rhyadd':case 'rhyall':{
+      if(!db||!S.canWrite)break;
+      var rl=act==='rhyall'?(S.rhy||[]):[(S.rhy||[])[+el.dataset.i]].filter(Boolean);
+      var rli=curList().id,rt0=Date.now();
+      Promise.all(rl.map(function(x,k){return db.collection('shopping').add({title:x.t,cat:CATS.indexOf(x.c)>=0?x.c:guessCat(x.t),list:rli,done:false,created:rt0+k});})).then(function(){
+        toast(rl.length===1?rl[0].t+' steht auf der Liste.':rl.length+' Artikel stehen auf der Liste.');
+      },fail);
+      break;
+    }
+    case 'rhyskip':{
+      var rx=(S.rhy||[])[+el.dataset.i];if(!rx)break;
+      var sk=rhSkipLoad();sk[rx.k]=todayIso();
+      try{localStorage.setItem('sommerhaus-rhy-skip',JSON.stringify(sk));}catch(e){}
+      renderShop();toast(rx.t+': die nächsten Tage kein Vorschlag.');
+      break;
+    }
+    case 'shopfinish':if(S.canWrite){S.finishAsk=true;renderShop();}break;
+    case 'shopfinishno':S.finishAsk=false;renderShop();break;
+    case 'tripstoggle':S.tripsOpen=!S.tripsOpen;renderShop();break;
+    case 'shopfinishgo':{
+      if(!db||!S.canWrite)break;
+      var fl=curList();
+      var fmine=S.shop.filter(function(x){return listOf(x)===fl.id;});
+      var fdone=fmine.filter(function(x){return x.done;}),fopen=fmine.filter(function(x){return !x.done;});
+      if(!fdone.length){S.finishAsk=false;renderShop();break;}
+      var trip={list:fl.id,listName:fl.name,at:Date.now(),date:todayIso(),n:fdone.length,
+        items:fdone.map(function(x){return {t:x.title,c:x.cat||'',cr:x.created||0,d:x.doneAt||0};}),
+        carriedN:fopen.length,carried:fopen.map(function(x){return x.title;})};
+      S.finishAsk=false;
+      db.collection('shopTrips').add(trip).then(function(){
+        return Promise.all(fdone.map(function(x){return db.collection('shopping').doc(x.id).delete();}));
+      }).then(function(){
+        toast('Einkauf abgeschlossen'+(fopen.length?'. '+fopen.length+(fopen.length===1?' Artikel bleibt':' Artikel bleiben')+' auf der Liste.':'.'));
+      },fail);
+      renderShop();
+      break;
+    }
     case 'shopdonetoggle':S.shopDoneOpen=!S.shopDoneOpen;renderShop();break;
     case 'dayprev':case 'daynext':goTo(addDays(S.selected,act==='daynext'?1:-1));render();break;
     case 'view':S.view=el.dataset.view;render();break;
@@ -1488,7 +1715,7 @@ document.addEventListener('click',function(ev){
       render();window.scrollTo(0,0);break;
     case 'shopkind':setShopKind(el.dataset.k);break;
     case 'shoplist':
-      S.shopList=el.dataset.l;S.delList=false;
+      S.shopList=el.dataset.l;S.delList=false;S.finishAsk=false;
       try{localStorage.setItem('sommerhaus-shoplist',S.shopList);}catch(e){}
       renderShop();break;
     case 'shoplistdel':{
@@ -1612,6 +1839,9 @@ render();
   },onErr);
   db.collection('shopping').onSnapshot(function(s){
     S.shop=s.docs.map(toItem);render();
+  },onErr);
+  db.collection('shopTrips').onSnapshot(function(s){
+    S.trips=s.docs.map(toItem);render();
   },onErr);
   db.collection('events').onSnapshot(function(s){
     S.events=s.docs.map(toItem);render();
