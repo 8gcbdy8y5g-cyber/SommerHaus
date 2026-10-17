@@ -414,18 +414,6 @@ span.check{cursor:default}
 .lrow .lt{flex:1;min-width:0}.lrow .lt em{font-style:normal;color:var(--fg2)}
 .lrow .lr{font-size:12.5px;color:var(--fg2);white-space:nowrap}
 .warn .lrow .lr{color:var(--red);font-weight:600}
-.dbadge{position:relative;flex:none;width:44px;height:44px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;font:inherit;background:var(--accent-soft);color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent);margin-right:4px}
-.dbadge b{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
-.dbadge.over{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red);box-shadow:inset 0 0 0 2px var(--red)}
-.dbadge.ok{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green);box-shadow:inset 0 0 0 2px var(--green)}
-.dbadge.open{background:var(--accent);color:var(--on-accent);box-shadow:none}
-.dbadge.over.open{background:var(--red);color:#fff}
-.dbadge.ok.open{background:var(--green);color:var(--on-green)}
-.dbadge:active{transform:scale(.94)}
-.dbadge .dbe{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;box-sizing:border-box;border-radius:9px;background:var(--purple);color:#fff;font-style:normal;font-size:11px;font-weight:700;line-height:18px;text-align:center;box-shadow:0 0 0 2px var(--card)}
-.dsumline{margin:2px 0 4px;font-size:14px;color:var(--fg2)}
-.dsumline b{color:var(--fg)}
-.dsumline .dsover{color:var(--red);font-weight:600}
 .daysum{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:10px;border:0;background:var(--fill);color:var(--fg);font:inherit;font-size:15px;text-align:left;border-radius:12px;padding:10px 12px 10px 14px;min-height:46px;cursor:pointer}
 .daysum b{font-weight:700}
 .daysum .dsover{color:var(--red);font-weight:600}
@@ -1654,23 +1642,20 @@ function weekStartIso(ds){var d=parse(ds),k=(d.getDay()+6)%7;return addDays(ds,-
 function renderDay(today){
   var ds=S.selected,it=itemsOn(ds);
   var done=S.tasks.filter(function(t){return t.lastDone===ds;});
+  var h='<div class="cal-head"><h2>'+esc(fmtLong.format(parse(ds)))+(ds===today?'<span class="tag">Heute</span>':'')+'</h2>'+
+    '<div class="nav"><button type="button" class="btn round" data-act="dayprev" aria-label="Vorheriger Tag">'+CHEV_L+'</button>'+
+    '<button type="button" class="btn round" data-act="daynext" aria-label="Nächster Tag">'+CHEV_R+'</button></div></div>';
   var nt=it.t.length,ne=it.e.length,nd=done.length,nover=it.t.filter(function(t){return t.due&&t.due<today;}).length;
   var parts=[];
   if(nt)parts.push('<b>'+nt+'</b> '+(nt===1?'Aufgabe':'Aufgaben')+' offen'+(nover?' <span class="dsover">('+nover+' überfällig)</span>':''));
   if(ne)parts.push('<b>'+ne+'</b> '+(ne===1?'Termin':'Termine'));
   if(nd)parts.push(nd+' erledigt');
-  var summ=parts.length?parts.join(' · '):(ds===today?'Für heute ist nichts offen.':'Für diesen Tag ist nichts geplant.');
-  var lbl=(nt?nt+(nt===1?' Aufgabe':' Aufgaben')+' offen':'Keine Aufgabe offen')+(nover?', '+nover+' überfällig':'')+(ne?', '+ne+(ne===1?' Termin':' Termine'):'')+'. '+(S.dayOpen?'Zuklappen':'Aufklappen');
-  var badge=S.loading?'':'<button type="button" class="dbadge'+(nover?' over':nt?'':' ok')+(S.dayOpen?' open':'')+'" data-act="daytoggle" aria-expanded="'+S.dayOpen+'" aria-label="'+esc(lbl)+'">'+
-    (nt?'<b>'+nt+'</b>':'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>')+
-    (ne?'<i class="dbe" aria-hidden="true">'+ne+'</i>':'')+'</button>';
-  var h='<div class="cal-head"><h2>'+esc(fmtLong.format(parse(ds)))+(ds===today?'<span class="tag">Heute</span>':'')+'</h2>'+
-    '<div class="nav">'+badge+'<button type="button" class="btn round" data-act="dayprev" aria-label="Vorheriger Tag">'+CHEV_L+'</button>'+
-    '<button type="button" class="btn round" data-act="daynext" aria-label="Nächster Tag">'+CHEV_R+'</button></div></div>';
+  var summ=S.loading?'Lädt …':parts.length?parts.join(' · '):(ds===today?'Für heute ist nichts offen.':'Für diesen Tag ist nichts geplant.');
+  var canOpen=!S.loading;
+  h+='<button type="button" class="daysum'+(S.dayOpen?' open':'')+'" data-act="daytoggle" aria-expanded="'+S.dayOpen+'"'+(canOpen?'':' disabled')+'><span>'+summ+'</span><svg class="chev'+(S.dayOpen?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>';
   if(!S.dayOpen||S.loading){$('day').innerHTML=h;return;}
-  h+='<p class="dsumline">'+summ+'</p>';
   if(ne||nt||nd){
-    h+='<div>'+it.e.map(function(e){return eventRow(e);}).join('')+it.t.map(function(t){return taskRow(t,today);}).join('')+done.map(doneRow).join('')+'</div>';
+    h+='<div style="margin-top:4px">'+it.e.map(function(e){return eventRow(e);}).join('')+it.t.map(function(t){return taskRow(t,today);}).join('')+done.map(doneRow).join('')+'</div>';
   }
   if(S.canWrite)h+='<div class="addrow"><button type="button" class="btn small" data-act="add-task" data-date="'+ds+'">Aufgabe</button><button type="button" class="btn small" data-act="add-event" data-date="'+ds+'">Termin</button></div>';
   $('day').innerHTML=h;
