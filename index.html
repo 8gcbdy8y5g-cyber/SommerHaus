@@ -372,7 +372,7 @@ span.check{cursor:default}
 .kpi span{font-size:11.5px;color:var(--fg2);line-height:1.2}
 .kpi.bad b{color:var(--red)}
 .kpi.kbtn{border:0;font:inherit;color:inherit;cursor:pointer;box-shadow:inset 0 0 0 1.5px var(--accent-soft)}
-.kpi.kbtn span{color:var(--accent);font-weight:600}
+.kpi.kbtn span{color:var(--accent);font-weight:600;white-space:nowrap;font-size:11px;letter-spacing:-.01em}
 .kpi.kbtn:active{opacity:.6}
 .trow.tlink{cursor:pointer}
 .trow.tlink:active{opacity:.6}
@@ -436,6 +436,8 @@ span.check{cursor:default}
 .rfoldh .chev{flex:none;color:var(--fg2);transition:transform .15s}
 .rfoldh .chev.open{transform:rotate(90deg)}
 .rfoldb{margin-top:10px}
+.rfoldbar{margin-top:10px;cursor:pointer}
+.rfoldbar .sbar{margin:0}
 .rchip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 11px;font-size:13px;line-height:1.2;background:color-mix(in srgb,var(--pc,var(--fg2)) 16%,transparent);color:var(--fg);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pc,var(--fg2)) 40%,transparent)}
 .rchip i{font-style:normal;font-size:11.5px;color:var(--fg2)}
 .rchip .bd{width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 1px var(--sep)}
@@ -1874,14 +1876,20 @@ function renderReport(){
   else{
     var segs=D.names.map(function(n){return {n:n,l:D.done.filter(function(e){return e.by===n;})};}).filter(function(g){return g.l.length;});
     if(nUn)segs.push({n:'',l:D.done.filter(function(e){return !e.by;})});
-    body+='<div class="sbar" role="img" aria-label="Verteilung der erledigten Aufgaben">'+segs.map(function(g){return '<span class="'+pcls(g.n)+'" style="flex:'+g.l.length+'"></span>';}).join('')+'</div>';
+    var wbar='<div class="sbar" role="img" aria-label="Verteilung der erledigten Aufgaben">'+segs.map(function(g){return '<span class="'+pcls(g.n)+'" style="flex:'+g.l.length+'"></span>';}).join('')+'</div>';
+    var wsum=segs.map(function(g){return (g.n||'Ohne Angabe')+' '+g.l.length;}).join(' · ');
     body+=segs.map(function(g){
       return '<div class="prow"><div class="phead">'+(g.n?pbadge(g.n):'<span class="pb pcx">?</span>')+'<b>'+esc(g.n||'Ohne Angabe')+'</b><span class="pn">'+g.l.length+' von '+D.done.length+'</span></div><div class="rchips">'+
         g.l.map(function(e){return '<span class="rchip '+pcls(g.n)+'">'+esc(e.title)+(e.bin?' ↗':'')+'<i>'+esc(dShort(e.date))+'</i></span>';}).join('')+'</div></div>';
     }).join('');
     if(nUn)body+='<p class="rnote">„Ohne Angabe“: wer abgehakt hat, speichert SommerHaus erst seit diesem Update. Ab jetzt steht es dabei.</p>';
   }
-  h+=rtile('','Wer hat was gemacht',body);
+  if(!D.done.length)h+=rtile('','Wer hat was gemacht',body);
+  else{
+    var wo=!!S.repWhoOpen;
+    h+='<section class="rtile rfold'+(wo?' open':'')+'"><button type="button" class="rfoldh" data-act="repwho" aria-expanded="'+wo+'"><h3>Wer hat was gemacht</h3><span class="rfs">'+esc(wsum)+'</span><svg class="chev'+(wo?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'+
+      '<div class="rfoldbar" data-act="repwho">'+wbar+'</div>'+(wo?'<div class="rfoldb">'+body+'</div>':'')+'</section>';
+  }
   // Einkäufe
   var eb='';
   if(D.trips.length){
@@ -2714,6 +2722,7 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'shopdonetoggle':S.shopDoneOpen=!S.shopDoneOpen;renderShop();break;
+    case 'repwho':S.repWhoOpen=!S.repWhoOpen;renderReport();break;
     case 'repshop':S.repShopOpen=!S.repShopOpen;renderReport();break;
     case 'daytoggle':S.dayOpen=!S.dayOpen;try{localStorage.setItem('sommerhaus-dayopen',S.dayOpen?'1':'0');}catch(e){}render();break;
     case 'dayprev':case 'daynext':goTo(addDays(S.selected,act==='daynext'?1:-1));render();break;
