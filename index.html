@@ -303,6 +303,14 @@ span.check{cursor:default}
 .shopadd .rowcat{margin-inline:0}
 .shopadd .go{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;cursor:pointer}
 .shopadd .go:active{opacity:.6}
+.sugg{display:flex;gap:6px;overflow-x:auto;padding:8px 2px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sugg::-webkit-scrollbar{display:none}
+.sugg[hidden]{display:none}
+.sugg.in{padding:8px 12px;border-top:1px solid var(--sep)}
+.sg{flex:none;border:0;background:var(--fill);color:var(--fg);border-radius:999px;padding:0 14px;min-height:36px;font-size:15px;white-space:nowrap;cursor:pointer}
+.sg b{font-weight:700;color:var(--accent)}
+.sg i{font-style:normal;font-size:12px;color:var(--fg2);margin-left:6px}
+.sg:active{opacity:.6}
 .shopadd .go{width:36px;height:36px;background:var(--fill);color:var(--accent)}
 .vc-top{display:grid;justify-items:center;gap:10px;padding-block:6px 2px;text-align:center}
 .vc-mic{width:76px;height:76px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow)}
@@ -368,6 +376,7 @@ span.check{cursor:default}
       <input id="shop-in" maxlength="80" placeholder="Artikel hinzufügen" aria-label="Artikel" enterkeyhint="done">
       <select class="rowcat" id="shop-cat" aria-label="Kategorie"></select>
     </form>
+    <div class="sugg" id="shopSugg" role="group" aria-label="Vorschläge" hidden></div>
     <div id="shopDone"></div>
     <div id="shopListDel"></div>
   </section>
@@ -504,7 +513,8 @@ span.check{cursor:default}
           <button type="button" data-act="shopkind" data-k="list" aria-pressed="false">Neue Liste</button>
         </div>
         <div class="fgroup" id="ssItem">
-          <label class="frow text"><span class="sr">Artikel</span><input id="ss-title" maxlength="80" placeholder="z. B. Äpfel"></label>
+          <label class="frow text"><span class="sr">Artikel</span><input id="ss-title" maxlength="80" placeholder="z. B. Äpfel" autocomplete="off" autocapitalize="sentences"></label>
+          <div class="sugg in" id="ssSugg" role="group" aria-label="Vorschläge" hidden></div>
           <label class="frow"><span class="fl">Kategorie</span><select id="ss-cat"></select></label>
           <label class="frow"><span class="fl">Liste</span><select id="ss-list"></select></label>
         </div>
@@ -1064,7 +1074,7 @@ function setShopKind(k){
 function openShopSheet(){
   if(!S.canWrite)return;
   $('form').hidden=true;$('namesForm').hidden=true;$('voiceSheet').hidden=true;$('shopSheet').hidden=false;
-  $('ss-title').value='';$('ss-name').value='';
+  $('ss-title').value='';$('ss-name').value='';$('ssSugg').hidden=true;
   $('ss-cat').innerHTML=catOptions('Sonstiges');ssManual=false;
   $('ss-list').innerHTML=allLists().map(function(l){return '<option value="'+esc(l.id)+'"'+(l.id===S.shopList?' selected':'')+'>'+esc(l.name)+'</option>';}).join('');
   $('scrim').hidden=false;
@@ -1119,11 +1129,80 @@ $('shop-in').addEventListener('input',function(){if(!shopManual)$('shop-cat').va
 $('shop-cat').addEventListener('change',function(){shopManual=true;});
 $('ss-title').addEventListener('input',function(){if(!ssManual)$('ss-cat').value=guessCat(this.value);});
 $('ss-cat').addEventListener('change',function(){ssManual=true;});
+/* Wortvorschläge: aus dem, was auf den Listen steht oder schon einmal eingegeben wurde */
+var HK='sommerhaus-hist';
+function histLoad(){try{var h=JSON.parse(localStorage.getItem(HK)||'[]');return Array.isArray(h)?h:[];}catch(e){return [];}}
+function histAdd(t,c){
+  var h=histLoad(),k=String(t).toLowerCase(),f=h.filter(function(x){return String(x.t).toLowerCase()===k;})[0];
+  if(f){f.n=(f.n||1)+1;f.c=c;f.u=Date.now();f.t=t;}else h.push({t:t,c:c,n:1,u:Date.now()});
+  h.sort(function(a,b){return (b.u||0)-(a.u||0);});
+  try{localStorage.setItem(HK,JSON.stringify(h.slice(0,300)));}catch(e){}
+}
+function nrm(x){return String(x||'').toLowerCase().replace(/ä/g,'a').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ß/g,'ss');}
+function suggestFor(q){
+  q=nrm(String(q||'').trim());
+  if(!q)return [];
+  var map={},cnt={};
+  S.shop.forEach(function(x){var k=String(x.title||'').trim().toLowerCase();if(k)cnt[k]=(cnt[k]||0)+1;});
+  histLoad().forEach(function(x){var k=String(x.t||'').trim().toLowerCase();if(k)map[k]={t:x.t,c:x.c,n:x.n||1,u:x.u||0};});
+  S.shop.forEach(function(x){
+    var k=String(x.title||'').trim().toLowerCase();if(!k)return;
+    var m=map[k];
+    if(m){m.n=Math.max(m.n,cnt[k]);m.u=Math.max(m.u,x.created||0);}
+    else map[k]={t:x.title,c:x.cat,n:cnt[k],u:x.created||0};
+  });
+  var openHere={};
+  S.shop.forEach(function(x){if(!x.done&&listOf(x)===S.shopList)openHere[String(x.title||'').trim().toLowerCase()]=1;});
+  var out=[];
+  Object.keys(map).forEach(function(k){
+    var kn=nrm(k);
+    if(kn===q)return;
+    var rank=kn.indexOf(q)===0?0:(kn.split(/[\s\-\/]+/).some(function(w){return w.indexOf(q)===0;})?1:-1);
+    if(rank<0)return;
+    var m=map[k];out.push({t:m.t,c:m.c,n:m.n,u:m.u,rank:rank,open:!!openHere[k]});
+  });
+  out.sort(function(a,b){return a.rank-b.rank||(a.open?1:0)-(b.open?1:0)||b.n-a.n||b.u-a.u||a.t.localeCompare(b.t,'de');});
+  return out.slice(0,6);
+}
+var SG={shop:[],ss:[]};
+function sugRender(box,input,key){
+  var q=input.value,list=suggestFor(q);SG[key]=list;
+  if(!list.length){box.hidden=true;box.innerHTML='';return;}
+  var ql=q.trim().length;
+  box.innerHTML=list.map(function(x,i){
+    var pre=x.rank===0?'<b>'+esc(x.t.slice(0,ql))+'</b>'+esc(x.t.slice(ql)):esc(x.t);
+    return '<button type="button" class="sg" data-i="'+i+'" aria-label="'+esc(x.t)+(x.open?', steht schon auf der Liste':'')+'">'+pre+(x.open?'<i>schon drauf</i>':'')+'</button>';
+  }).join('');
+  box.hidden=false;
+}
+function sugPick(key,i,input,sel,setManual,box){
+  var x=SG[key][i];if(!x)return;
+  input.value=x.t;
+  sel.value=CATS.indexOf(x.c)>=0?x.c:guessCat(x.t);
+  box.hidden=true;box.innerHTML='';
+  setManual();
+  input.focus();
+  try{input.setSelectionRange(input.value.length,input.value.length);}catch(e){}
+}
+$('shop-in').addEventListener('input',function(){sugRender($('shopSugg'),this,'shop');});
+$('shop-in').addEventListener('focus',function(){if(this.value)sugRender($('shopSugg'),this,'shop');});
+$('shopSugg').addEventListener('mousedown',function(ev){ev.preventDefault();});
+$('shopSugg').addEventListener('click',function(ev){
+  var b=ev.target.closest('.sg');if(!b)return;
+  sugPick('shop',+b.dataset.i,$('shop-in'),$('shop-cat'),function(){shopManual=true;},$('shopSugg'));
+});
+$('ss-title').addEventListener('input',function(){sugRender($('ssSugg'),this,'ss');});
+$('ssSugg').addEventListener('mousedown',function(ev){ev.preventDefault();});
+$('ssSugg').addEventListener('click',function(ev){
+  var b=ev.target.closest('.sg');if(!b)return;
+  sugPick('ss',+b.dataset.i,$('ss-title'),$('ss-cat'),function(){ssManual=true;},$('ssSugg'));
+});
 $('shopForm').addEventListener('submit',function(ev){
   ev.preventDefault();
   var t=$('shop-in').value.trim();
   if(!t||!db||!S.canWrite)return;
   var c=$('shop-cat').value;
+  histAdd(t,c);$('shopSugg').hidden=true;$('shopSugg').innerHTML='';
   $('shop-in').value='';shopManual=false;$('shop-cat').value='Sonstiges';
   db.collection('shopping').add({title:t,cat:c,list:S.shopList,done:false,created:Date.now()}).catch(fail);
   $('shop-in').focus();
@@ -1209,6 +1288,7 @@ $('voiceSheet').addEventListener('submit',function(ev){
   window.__vcStop();
   var pick=VC.items.filter(function(i){return i.on;});if(!pick.length)return;
   var li=S.shopList,ln=curList().name,t0=Date.now();
+  pick.forEach(function(it){histAdd(it.t,it.c);});
   Promise.all(pick.map(function(it,k){return db.collection('shopping').add({title:it.t,cat:it.c,list:li,done:false,created:t0+k});})).then(function(){
     closeSheet();render();toast(pick.length+(pick.length===1?' Artikel steht':' Artikel stehen')+' auf „'+ln+'“.');
   },fail);
@@ -1220,6 +1300,7 @@ $('shopSheet').addEventListener('submit',function(ev){
     var t=$('ss-title').value.trim();
     if(!t){$('ss-title').focus();return;}
     var li=$('ss-list').value||DEF_LIST.id,ln=(allLists().find(function(l){return l.id===li;})||DEF_LIST).name;
+    histAdd(t,$('ss-cat').value);
     db.collection('shopping').add({title:t,cat:$('ss-cat').value,list:li,done:false,created:Date.now()}).then(function(){
       S.shopList=li;try{localStorage.setItem('sommerhaus-shoplist',li);}catch(e){}
       closeSheet();render();toast(t+' steht auf „'+ln+'“.');
