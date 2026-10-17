@@ -1,0 +1,25 @@
+name: Muellkalender
+on:
+  schedule:
+    - cron: '0 5 * * 0'   # sonntags früh, Müllmax aktualisiert höchstens einmal am Tag
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  holen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zugang entschlüsseln
+        env:
+          SH_KEY: ${{ secrets.SH_KEY }}
+        run: |
+          printf '%s' "$SH_KEY" > /tmp/k && openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -a -in scripts/geheim.enc -pass file:/tmp/k > /tmp/g.json && rm /tmp/k
+      - run: pip install -q requests && python3 scripts/muell.py /tmp/g.json
+      - name: Speichern
+        run: |
+          if [ -n "$(git status --porcelain muell.json)" ]; then
+            git config user.name "SommerHaus" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add muell.json && git commit -m "Abfuhrtermine aktualisiert" && git push
+          fi

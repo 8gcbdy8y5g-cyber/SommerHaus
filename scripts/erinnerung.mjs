@@ -46,7 +46,7 @@ async function list(tok, col) {
   return out;
 }
 const BIN = { yellow: 'Gelbe Tonne', black: 'Restmüll', blue: 'Papier', brown: 'Biotonne', green: 'Biotonne' };
-const isOpen = t => !(t.unit === 'once' && t.done === true) && !!t.due;
+const isOpen = t => !(t.unit === 'once' && t.done === true) && !t.binWait && !!t.due;
 const nrm = s => String(s || '').toLowerCase();
 function mineOk(t, sub) {
   if (!sub.prefs || !sub.prefs.mine) return true;

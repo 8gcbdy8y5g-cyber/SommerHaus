@@ -258,6 +258,8 @@ span.check{cursor:default}
 .rpt select{flex:none}
 #f-every{flex:none;width:56px;text-align:center;background:var(--fill);border-radius:8px;padding:6px 4px;min-height:34px}
 .pushon{margin-left:auto;color:var(--green);font-weight:600}
+.mu-v{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums}
+#muBox .fl{display:flex;align-items:center;gap:8px}
 .pushopt input{margin-left:auto;width:22px;height:22px;accent-color:var(--accent)}
 .fnote{font-size:13px;color:var(--fg2);margin:-8px 16px 0}
 .fhead{font-size:13px;font-weight:600;color:var(--fg2);margin:0 0 6px 4px}
@@ -788,6 +790,11 @@ span.check{cursor:default}
           <div class="fgroup" id="pushBox"></div>
           <p class="fnote" style="margin-top:0" id="pushNote"></p>
         </div>
+        <div class="stack" id="muStack" hidden>
+          <p class="fhead" style="margin:0 0 0 4px">Mülltonnen</p>
+          <div class="fgroup" id="muBox"></div>
+          <p class="fnote" style="margin-top:0" id="muNote"></p>
+        </div>
         <div class="stack">
           <p class="fhead" style="margin:0 0 0 4px">Darstellung</p>
           <div class="seg theme" role="group" aria-label="Darstellung">
@@ -965,7 +972,7 @@ function personClass(x){
   var i=x&&x.who?S.members.indexOf(x.who):-1;
   return i>=0?'p'+(i%4):'';
 }
-function isOpen(t){return !(t.unit==='once'&&t.done);}
+function isOpen(t){return !(t.unit==='once'&&t.done)&&!t.binWait;}
 /* Nicht abgehakte Aufgaben rutschen jeden Tag mit auf heute. Mülltermine bleiben auf ihrem Abfuhrtag. */
 function showDue(t,today){return (!t.icon&&t.due<today)?today:t.due;}
 function itemsOn(ds){
@@ -1688,6 +1695,54 @@ function tripDelete(x){
   },fail);
   renderTrips();
 }
+/* ---------- Mülltonnen: Termine vom USB Bochum aus muell.json, nur für eure Dienstmonate ---------- */
+var MUELL=window.SH_MUELL||null,muBusy={};
+var MU_MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+function muOk(d){return !!(d&&d.dates&&typeof d.dates==='object'&&Array.isArray(d.months)&&d.months.length);}
+if(!MUELL&&window.fetch&&location.protocol.indexOf('http')===0){
+  fetch('muell.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(muOk(d)){MUELL=d;binSync();render();}
+  }).catch(function(){});
+}
+function muNextStart(today){
+  var d=parse(today);
+  for(var i=1;i<=12;i++){var x=new Date(d.getFullYear(),d.getMonth()+i,1);if(MUELL.months.indexOf(x.getMonth()+1)>=0)return iso(x);}
+  return null;
+}
+function binTarget(t,today,from){
+  if(!muOk(MUELL)||!t||!t.icon||!BINS[t.icon]||t.unit==='once'||!t.every)return null;
+  var L=(MUELL.dates[t.icon]||[]).slice().sort();
+  for(var i=0;i<L.length;i++)if(L[i]>=from)return {due:L[i],wait:false};
+  return {due:muNextStart(today)||t.due,wait:true};
+}
+function binSync(){
+  if(!muOk(MUELL)||!db||!S.canWrite||S.loading)return;
+  var today=todayIso();
+  S.tasks.forEach(function(t){
+    if(!t.id||muBusy[t.id])return;
+    var x=binTarget(t,today,(t.lastDone&&t.lastDone>=today)?addDays(today,1):today);
+    if(!x||(t.due===x.due&&!!t.binWait===x.wait))return;
+    muBusy[t.id]=1;
+    db.collection('tasks').doc(t.id).update({due:x.due,binWait:x.wait}).then(function(){delete muBusy[t.id];},function(){delete muBusy[t.id];});
+  });
+}
+function renderMuBox(){
+  var st=$('muStack'),box=$('muBox'),note=$('muNote');if(!st||!box)return;
+  if(!muOk(MUELL)){st.hidden=true;return;}
+  st.hidden=false;
+  var today=todayIso(),h='',bins=S.tasks.filter(function(t){return t.icon&&BINS[t.icon]&&t.unit!=='once';});
+  var mon=MUELL.months.map(function(m){return MU_MON[m-1];}).join(' und ');
+  bins.sort(byTitle).forEach(function(t){
+    var txt=t.binWait?'Termin folgt':fmtShort.format(parse(t.due));
+    h+='<div class="frow"><span class="fl">'+binIcon(t.icon)+esc(BINS[t.icon].label)+'</span><span class="mu-v">'+esc(txt)+'</span></div>';
+  });
+  if(!h)h='<div class="frow"><span class="fl">Keine Tonnen-Aufgaben angelegt</span></div>';
+  box.innerHTML=h;
+  var wait=bins.some(function(t){return t.binWait;}),ns=muNextStart(today);
+  note.textContent='Ihr seid im '+mon+' mit den Tonnen dran. Die Termine kommen vom USB Bochum, in den anderen Monaten blendet die App die Tonnen aus.'+
+    (wait&&ns?' Der nächste Dienst beginnt im '+MU_MON[parse(ns).getMonth()]+' '+parse(ns).getFullYear()+'. Die genauen Termine erscheinen, sobald der USB seinen Kalender dafür veröffentlicht.':'');
+}
+
 /* ---------- Angebote: Prospekt-Angebote mit eurer Liste und euren häufigen Einkäufen abgleichen ---------- */
 var OFFERS=window.SH_OFFERS||null;
 /* Angebote kommen aus der Datei angebote.json neben der index.html (wird jede Woche neu hochgeladen). */
@@ -2298,10 +2353,13 @@ function doneTask(id){
       toast('Erledigt: '+t.title,function(){ref.update({done:wasDone,lastDone:oldLast2}).catch(fail);unlogDone(lp);});
     },fail);
   }else{
-    var nd=nextDue(t,today),oldDue=t.due,oldLast=t.lastDone||'';
-    p=ref.update({due:nd,lastDone:today}).then(function(){
+    var bx=binTarget(t,today,addDays(today,1));
+    var nd=bx?bx.due:nextDue(t,today),oldDue=t.due,oldLast=t.lastDone||'',oldWait=!!t.binWait;
+    var ch={due:nd,lastDone:today};if(bx)ch.binWait=bx.wait;
+    p=ref.update(ch).then(function(){
       var lp=logDone(t,today);
-      toast(t.title+' erledigt. Wieder fällig am '+fmtShort.format(parse(nd))+'.',function(){ref.update({due:oldDue,lastDone:oldLast}).catch(fail);unlogDone(lp);});
+      var msg=bx&&bx.wait?t.title+' erledigt. Nächster Tonnendienst im '+MU_MON[parse(nd).getMonth()]+'.':t.title+' erledigt. Wieder fällig am '+fmtShort.format(parse(nd))+'.';
+      toast(msg,function(){var u={due:oldDue,lastDone:oldLast};if(bx)u.binWait=oldWait;ref.update(u).catch(fail);unlogDone(lp);});
     },fail);
   }
   return p.then(function(){delete busy[id];});
@@ -2495,7 +2553,7 @@ function openNames(){
   $('f-names').disabled=!S.canWrite;
   $('btnNamesSave').hidden=!S.canWrite;
   $('scrim').hidden=false;
-  pushRefresh();
+  pushRefresh();renderMuBox();
   if(S.canWrite&&!window.matchMedia('(pointer:coarse)').matches)setTimeout(function(){$('f-names').focus();},30);
 }
 function syncQuick(){
@@ -3215,7 +3273,7 @@ render();
   }
   var onErr=function(e){S.loading=false;showBanner('Der Speicher antwortet gerade nicht ('+((e&&e.code)||'Fehler')+'). Lade die Seite neu, wenn es so bleibt.');render();};
   db.collection('tasks').onSnapshot(function(s){
-    S.tasks=s.docs.map(toItem);S.loading=false;render();renderTrips();
+    S.tasks=s.docs.map(toItem);S.loading=false;render();renderTrips();binSync();
   },onErr);
   db.collection('shopLists').onSnapshot(function(s){
     S.lists=s.docs.map(toItem);render();
