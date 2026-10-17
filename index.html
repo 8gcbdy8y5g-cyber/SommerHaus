@@ -514,13 +514,23 @@ span.check{cursor:default}
 /* Suche */
 .mon-chart{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end;margin-top:4px}
 .mon-col{border:0;background:none;font:inherit;color:var(--fg2);display:grid;justify-items:center;gap:4px;padding:0;cursor:pointer;min-width:0}
-.mon-val{font-size:12px;font-weight:700;color:var(--fg);white-space:nowrap;font-variant-numeric:tabular-nums}
+.mon-val{position:relative;z-index:1;background:var(--card);padding:0 3px;border-radius:4px;font-size:12px;font-weight:700;color:var(--fg);white-space:nowrap;font-variant-numeric:tabular-nums}
 .mon-bar{height:140px;width:100%;max-width:40px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;border-bottom:1px solid var(--sep)}
 .mon-bar i{display:block;width:100%;border-radius:4px 4px 0 0;background:color-mix(in srgb,var(--accent) 45%,var(--card))}
 .mon-col.on .mon-bar i{background:var(--accent)}
 .mon-col.cur .mon-bar i{background-image:repeating-linear-gradient(45deg,transparent 0 5px,color-mix(in srgb,var(--card) 35%,transparent) 5px 8px)}
 .mon-lab{font-size:12px;font-weight:600}
 .mon-col.on .mon-lab{color:var(--accent)}
+.mon-bar{position:relative}
+.mon-bud{position:absolute;left:-5px;right:-5px;border-top:1.5px dashed var(--fg2);opacity:.7;pointer-events:none}
+.bud{margin:10px 0 4px}
+.bud-bar{height:10px;border-radius:5px;background:var(--fill);overflow:hidden}
+.bud-bar i{display:block;height:100%;border-radius:5px;background:var(--green)}
+.bud.warn .bud-bar i{background:var(--yellow)}
+.bud.over .bud-bar i{background:var(--red)}
+.bud-txt{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--fg2);margin-top:5px;font-variant-numeric:tabular-nums}
+.bud.warn .bud-txt b{color:color-mix(in srgb,var(--yellow) 70%,var(--fg))}
+.bud.over .bud-txt b{color:var(--red)}
 .mon-det{margin-top:14px;padding-top:12px;border-top:1px solid var(--sep)}
 .rcs-in{display:flex;align-items:center;gap:8px;background:var(--fill);border-radius:12px;padding:0 12px;color:var(--fg2)}
 .rcs-in input{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;font-size:16px;color:var(--fg);min-height:44px}
@@ -789,6 +799,11 @@ span.check{cursor:default}
           <p class="fhead" style="margin:0 0 0 4px">Erinnerungen aufs Handy</p>
           <div class="fgroup" id="pushBox"></div>
           <p class="fnote" style="margin-top:0" id="pushNote"></p>
+        </div>
+        <div class="stack">
+          <p class="fhead" style="margin:0 0 0 4px">Budget für Einkäufe</p>
+          <div class="fgroup"><label class="frow text"><span class="fl">Pro Monat</span><input id="f-budget" inputmode="decimal" maxlength="9" placeholder="kein Budget" style="text-align:right"><span class="fl" style="margin-left:6px">€</span></label></div>
+          <p class="fnote" style="margin-top:0" id="budgetNote">Im Überblick seht ihr dann bei „Ausgaben pro Monat“, wie viel noch übrig ist. Feld leer lassen für kein Budget.</p>
         </div>
         <div class="stack" id="muStack" hidden>
           <p class="fhead" style="margin:0 0 0 4px">Mülltonnen</p>
@@ -2181,20 +2196,28 @@ function monthsData(n){
   }
   return out;
 }
+function budHtml(m,B){
+  if(!B)return '';
+  var pct=m.sum/B,cls=pct>1?' over':pct>=0.8?' warn':'',rest=B-m.sum,txt;
+  if(m.cur)txt=rest>=0?'<b>noch '+esc(fmtEur(rest))+' übrig</b>':'<b>'+esc(fmtEur(-rest))+' über dem Budget</b>';
+  else txt=rest>=0?'<b>'+esc(fmtEur(rest))+' unter dem Budget</b>':'<b>'+esc(fmtEur(-rest))+' über dem Budget</b>';
+  var hint=m.cur&&pct>=0.8&&pct<=1?'<p class="rnote" style="margin:4px 0 0">Schon '+Math.round(pct*100)+' % vom Budget ausgegeben.</p>':'';
+  return '<div class="bud'+cls+'"><div class="bud-bar"><i style="width:'+Math.min(100,Math.round(pct*100))+'%"></i></div><div class="bud-txt">'+txt+'<span>Budget '+esc(fmtEur(B))+'</span></div>'+hint+'</div>';
+}
 function renderMonths(){
   var M=monthsData(6),withData=M.filter(function(m){return m.sum>0;});
   var h='<section class="rtile mon"><h3>Ausgaben pro Monat</h3>';
   if(withData.length<1){return h+'<p class="rnote" style="margin:0">Sobald ihr bei Einkäufen Beträge eintragt oder Kassenzettel fotografiert, seht ihr hier die Entwicklung über die Monate.</p></section>';}
-  var mx=Math.max.apply(null,M.map(function(m){return m.sum;})),sel=S.monSel&&M.some(function(m){return m.key===S.monSel;})?S.monSel:M[M.length-1].key;
+  var B=S.budget>0?S.budget:0,mx=Math.max(B,Math.max.apply(null,M.map(function(m){return m.sum;}))),sel=S.monSel&&M.some(function(m){return m.key===S.monSel;})?S.monSel:M[M.length-1].key;
   var selM=M.find(function(m){return m.key===sel;});
   var avgL=withData.filter(function(m){return !m.cur;}),avg=avgL.length?avgL.reduce(function(a,m){return a+m.sum;},0)/avgL.length:0;
   h+='<div class="mon-chart" role="img" aria-label="Ausgaben der letzten sechs Monate">'+M.map(function(m){
     var bh=m.sum?Math.max(4,Math.round(m.sum/mx*120)):0;
     return '<button type="button" class="mon-col'+(m.key===sel?' on':'')+(m.cur?' cur':'')+'" data-act="monsel" data-m="'+m.key+'" aria-label="'+esc(fmtMonth.format(m.d))+': '+esc(fmtEur(m.sum))+'">'+
-      '<span class="mon-bar"><span class="mon-val">'+(m.key===sel&&m.sum?esc(fmtEur(m.sum).replace(/,\d\d\s€/,' €')):'')+'</span><i style="height:'+bh+'px"></i></span><span class="mon-lab">'+esc(fmtMonShort.format(m.d).replace('.',''))+'</span></button>';
+      '<span class="mon-bar"><span class="mon-val">'+(m.key===sel&&m.sum?esc(fmtEur(m.sum).replace(/,\d\d\s€/,' €')):'')+'</span><i style="height:'+bh+'px"></i>'+(B?'<span class="mon-bud" style="bottom:'+Math.round(B/mx*120)+'px"></span>':'')+'</span><span class="mon-lab">'+esc(fmtMonShort.format(m.d).replace('.',''))+'</span></button>';
   }).join('')+'</div>';
   h+='<div class="mon-det"><div class="zline"><b>'+esc(fmtMonth.format(selM.d))+(selM.cur?' (läuft noch)':'')+'</b><b>'+esc(fmtEur(selM.sum))+'</b></div>'+
-    '<p class="rnote" style="margin:2px 0 8px">'+plural(selM.n,'Einkauf','Einkäufe')+' mit Betrag'+(avg&&!selM.cur?' · Schnitt der Vormonate '+esc(fmtEur(avg)):'')+(avg&&selM.cur?' · bisheriger Monatsschnitt '+esc(fmtEur(avg)):'')+'</p>';
+    budHtml(selM,B)+'<p class="rnote" style="margin:2px 0 8px">'+plural(selM.n,'Einkauf','Einkäufe')+' mit Betrag'+(avg&&!selM.cur?' · Schnitt der Vormonate '+esc(fmtEur(avg)):'')+(avg&&selM.cur?' · bisheriger Monatsschnitt '+esc(fmtEur(avg)):'')+'</p>';
   if(selM.stores.length){var smx=selM.stores[0].sum||1;h+='<div class="rb-stores">'+selM.stores.slice(0,6).map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/smx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
   h+='<p class="rnote">Zählt nur Einkäufe mit eingetragenem Betrag. Tipp auf einen Monat zeigt die Läden.</p></div></section>';
   return h;
@@ -2551,6 +2574,7 @@ function openNames(){
   $('form').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=true;$('namesForm').hidden=false;
   $('f-names').value=S.members.join(', ');
   $('f-names').disabled=!S.canWrite;
+  $('budgetNote').textContent='Im Überblick seht ihr dann bei „Ausgaben pro Monat“, wie viel noch übrig ist. Feld leer lassen für kein Budget.';$('f-budget').value=S.budget>0?String(S.budget).replace('.',','):'';$('f-budget').disabled=!S.canWrite;
   $('btnNamesSave').hidden=!S.canWrite;
   $('scrim').hidden=false;
   pushRefresh();renderMuBox();
@@ -2618,7 +2642,10 @@ $('namesForm').addEventListener('submit',function(ev){
   ev.preventDefault();
   if(!db||!S.canWrite)return;
   var seen={},names=$('f-names').value.split(',').map(function(s){return s.trim();}).filter(function(s){if(!s||seen[s])return false;seen[s]=1;return true;}).slice(0,6);
-  db.doc('settings/members').set({names:names}).then(function(){closeSheet();toast('Namen gespeichert.');},fail);
+  var bv=parseAmt($('f-budget').value);
+  if(bv!==null&&!(bv>=0)){$('budgetNote').textContent='Bitte nur eine Zahl eintragen, zum Beispiel 600 oder 650,50.';$('f-budget').focus();return;}
+  var bnew=bv?Math.round(bv*100)/100:0,bp=bnew!==(S.budget||0)?db.doc('settings/budget').set({amount:bnew}):Promise.resolve();
+  Promise.all([db.doc('settings/members').set({names:names}),bp]).then(function(){closeSheet();toast('Gespeichert.');},fail);
 });
 $('shop-cat').innerHTML=catOptions('Sonstiges');
 var shopManual=false,ssManual=false;
@@ -3301,6 +3328,7 @@ render();
     },onErr);
   },4000);
   db.doc('settings/vocab').onSnapshot(function(s){S.vocab=vocabParse(s&&s.data&&s.data());},function(){});
+  db.doc('settings/budget').onSnapshot(function(s){var d=s&&s.data&&s.data();S.budget=d&&d.amount>0?+d.amount:0;render();},function(){});
   db.doc('settings/members').onSnapshot(function(s){
     var d=s.data();S.members=d&&Array.isArray(d.names)?d.names.slice():[];render();
   },onErr);
