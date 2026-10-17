@@ -376,6 +376,10 @@ span.check{cursor:default}
 .tlist .tl-amt{font-weight:600;font-variant-numeric:tabular-nums}
 .tlist .tl-rc{color:var(--fg2);flex:none}
 .tlist .chev{color:var(--fg2);flex:none}
+.kli{display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:52px}
+.kli .tl-main b .bin{width:1.1em;height:1.1em;vertical-align:-.2em;margin-right:.25em}
+.kbox{background:var(--card);border-radius:12px;padding:2px 12px}
+.kpi.kbtn.bad b{color:var(--red)}
 .tsum{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 4px;font-size:14px;color:var(--fg2)}
 .tsum b{color:var(--fg);font-size:17px}
 .tdet{background:var(--card);border-radius:12px;padding:4px 0}
@@ -400,6 +404,12 @@ span.check{cursor:default}
 .pb.pcx{background:var(--fill);color:var(--fg2)}
 .pd{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pc);flex:none}
 .rchips{display:flex;flex-wrap:wrap;gap:6px}
+.rfoldh{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer;min-height:32px}
+.rfoldh h3{margin:0;flex:none}
+.rfoldh .rfs{flex:1;text-align:right;font-size:14px;color:var(--fg2);font-variant-numeric:tabular-nums}
+.rfoldh .chev{flex:none;color:var(--fg2);transition:transform .15s}
+.rfoldh .chev.open{transform:rotate(90deg)}
+.rfoldb{margin-top:10px}
 .rchip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 11px;font-size:13px;line-height:1.2;background:color-mix(in srgb,var(--pc,var(--fg2)) 16%,transparent);color:var(--fg);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pc,var(--fg2)) 40%,transparent)}
 .rchip i{font-style:normal;font-size:11.5px;color:var(--fg2)}
 .rchip .bd{width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 1px var(--sep)}
@@ -784,7 +794,7 @@ function syncDur(){
 }
 
 var now0=new Date();
-var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],log:[],repWeek:'this',shopDoneOpen:false,dayOpen:false,finishAsk:false,finishStore:'',finishAmt:'',finishErr:'',spontAsk:false,spontDate:'',tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
+var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],log:[],repWeek:'this',shopDoneOpen:false,dayOpen:false,repShopOpen:false,finishAsk:false,finishStore:'',finishAmt:'',finishErr:'',spontAsk:false,spontDate:'',tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
 var db=null;
 
 var BINS={
@@ -1301,7 +1311,7 @@ function rcSaveTrip(trip,pend){
   }).then(function(tref){if(tref&&tref.id)db.collection('receipts').doc(rid).update({trip:tref.id}).catch(function(){});return tref;});
 }
 /* ---------- Einkäufe im Wochenbericht: Liste, Details, Kassenzettel, Löschen ---------- */
-var TV={scope:'week',id:null,delAsk:false},RCC={};
+var TV={scope:'week',id:null,delAsk:false,mode:'trips'},RCC={};
 function tvTrips(){
   var R=repRange(),l=S.trips.slice();
   if(TV.scope==='week')l=l.filter(function(x){return x.date>=R.from&&x.date<=R.to;});
@@ -1309,7 +1319,7 @@ function tvTrips(){
 }
 function openTrips(id){
   $('form').hidden=true;$('namesForm').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=false;
-  TV.id=id||null;TV.delAsk=false;
+  TV.id=id||null;TV.delAsk=false;TV.mode='trips';
   if(id&&!S.trips.some(function(x){return x.id===id;}))TV.id=null;
   $('scrim').hidden=false;renderTrips();
 }
@@ -1320,8 +1330,49 @@ function tripLine(x){
   return p.join(' · ');
 }
 var RC_ICON='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Kassenzettel"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>';
+function openKpi(m){
+  $('form').hidden=true;$('namesForm').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=false;
+  TV.mode=m;TV.id=null;TV.delAsk=false;
+  $('scrim').hidden=false;renderTrips();$('tripBody').parentNode.scrollTop=0;
+}
+function renderKpi(){
+  var body=$('tripBody'),h='',D=repData(),R=D.R,today=todayIso();
+  $('tripBack').textContent='Schließen';
+  var range='<p class="tsum"><span>'+esc(dLabel(R.from)).replace(/\.$/,'')+' bis '+esc(dLabel(R.to))+'</span></p>';
+  if(TV.mode==='done'){
+    $('tripTitle').textContent='Erledigt';
+    h+=range;
+    if(!D.done.length)h+='<p class="empty" style="margin:4px">In dieser Woche wurde noch nichts abgehakt.</p>';
+    else{
+      var cur='',l=D.done.slice().sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0;});
+      h+='<ul class="tlist">'+l.map(function(e){
+        return '<li><div class="kli"><span class="tl-main"><b>'+binIcon(e.bin)+esc(e.title)+'</b><span>'+esc(dShort(e.date))+(e.by?' · erledigt von '+esc(e.by):e.who?' · zugeordnet an '+esc(e.who):'')+'</span></span>'+(e.by?pbadge(e.by):'')+'</div></li>';
+      }).join('')+'</ul>';
+    }
+  }else if(TV.mode==='over'){
+    $('tripTitle').textContent='Überfällig';
+    var ov=S.tasks.filter(function(t){return isOpen(t)&&t.due&&t.due<today;}).sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:byTitle(a,b);});
+    h+='<p class="tsum"><span>Stand heute · '+plural(ov.length,'Aufgabe','Aufgaben')+'</span></p>';
+    if(!ov.length)h+='<p class="empty ok" style="margin:4px">Nichts überfällig.</p>';
+    else h+='<div class="kbox">'+ov.map(function(t){return taskRow(t,today);}).join('')+'</div><p class="rnote" style="margin:0 4px">Tipp auf den Kreis hakt die Aufgabe ab, Tipp auf den Namen öffnet sie.</p>';
+  }else if(TV.mode==='items'){
+    $('tripTitle').textContent='Gekaufte Artikel';
+    var m={};
+    D.trips.forEach(function(x){(x.items||[]).forEach(function(y){var k=String(y.t||'').trim();if(!k)return;var key=k.toLowerCase();var o=m[key]||(m[key]={t:k,n:0,last:'',store:''});o.n++;if((x.date||'')>=o.last){o.last=x.date||'';o.store=x.store||'';}});});
+    var it=Object.keys(m).map(function(k){return m[k];}).sort(function(a,b){return b.n-a.n||a.t.localeCompare(b.t,'de');});
+    h+=range.replace('</span></p>',' · '+plural(D.items,'Artikel','Artikel')+'</span></p>');
+    if(!it.length)h+='<p class="empty" style="margin:4px">In dieser Woche wurde nichts von der Liste gekauft.</p>';
+    else h+='<ul class="tlist">'+it.map(function(o){
+      return '<li><div class="kli"><span class="tl-main"><b>'+esc(o.t)+'</b><span>'+esc(dShort(o.last))+(o.store?' · '+esc(o.store):'')+'</span></span>'+(o.n>1?'<span class="tl-amt">'+o.n+'×</span>':'')+'</div></li>';
+    }).join('')+'</ul>';
+    var sp=D.trips.filter(function(x){return x.spont;}).length;
+    if(sp)h+='<p class="rnote" style="margin:0 4px">'+(sp===1?'Ein spontaner Einkauf ohne Artikelliste ist':sp+' spontane Einkäufe ohne Artikelliste sind')+' hier nicht enthalten.</p>';
+  }
+  body.innerHTML=h;
+}
 function renderTrips(){
   if($('tripSheet').hidden)return;
+  if(TV.mode!=='trips'){renderKpi();return;}
   var body=$('tripBody'),h='';
   var x=TV.id?S.trips.find(function(t){return t.id===TV.id;}):null;
   if(TV.id&&!x)TV.id=null;
@@ -1575,7 +1626,7 @@ function renderReport(){
   var nUn=D.done.filter(function(e){return !e.by;}).length;
   h+='<section class="rtile rhero"><h3>Wochenbericht</h3><p class="rsub">'+esc(dLabel(R.from))+' bis '+esc(dLabel(R.to))+(R.today<=R.to?' · läuft noch':'')+'</p>'+
     '<div class="seg2"><button type="button" data-act="repweek" data-wk="this" aria-pressed="'+(S.repWeek==='this')+'">Diese Woche</button><button type="button" data-act="repweek" data-wk="last" aria-pressed="'+(S.repWeek==='last')+'">Letzte Woche</button></div>'+
-    '<div class="kpis"><div class="kpi"><b>'+D.done.length+'</b><span>erledigt</span></div><div class="kpi'+(D.over.length?' bad':'')+'"><b>'+D.over.length+'</b><span>überfällig</span></div><button type="button" class="kpi kbtn" data-act="tripsheet" aria-label="Einkäufe ansehen"><b>'+D.trips.length+'</b><span>'+(D.trips.length===1?'Einkauf':'Einkäufe')+' ›</span></button><div class="kpi"><b>'+D.items+'</b><span>Artikel gekauft</span></div></div></section>';
+    '<div class="kpis"><button type="button" class="kpi kbtn" data-act="kpi" data-m="done" aria-label="Erledigte Aufgaben ansehen"><b>'+D.done.length+'</b><span>erledigt ›</span></button><button type="button" class="kpi kbtn'+(D.over.length?' bad':'')+'" data-act="kpi" data-m="over" aria-label="Überfällige Aufgaben ansehen"><b>'+D.over.length+'</b><span>überfällig ›</span></button><button type="button" class="kpi kbtn" data-act="tripsheet" aria-label="Einkäufe ansehen"><b>'+D.trips.length+'</b><span>'+(D.trips.length===1?'Einkauf':'Einkäufe')+' ›</span></button><button type="button" class="kpi kbtn" data-act="kpi" data-m="items" aria-label="Gekaufte Artikel ansehen"><b>'+D.items+'</b><span>Artikel ›</span></button></div></section>';
   // Wer hat was gemacht
   var body='';
   if(!D.done.length)body='<p class="empty" style="margin:0">Diese Woche wurde noch nichts abgehakt.</p>';
@@ -1590,17 +1641,6 @@ function renderReport(){
     if(nUn)body+='<p class="rnote">„Ohne Angabe“: wer abgehakt hat, speichert SommerHaus erst seit diesem Update. Ab jetzt steht es dabei.</p>';
   }
   h+=rtile('','Wer hat was gemacht',body);
-  // Zuständigkeit
-  var zr='';
-  D.names.forEach(function(n){
-    var dn=D.done.filter(function(e){return e.who===n;}).length,op=D.assignedOpen(n),tot=dn+op;
-    zr+='<div class="zrow">'+pbadge(n,true)+'<div class="zmain"><div class="zline"><b>'+esc(n)+'</b><span>'+(tot?dn+' von '+tot+' erledigt':'nichts zugeordnet')+'</span></div><div class="prog '+pcls(n)+'"><span style="width:'+(tot?Math.round(dn/tot*100):0)+'%"></span></div></div></div>';
-  });
-  var dnN=D.done.filter(function(e){return !e.who;}).length,opN=S.tasks.filter(function(t){return isOpen(t)&&t.due&&t.due<=R.to&&!whoTxt(t.who);}).length;
-  zr+='<div class="zrow"><span class="pb pcx sm">–</span><div class="zmain"><div class="zline"><b>Niemandem zugeordnet</b><span>'+(dnN+opN?dnN+' von '+(dnN+opN)+' erledigt':'nichts')+'</span></div><div class="prog pcx"><span style="width:'+(dnN+opN?Math.round(dnN/(dnN+opN)*100):0)+'%"></span></div></div></div>';
-  h+=rtile('','Zuständigkeit und Stand',zr+'<p class="rnote">Zählt Aufgaben bis Wochenende: erledigt gegenüber noch offen. Zugeordnet heißt zuständig, nicht erledigt von.</p>');
-  // Überfällig
-  h+=rtile('warn','Überfällig',D.over.length?D.over.map(function(o){return '<div class="lrow">'+pdot(o.who)+'<span class="lt">'+esc(o.title)+'</span><span class="lr">'+plural(o.days,'Tag','Tage')+'</span></div>';}).join(''):'<p class="empty ok" style="margin:0">Nichts überfällig.</p>');
   // Einkäufe
   var eb='';
   if(D.trips.length){
@@ -1618,14 +1658,8 @@ function renderReport(){
   }else eb='<p class="empty" style="margin:0">Kein Einkauf abgeschlossen.</p>';
   if(D.rhy.length)eb+='<p class="rnote" style="margin-top:12px">Bald fällig laut Rhythmus</p><div class="rchips">'+D.rhy.map(function(x){return '<span class="rchip">'+esc(x.t)+'<i>'+rhEvery(x.every)+'</i></span>';}).join('')+'</div>';
   if(D.tripsAll)eb+='<p class="rnote">Insgesamt bisher '+plural(D.tripsAll,'Einkauf','Einkäufe')+', der letzte am '+esc(dLabel(D.lastTrip)).replace(/\.$/,'')+'.</p>';
-  h+=rtile('','Einkäufe',eb);
-  // Mülltonnen
-  var bins=D.done.filter(function(e){return e.bin;}),nbins=D.next.filter(function(r){return r.bin;});
-  if(bins.length||nbins.length){
-    var bc={yellow:'var(--yellow)',black:'var(--fg)',blue:'var(--blue)'};
-    h+=rtile('','Mülltonnen',(bins.length?'<p class="rnote" style="margin:0 0 6px">Rausgestellt</p><div class="rchips">'+bins.map(function(e){return '<span class="rchip"><i class="bd" style="background:'+(bc[e.bin]||'var(--fg2)')+'"></i>'+esc(e.title)+'<i>'+esc(dShort(e.date))+'</i></span>';}).join('')+'</div>':'')+
-      (nbins.length?'<p class="rnote" style="margin:10px 0 6px">Nächste Woche</p><div class="rchips">'+nbins.map(function(r){return '<span class="rchip"><i class="bd" style="background:'+(bc[r.bin]||'var(--fg2)')+'"></i>'+esc(r.title)+'<i>'+esc(dShort(r.date))+'</i></span>';}).join('')+'</div>':''));
-  }
+  var shSum=D.trips.length?plural(D.trips.length,'Einkauf','Einkäufe')+(D.spend.n?' · '+fmtEur(D.spend.sum):''):'kein Einkauf';
+  h+='<section class="rtile rfold'+(S.repShopOpen?' open':'')+'"><button type="button" class="rfoldh" data-act="repshop" aria-expanded="'+S.repShopOpen+'"><h3>Einkäufe</h3><span class="rfs">'+esc(shSum)+'</span><svg class="chev'+(S.repShopOpen?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'+(S.repShopOpen?'<div class="rfoldb">'+eb+'</div>':'')+'</section>';
   // Nächste Woche
   var nb='',cur='';
   D.next.forEach(function(r){
@@ -1634,8 +1668,7 @@ function renderReport(){
   });
   h+=rtile('','Nächste Woche · '+esc(dLabel(R.nf))+' bis '+esc(dLabel(R.nt)),nb||'<p class="empty" style="margin:0">Nichts eingetragen.</p>');
   h+='<section class="rtile rfoot"><div class="legend rleg">'+D.names.map(function(n){return '<span><i class="pd '+pcls(n)+'"></i>'+esc(n)+'</span>';}).join('')+'<span><i class="pd pcx"></i>ohne Zuordnung</span></div>'+
-    '<p class="rnote">Bei Wiederholungen speichert SommerHaus nur den letzten Erledigungstag. Der Aufwand (Dauer) wird nicht erfasst.</p>'+
-    '<div class="ract"><button type="button" data-act="repmail">Per Mail senden</button><button type="button" class="sec" data-act="repcopy">Kopieren</button></div></section>';
+    '<p class="rnote">Bei Wiederholungen speichert SommerHaus nur den letzten Erledigungstag. Der Aufwand (Dauer) wird nicht erfasst.</p>'+'</section>';
   box.innerHTML=h;
 }
 function weekStartIso(ds){var d=parse(ds),k=(d.getDay()+6)%7;return addDays(ds,-k);}
@@ -2366,6 +2399,7 @@ document.addEventListener('click',function(ev){
     }
     case 'rcshoot':rcPick(null);break;
     case 'tripsheet':openTrips(el.dataset.t);break;
+    case 'kpi':openKpi(el.dataset.m);break;
     case 'tripscope':TV.scope=el.dataset.s;renderTrips();break;
     case 'tripopen':TV.id=el.dataset.t;TV.delAsk=false;renderTrips();$('tripBody').parentNode.scrollTop=0;break;
     case 'tripback':if(TV.id){TV.id=null;TV.delAsk=false;renderTrips();}else closeSheet();break;
@@ -2404,6 +2438,7 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'shopdonetoggle':S.shopDoneOpen=!S.shopDoneOpen;renderShop();break;
+    case 'repshop':S.repShopOpen=!S.repShopOpen;renderReport();break;
     case 'daytoggle':S.dayOpen=!S.dayOpen;try{localStorage.setItem('sommerhaus-dayopen',S.dayOpen?'1':'0');}catch(e){}render();break;
     case 'dayprev':case 'daynext':goTo(addDays(S.selected,act==='daynext'?1:-1));render();break;
     case 'view':S.view=el.dataset.view;render();break;
@@ -2533,7 +2568,7 @@ render();
   }
   var onErr=function(e){S.loading=false;showBanner('Der Speicher antwortet gerade nicht ('+((e&&e.code)||'Fehler')+'). Lade die Seite neu, wenn es so bleibt.');render();};
   db.collection('tasks').onSnapshot(function(s){
-    S.tasks=s.docs.map(toItem);S.loading=false;render();
+    S.tasks=s.docs.map(toItem);S.loading=false;render();renderTrips();
   },onErr);
   db.collection('shopLists').onSnapshot(function(s){
     S.lists=s.docs.map(toItem);render();
@@ -2542,7 +2577,7 @@ render();
     S.shop=s.docs.map(toItem);render();
   },onErr);
   db.collection('doneLog').onSnapshot(function(s){
-    S.log=s.docs.map(toItem);render();
+    S.log=s.docs.map(toItem);render();renderTrips();
   },onErr);
   db.collection('shopTrips').onSnapshot(function(s){
     S.trips=s.docs.map(toItem);render();renderTrips();
