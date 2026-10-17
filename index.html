@@ -257,6 +257,8 @@ span.check{cursor:default}
 .rpt{flex:1;display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
 .rpt select{flex:none}
 #f-every{flex:none;width:56px;text-align:center;background:var(--fill);border-radius:8px;padding:6px 4px;min-height:34px}
+.pushon{margin-left:auto;color:var(--green);font-weight:600}
+.pushopt input{margin-left:auto;width:22px;height:22px;accent-color:var(--accent)}
 .fnote{font-size:13px;color:var(--fg2);margin:-8px 16px 0}
 .fhead{font-size:13px;font-weight:600;color:var(--fg2);margin:0 0 6px 4px}
 .quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:-4px}
@@ -508,6 +510,16 @@ span.check{cursor:default}
 .rbC-money{margin:0;font-size:14px;line-height:1.45}
 @media (max-width:420px){.rbC-foot{grid-template-columns:1fr}}
 /* Suche */
+.mon-chart{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end;margin-top:4px}
+.mon-col{border:0;background:none;font:inherit;color:var(--fg2);display:grid;justify-items:center;gap:4px;padding:0;cursor:pointer;min-width:0}
+.mon-val{font-size:12px;font-weight:700;color:var(--fg);white-space:nowrap;font-variant-numeric:tabular-nums}
+.mon-bar{height:140px;width:100%;max-width:40px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;border-bottom:1px solid var(--sep)}
+.mon-bar i{display:block;width:100%;border-radius:4px 4px 0 0;background:color-mix(in srgb,var(--accent) 45%,var(--card))}
+.mon-col.on .mon-bar i{background:var(--accent)}
+.mon-col.cur .mon-bar i{background-image:repeating-linear-gradient(45deg,transparent 0 5px,color-mix(in srgb,var(--card) 35%,transparent) 5px 8px)}
+.mon-lab{font-size:12px;font-weight:600}
+.mon-col.on .mon-lab{color:var(--accent)}
+.mon-det{margin-top:14px;padding-top:12px;border-top:1px solid var(--sep)}
 .rcs-in{display:flex;align-items:center;gap:8px;background:var(--fill);border-radius:12px;padding:0 12px;color:var(--fg2)}
 .rcs-in input{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;font-size:16px;color:var(--fg);min-height:44px}
 .rcs-list{margin-top:10px;background:var(--bg)}
@@ -770,6 +782,11 @@ span.check{cursor:default}
           <p class="fhead" style="margin:0 0 0 4px">Wer ist dabei?</p>
           <div class="fgroup"><label class="frow text"><span class="sr">Namen</span><input id="f-names" maxlength="120" placeholder="Bruno, Vanessa"></label></div>
           <p class="fnote" style="margin-top:0">Namen mit Komma trennen. Sie erscheinen bei „Wer“ und als Kürzel hinter Aufgaben und Terminen.</p>
+        </div>
+        <div class="stack">
+          <p class="fhead" style="margin:0 0 0 4px">Erinnerungen aufs Handy</p>
+          <div class="fgroup" id="pushBox"></div>
+          <p class="fnote" style="margin-top:0" id="pushNote"></p>
         </div>
         <div class="stack">
           <p class="fhead" style="margin:0 0 0 4px">Darstellung</p>
@@ -2097,6 +2114,36 @@ function rcSearchRows(){
 function renderRcSearch(){
   return '<section class="rtile rcs"><h3>Kassenzettel suchen</h3><div class="rcs-in"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" id="rcQ" value="'+esc(S.rcQ||'')+'" placeholder="z. B. Lampe Aldi" autocomplete="off" enterkeyhint="search" aria-label="Kassenzettel suchen"></div><div id="rcRes">'+rcSearchRows()+'</div></section>';
 }
+/* Ausgaben über die Monate: ein Balken je Monat, Tipp zeigt die Läden */
+var fmtMonShort=new Intl.DateTimeFormat('de-DE',{month:'short'});
+function monthsData(n){
+  var now=new Date(),out=[];
+  for(var i=n-1;i>=0;i--){
+    var d=new Date(now.getFullYear(),now.getMonth()-i,1),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    var tr=S.trips.filter(function(x){return (x.date||'').slice(0,7)===key&&x.amount>0;});
+    var bs={};tr.forEach(function(x){var nm=x.store||'ohne Angabe';bs[nm]=(bs[nm]||0)+x.amount;});
+    out.push({key:key,d:d,sum:tr.reduce(function(a,x){return a+x.amount;},0),n:tr.length,stores:Object.keys(bs).map(function(k){return {name:k,sum:bs[k]};}).sort(function(a,b){return b.sum-a.sum;}),cur:i===0});
+  }
+  return out;
+}
+function renderMonths(){
+  var M=monthsData(6),withData=M.filter(function(m){return m.sum>0;});
+  var h='<section class="rtile mon"><h3>Ausgaben pro Monat</h3>';
+  if(withData.length<1){return h+'<p class="rnote" style="margin:0">Sobald ihr bei Einkäufen Beträge eintragt oder Kassenzettel fotografiert, seht ihr hier die Entwicklung über die Monate.</p></section>';}
+  var mx=Math.max.apply(null,M.map(function(m){return m.sum;})),sel=S.monSel&&M.some(function(m){return m.key===S.monSel;})?S.monSel:M[M.length-1].key;
+  var selM=M.find(function(m){return m.key===sel;});
+  var avgL=withData.filter(function(m){return !m.cur;}),avg=avgL.length?avgL.reduce(function(a,m){return a+m.sum;},0)/avgL.length:0;
+  h+='<div class="mon-chart" role="img" aria-label="Ausgaben der letzten sechs Monate">'+M.map(function(m){
+    var bh=m.sum?Math.max(4,Math.round(m.sum/mx*120)):0;
+    return '<button type="button" class="mon-col'+(m.key===sel?' on':'')+(m.cur?' cur':'')+'" data-act="monsel" data-m="'+m.key+'" aria-label="'+esc(fmtMonth.format(m.d))+': '+esc(fmtEur(m.sum))+'">'+
+      '<span class="mon-bar"><span class="mon-val">'+(m.key===sel&&m.sum?esc(fmtEur(m.sum).replace(/,\d\d\s€/,' €')):'')+'</span><i style="height:'+bh+'px"></i></span><span class="mon-lab">'+esc(fmtMonShort.format(m.d).replace('.',''))+'</span></button>';
+  }).join('')+'</div>';
+  h+='<div class="mon-det"><div class="zline"><b>'+esc(fmtMonth.format(selM.d))+(selM.cur?' (läuft noch)':'')+'</b><b>'+esc(fmtEur(selM.sum))+'</b></div>'+
+    '<p class="rnote" style="margin:2px 0 8px">'+plural(selM.n,'Einkauf','Einkäufe')+' mit Betrag'+(avg&&!selM.cur?' · Schnitt der Vormonate '+esc(fmtEur(avg)):'')+(avg&&selM.cur?' · bisheriger Monatsschnitt '+esc(fmtEur(avg)):'')+'</p>';
+  if(selM.stores.length){var smx=selM.stores[0].sum||1;h+='<div class="rb-stores">'+selM.stores.slice(0,6).map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/smx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
+  h+='<p class="rnote">Zählt nur Einkäufe mit eingetragenem Betrag. Tipp auf einen Monat zeigt die Läden.</p></div></section>';
+  return h;
+}
 function renderReport(){
   var box=$('report');if(!box)return;
   if(S.loading){box.innerHTML='<section class="rtile"><h3>Wochenbericht</h3><p class="empty">Lädt …</p></section>';return;}
@@ -2131,6 +2178,7 @@ function renderReport(){
   });
   h+=renderRueckblick();
   h+=renderRcSearch();
+  h+=renderMonths();
   h+=rtile('','Nächste Woche · '+esc(dLabel(R.nf))+' bis '+esc(dLabel(R.nt)),nb||'<p class="empty" style="margin:0">Nichts eingetragen.</p>');
   h+='<section class="rtile rfoot"><div class="legend rleg">'+D.names.map(function(n){return '<span><i class="pd '+pcls(n)+'"></i>'+esc(n)+'</span>';}).join('')+'<span><i class="pd pcx"></i>ohne Zuordnung</span></div>'+
     '<p class="rnote">Bei Wiederholungen speichert SommerHaus nur den letzten Erledigungstag. Der Aufwand (Dauer) wird nicht erfasst.</p>'+'</section>';
@@ -2382,13 +2430,73 @@ function openSheet(kind,item,date){
   $('scrim').hidden=false;
   if(S.canWrite&&kind!=='bin'&&!$('nameField').hidden)setTimeout(function(){$('f-title').focus();},30);
 }
+/* ---------- Erinnerungen per Push: Anmeldung auf diesem Handy, Versand übernimmt GitHub jeden Morgen und Abend ---------- */
+var VAPID_PUBLIC='BGwLowHuGJUw0ryYCoWR6bfw2hhreQrkllaUELXBCPMlnHUeFIToxCjstX_gyhABcg2pniwWrKFvfGSkYPqMgYI';
+var PUSH={state:'',busy:false,prefs:{bins:true,morning:true,mine:false}};
+function pushSupported(){return 'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window;}
+function pushStandalone(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
+function b64u(s){var p='='.repeat((4-s.length%4)%4),b=atob((s+p).replace(/-/g,'+').replace(/_/g,'/')),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+function pushId(ep){var h=0;for(var i=0;i<ep.length;i++){h=((h<<5)-h+ep.charCodeAt(i))|0;}return 'p'+(h>>>0).toString(36)+ep.length.toString(36);}
+function pushRefresh(){
+  if(!pushSupported()){PUSH.state='unsupported';renderPushBox();return;}
+  navigator.serviceWorker.getRegistration().then(function(reg){
+    if(!reg){PUSH.state='nosw';renderPushBox();return null;}
+    return reg.pushManager.getSubscription();
+  }).then(function(sub){
+    if(sub===undefined)return;
+    PUSH.sub=sub||null;PUSH.state=sub?'on':(Notification.permission==='denied'?'denied':'off');
+    if(sub&&db)db.collection('pushSubs').doc(pushId(sub.endpoint)).get().then(function(d){var o=d&&d.exists?d.data():null;if(o&&o.prefs){PUSH.prefs=Object.assign(PUSH.prefs,o.prefs);}renderPushBox();},function(){renderPushBox();});
+    else renderPushBox();
+  },function(){PUSH.state='err';renderPushBox();});
+}
+function pushSave(sub){
+  if(!db||!sub)return Promise.resolve();
+  var who=(($('shWho')||{}).textContent||'').trim();
+  return db.collection('pushSubs').doc(pushId(sub.endpoint)).set({sub:JSON.parse(JSON.stringify(sub)),email:who,name:meName()||'',prefs:PUSH.prefs,at:Date.now(),ua:navigator.userAgent.slice(0,120)});
+}
+function pushOn(){
+  if(PUSH.busy)return;PUSH.busy=true;renderPushBox();
+  Notification.requestPermission().then(function(perm){
+    if(perm!=='granted'){PUSH.state=perm==='denied'?'denied':'off';throw new Error('perm');}
+    return navigator.serviceWorker.ready;
+  }).then(function(reg){
+    return reg.pushManager.getSubscription().then(function(s){return s||reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64u(VAPID_PUBLIC)});});
+  }).then(function(sub){PUSH.sub=sub;PUSH.state='on';return pushSave(sub);}).then(function(){toast('Erinnerungen sind auf diesem Handy an.');},function(e){if(String(e&&e.message)!=='perm')toast('Das hat nicht geklappt ('+((e&&e.message)||'Fehler')+').');})
+  .then(function(){PUSH.busy=false;renderPushBox();});
+}
+function pushOff(){
+  var sub=PUSH.sub;if(!sub)return;PUSH.busy=true;renderPushBox();
+  var id=pushId(sub.endpoint);
+  sub.unsubscribe().catch(function(){}).then(function(){return db?db.collection('pushSubs').doc(id).delete():null;}).then(function(){PUSH.sub=null;PUSH.state='off';toast('Erinnerungen sind auf diesem Handy aus.');},fail).then(function(){PUSH.busy=false;renderPushBox();});
+}
+function renderPushBox(){
+  var box=$('pushBox'),note=$('pushNote');if(!box)return;
+  var st=PUSH.state,h='',n='';
+  if(st==='unsupported'||st==='nosw'){
+    h='<div class="frow"><span class="fl">Auf diesem Gerät nicht verfügbar</span></div>';
+    n=/iphone|ipad/i.test(navigator.userAgent)&&!pushStandalone()?'Auf dem iPhone gehen Mitteilungen nur, wenn SommerHaus über „Zum Home-Bildschirm“ installiert ist und du die App von dort öffnest (ab iOS 16.4).':'Dieser Browser unterstützt keine Mitteilungen für Web-Apps.';
+  }else if(st==='denied'){
+    h='<div class="frow"><span class="fl">Mitteilungen sind blockiert</span></div>';
+    n='Du hast Mitteilungen für SommerHaus abgelehnt. Erlauben kannst du sie in den Einstellungen des Handys unter Mitteilungen, SommerHaus.';
+  }else if(st==='on'){
+    var c=function(k,l){return '<label class="frow pushopt"><span class="fl">'+l+'</span><input type="checkbox" data-push="'+k+'"'+(PUSH.prefs[k]?' checked':'')+'></label>';};
+    h='<div class="frow"><span class="fl">Auf diesem Handy</span><span class="pushon">an</span></div>'+c('bins','Mülltonnen am Vorabend, 19 Uhr')+c('morning','Fällige Aufgaben morgens, 7 Uhr')+c('mine','Nur Aufgaben für mich und ohne Zuordnung')+
+      '<button type="button" class="frow act danger" data-act="pushoff"'+(PUSH.busy?' disabled':'')+'>Erinnerungen ausschalten</button>';
+    n='Die Erinnerungen gelten nur für dieses Handy. Vanessa schaltet sie auf ihrem Handy selbst ein.';
+  }else{
+    h='<button type="button" class="frow act" data-act="pushon"'+(PUSH.busy?' disabled':'')+'>'+(PUSH.busy?'Einen Moment …':'Erinnerungen einschalten')+'</button>';
+    n='Abends kommt ein Hinweis, welche Tonne morgen raus muss, morgens eine kurze Liste der fälligen Aufgaben.';
+  }
+  box.innerHTML=h;if(note)note.textContent=n;
+}
 function openNames(){
   $('form').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=true;$('namesForm').hidden=false;
   $('f-names').value=S.members.join(', ');
   $('f-names').disabled=!S.canWrite;
   $('btnNamesSave').hidden=!S.canWrite;
   $('scrim').hidden=false;
-  if(S.canWrite)setTimeout(function(){$('f-names').focus();},30);
+  pushRefresh();
+  if(S.canWrite&&!window.matchMedia('(pointer:coarse)').matches)setTimeout(function(){$('f-names').focus();},30);
 }
 function syncQuick(){
   var v=$('f-date').value,t=todayIso();
@@ -2599,6 +2707,10 @@ $('shopFinish').addEventListener('input',function(ev){
   else if(id==='shopDate'){S.spontDate=ev.target.value;}
 });
 $('report').addEventListener('input',function(ev){if(ev.target.id!=='rcQ')return;S.rcQ=ev.target.value;var r=$('rcRes');if(r)r.innerHTML=rcSearchRows();});
+document.addEventListener('change',function(ev){
+  var k=ev.target&&ev.target.getAttribute&&ev.target.getAttribute('data-push');if(!k)return;
+  PUSH.prefs[k]=ev.target.checked;if(PUSH.sub)pushSave(PUSH.sub).catch(fail);
+});
 $('shopList').addEventListener('input',function(ev){if(ev.target.id==='shopEditIn')S.shopEditVal=ev.target.value;});
 $('shopList').addEventListener('keydown',function(ev){
   if(ev.target.id!=='shopEditIn')return;
@@ -2967,6 +3079,7 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'shopdonetoggle':S.shopDoneOpen=!S.shopDoneOpen;renderShop();break;
+    case 'monsel':S.monSel=el.dataset.m;renderReport();break;
     case 'rbshop':S.rbShopOpen=!S.rbShopOpen;renderReport();break;
     case 'rbvar':S.rbVariant=el.dataset.v;renderReport();break;
     case 'repwho':S.repWhoOpen=!S.repWhoOpen;renderReport();break;
@@ -3015,6 +3128,8 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'theme':setTheme(el.dataset.t,true);break;
+    case 'pushon':pushOn();break;
+    case 'pushoff':pushOff();break;
     case 'close':closeSheet();break;
     case 'kind':setKind(el.dataset.k);break;
     case 'quick':$('f-date').value=addDays(todayIso(),parseInt(el.dataset.add,10));syncQuick();break;

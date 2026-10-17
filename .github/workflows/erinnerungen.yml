@@ -1,0 +1,38 @@
+name: Erinnerungen
+on:
+  schedule:
+    # 7 und 19 Uhr in Berlin, Sommer- und Winterzeit (das Skript prüft die Berliner Uhrzeit)
+    - cron: '0 5,6 * * *'
+    - cron: '0 17,18 * * *'
+  push:
+    branches: [erinnerung-test]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'test, morning oder evening'
+        default: 'test'
+permissions:
+  contents: read
+jobs:
+  senden:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-save --no-audit --no-fund web-push@3.6.7
+      - name: Zugang entschlüsseln
+        env:
+          SH_KEY: ${{ secrets.SH_KEY }}
+        run: |
+          if [ -z "$SH_KEY" ]; then echo "Geheimnis SH_KEY fehlt"; exit 1; fi
+          printf '%s' "$SH_KEY" > /tmp/k && openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -a -in scripts/geheim.enc -pass file:/tmp/k > /tmp/g.json && rm /tmp/k
+      - run: node scripts/erinnerung.mjs
+        env:
+          MODE: ${{ github.event_name == 'push' && 'test' || github.event.inputs.mode || 'auto' }}
+          SECRETS_FILE: /tmp/g.json
+          FIREBASE_API_KEY: AIzaSyD3VwPMgOV75f1NDhJYDTx-K4l3P0bbWbM
+          FIREBASE_PROJECT: sommerhaus-5bb17
+          VAPID_PUBLIC_KEY: BGwLowHuGJUw0ryYCoWR6bfw2hhreQrkllaUELXBCPMlnHUeFIToxCjstX_gyhABcg2pniwWrKFvfGSkYPqMgYI
