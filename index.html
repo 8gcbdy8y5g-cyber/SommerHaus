@@ -2468,6 +2468,29 @@ function histAdd(t,c){
   if(f){f.n=(f.n||1)+1;f.c=c;f.u=Date.now();f.t=t;}else h.push({t:t,c:c,n:1,u:Date.now()});
   h.sort(function(a,b){return (b.u||0)-(a.u||0);});
   try{localStorage.setItem(HK,JSON.stringify(h.slice(0,300)));}catch(e){}
+  vocabAdd(t,c);
+}
+/* Gemeinsamer Wortschatz: gelernte Artikel gelten für alle Handys, nicht nur für dieses. */
+function vocabKey(t){return nrm(String(t||'').trim()).replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,60);}
+function vocabAdd(t,c){
+  if(!db||!S.canWrite)return;
+  var k=vocabKey(t);if(!k)return;
+  var old=(S.vocab||[]).find(function(v){return v.k===k;});
+  var val={t:String(t).trim(),c:c||guessCat(t),n:((old&&old.n)||0)+1,u:Date.now()},up={};up['w.'+k]=val;
+  db.doc('settings/vocab').update(up).catch(function(){var w={};w[k]=val;return db.doc('settings/vocab').set({w:w});}).catch(function(){});
+}
+function vocabParse(d){
+  var out=[];if(!d)return out;
+  var w=d.w&&typeof d.w==='object'?d.w:{};
+  Object.keys(w).forEach(function(k){var v=w[k];if(v&&v.t)out.push({k:k,t:v.t,c:v.c,n:v.n||1,u:v.u||0});});
+  Object.keys(d).forEach(function(k){if(k.indexOf('w.')===0&&d[k]&&d[k].t)out.push({k:k.slice(2),t:d[k].t,c:d[k].c,n:d[k].n||1,u:d[k].u||0});});
+  return out;
+}
+function vocabAll(){
+  var m={};
+  (S.vocab||[]).forEach(function(v){var k=String(v.t).toLowerCase();m[k]={t:v.t,c:v.c,n:v.n,u:v.u};});
+  S.trips.forEach(function(tr){(tr.items||[]).forEach(function(y){if(y.g||y.r)return;var k=String(y.t||'').trim().toLowerCase();if(!k)return;var o=m[k];if(o){o.n++;o.u=Math.max(o.u,tr.at||0);}else m[k]={t:y.t,c:y.c,n:1,u:tr.at||0};});});
+  return m;
 }
 function nrm(x){return String(x||'').toLowerCase().replace(/ä/g,'a').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ß/g,'ss');}
 function suggestFor(q){
@@ -2475,7 +2498,8 @@ function suggestFor(q){
   if(!q)return [];
   var map={},cnt={};
   S.shop.forEach(function(x){var k=String(x.title||'').trim().toLowerCase();if(k)cnt[k]=(cnt[k]||0)+1;});
-  histLoad().forEach(function(x){var k=String(x.t||'').trim().toLowerCase();if(k)map[k]={t:x.t,c:x.c,n:x.n||1,u:x.u||0};});
+  var va=vocabAll();Object.keys(va).forEach(function(k){map[k]=va[k];});
+  histLoad().forEach(function(x){var k=String(x.t||'').trim().toLowerCase();if(!k)return;var m0=map[k];if(m0){m0.n=Math.max(m0.n,x.n||1);m0.u=Math.max(m0.u,x.u||0);}else map[k]={t:x.t,c:x.c,n:x.n||1,u:x.u||0};});
   S.shop.forEach(function(x){
     var k=String(x.title||'').trim().toLowerCase();if(!k)return;
     var m=map[k];
@@ -2508,6 +2532,7 @@ function typoFix(t){
   if(q.length<4)return null;
   var cand=[];
   histLoad().forEach(function(x){cand.push({t:x.t,c:x.c,n:x.n||1,stem:false});});
+  var va2=vocabAll();Object.keys(va2).forEach(function(k){cand.push({t:va2[k].t,c:va2[k].c,n:va2[k].n,stem:false});});
   S.shop.forEach(function(x){if(x.title)cand.push({t:x.title,c:effCat(x),n:1,stem:false});});
   CAT_KW.forEach(function(p){if(p[0].length>=4)cand.push({t:p[0].charAt(0).toUpperCase()+p[0].slice(1),c:p[1],n:0,stem:true});});
   var best=null,lim=q.length>=8?2:1;
@@ -3102,6 +3127,7 @@ render();
       S.loading=false;render();
     },onErr);
   },4000);
+  db.doc('settings/vocab').onSnapshot(function(s){S.vocab=vocabParse(s&&s.data&&s.data());},function(){});
   db.doc('settings/members').onSnapshot(function(s){
     var d=s.data();S.members=d&&Array.isArray(d.names)?d.names.slice():[];render();
   },onErr);
