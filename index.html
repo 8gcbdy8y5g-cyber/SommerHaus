@@ -801,7 +801,7 @@ span.check{cursor:default}
           <p class="fnote" style="margin-top:0" id="pushNote"></p>
         </div>
         <div class="stack">
-          <p class="fhead" style="margin:0 0 0 4px">Budget für Einkäufe</p>
+          <p class="fhead" style="margin:0 0 0 4px">Budget für Lebensmittel</p>
           <div class="fgroup"><label class="frow text"><span class="fl">Pro Monat</span><input id="f-budget" inputmode="decimal" maxlength="9" placeholder="kein Budget" style="text-align:right"><span class="fl" style="margin-left:6px">€</span></label></div>
           <p class="fnote" style="margin-top:0" id="budgetNote">Im Überblick seht ihr dann bei „Ausgaben pro Monat“, wie viel noch übrig ist. Feld leer lassen für kein Budget.</p>
         </div>
@@ -1985,11 +1985,13 @@ function repData(){
   D.wait=waits.length?waits.reduce(function(a,b){return a+b;},0)/waits.length:null;
   var sp={sum:0,n:0,spont:0,spontN:0,listN:trips.filter(function(x){return !x.spont;}).length,missing:0,byStore:[]},bs={};
   trips.forEach(function(x){
-    if(!(x.amount>0)){sp.missing++;return;}
-    sp.sum+=x.amount;sp.n++;
-    if(x.spont){sp.spont+=x.amount;sp.spontN++;}
-    var nm=x.store||'ohne Angabe',o=bs[nm]||(bs[nm]={name:nm,sum:0,n:0});o.sum+=x.amount;o.n++;
+    if(!(x.amount>0)){if((x.list||DEF_LIST.id)===DEF_LIST.id)sp.missing++;return;}
+    var fa=tripFood(x);if(!(fa>0))return;
+    sp.sum+=fa;sp.n++;
+    if(x.spont){sp.spont+=fa;sp.spontN++;}
+    var nm=x.store||'ohne Angabe',o=bs[nm]||(bs[nm]={name:nm,sum:0,n:0});o.sum+=fa;o.n++;
   });
+  sp.other=otherSum(trips);
   sp.avg=sp.n?sp.sum/sp.n:0;
   sp.byStore=Object.keys(bs).map(function(k){return bs[k];}).sort(function(a,b){return b.sum-a.sum;});
   D.spend=sp;
@@ -2061,6 +2063,22 @@ function buildReport(){
 function rtile(cls,h,body){return '<section class="rtile'+(cls?' '+cls:'')+'"><h3>'+h+'</h3>'+body+'</section>';}
 function pdot(name){return '<i class="pd '+pcls(name)+'" title="'+esc(name||'ohne Zuordnung')+'"></i>';}
 function pbadge(name,sm){return name?'<span class="pb '+pcls(name)+(sm?' sm':'')+'" title="'+esc(name)+'">'+esc(name.trim().charAt(0).toUpperCase())+'</span>':'';}
+/* Ausgaben trennen: Supermarkt-Einkäufe vom Wocheneinkauf zählen komplett; andere Listen, Drogeriemärkte und Baumärkte laufen extra. */
+var BAU_STORES=/(^|\s)(bauhaus|hornbach|obi|toom|hagebau|hagebaumarkt|hellweg|globus baumarkt|bauking|raiffeisen|sonderpreis baumarkt|baustoffshop)(\s|$)/;
+var DROG_STORES=/(^|\s)(dm|rossmann|müller|mueller|budni|budnikowsky)(\s|$)/;
+function listName(id){var l=allLists().find(function(x){return x.id===id;});return l?l.name:'Andere Liste';}
+function tripSplit(x){
+  var amt=x.amount>0?+x.amount:0,lid=x.list||DEF_LIST.id;
+  if(!amt)return {food:0,other:[]};
+  if(lid!==DEF_LIST.id)return {food:0,other:[{name:x.listName||listName(lid),sum:amt}]};
+  var st=nrm(String(x.store||'')).replace(/[^a-z0-9äöüß]+/g,' ').trim();
+  if(DROG_STORES.test(st))return {food:0,other:[{name:'Drogerie',sum:amt}]};
+  if(BAU_STORES.test(st))return {food:0,other:[{name:'Baumarkt',sum:amt}]};
+  return {food:amt,other:[]};
+}
+function tripFood(x){return tripSplit(x).food;}
+function otherSum(trips){var o={};trips.forEach(function(x){tripSplit(x).other.forEach(function(e){o[e.name]=(o[e.name]||0)+e.sum;});});return Object.keys(o).map(function(k){return {name:k,sum:o[k]};}).sort(function(a,b){return b.sum-a.sum;});}
+function otherLine(l){return l.length?'Nicht bei Lebensmitteln mitgezählt: '+l.map(function(e){return e.name+' '+fmtEur(e.sum);}).join(', ')+'.':'';}
 /* ---------- Wochenrückblick (drei Gestaltungen zur Auswahl) und Kassenzettel-Suche ---------- */
 var RB_NUM=['keine','eine','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn','elf','zwölf'];
 function rbWord(n,cap){var w=n<RB_NUM.length?RB_NUM[n]:String(n);return cap?w.charAt(0).toUpperCase()+w.slice(1):w;}
@@ -2069,8 +2087,8 @@ function rbData(){
   var stuck=S.tasks.filter(function(t){return isOpen(t)&&t.due&&t.due<=end&&!(t.due===today&&R.to>=today);})
     .sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:byTitle(a,b);})
     .map(function(t){return {title:t.title,due:t.due,who:whoTxt(t.who),days:Math.max(0,Math.round((parse(end)-parse(t.due))/864e5)),bin:t.icon||''};});
-  var pf=addDays(R.from,-7),pt=addDays(R.from,-1),prev=S.trips.filter(function(x){return x.date>=pf&&x.date<=pt&&x.amount>0;}).reduce(function(a,x){return a+x.amount;},0);
-  var days=[];for(var i=0;i<7;i++){var ds=addDays(R.from,i);days.push({ds:ds,done:D.done.filter(function(e){return e.date===ds;}),spend:D.trips.filter(function(x){return x.date===ds&&x.amount>0;}).reduce(function(a,x){return a+x.amount;},0),trips:D.trips.filter(function(x){return x.date===ds;}).length});}
+  var pf=addDays(R.from,-7),pt=addDays(R.from,-1),prev=S.trips.filter(function(x){return x.date>=pf&&x.date<=pt&&x.amount>0;}).reduce(function(a,x){return a+tripFood(x);},0);
+  var days=[];for(var i=0;i<7;i++){var ds=addDays(R.from,i);days.push({ds:ds,done:D.done.filter(function(e){return e.date===ds;}),spend:D.trips.filter(function(x){return x.date===ds&&x.amount>0;}).reduce(function(a,x){return a+tripFood(x);},0),trips:D.trips.filter(function(x){return x.date===ds;}).length});}
   var big=D.trips.filter(function(x){return x.amount>0;}).sort(function(a,b){return b.amount-a.amount;})[0]||null;
   return {D:D,R:R,today:today,stuck:stuck,prev:prev,days:days,big:big,kw:isoWeek(parse(R.from)),total:D.done.length+stuck.length,receipts:D.trips.filter(function(x){return x.receipt;}).length};
 }
@@ -2092,7 +2110,8 @@ function rbMoneyLine(B){
   if(!t)return 'Diese Woche wurde kein Einkauf abgeschlossen.';
   if(!sp.n)return plural(t,'Einkauf','Einkäufe')+', aber ohne eingetragenen Betrag.';
   var dl=rbDelta(sp.sum,B.prev);
-  return 'Für '+plural(t,'Einkauf','Einkäufe')+' gingen '+fmtEur(sp.sum)+' raus'+(dl?', '+dl:'')+'.';
+  if(!sp.n)return 'Keine Lebensmittel-Einkäufe diese Woche.';
+  return 'Für Lebensmittel gingen '+fmtEur(sp.sum)+' raus'+(dl?', '+dl:'')+'.';
 }
 function rbStuckList(B,max){
   if(!B.stuck.length)return '<p class="rb-ok">Nichts hängt. Stark.</p>';
@@ -2119,6 +2138,7 @@ function rbA(B){
     }).join('')+'</ul>';
     if(sp.byStore.length>1&&sp.byStore.length<sp.n)shop+='<div class="rbA-sub"><h4>Nach Laden</h4>'+rbStores(B)+'</div>';
     if(sp.missing)shop+='<p class="rnote">Bei '+plural(sp.missing,'Einkauf','Einkäufen')+' fehlt der Betrag.</p>';
+    if(sp.other&&sp.other.length)shop+='<p class="rnote">'+esc(otherLine(sp.other))+'</p>';
   }
   shop+='</div>';
   return '<section class="rtile rb rbA"><p class="rb-kick">Wochenrückblick · KW '+B.kw+'</p>'+
@@ -2190,9 +2210,10 @@ function monthsData(n){
   var now=new Date(),out=[];
   for(var i=n-1;i>=0;i--){
     var d=new Date(now.getFullYear(),now.getMonth()-i,1),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
-    var tr=S.trips.filter(function(x){return (x.date||'').slice(0,7)===key&&x.amount>0;});
-    var bs={};tr.forEach(function(x){var nm=x.store||'ohne Angabe';bs[nm]=(bs[nm]||0)+x.amount;});
-    out.push({key:key,d:d,sum:tr.reduce(function(a,x){return a+x.amount;},0),n:tr.length,stores:Object.keys(bs).map(function(k){return {name:k,sum:bs[k]};}).sort(function(a,b){return b.sum-a.sum;}),cur:i===0});
+    var all=S.trips.filter(function(x){return (x.date||'').slice(0,7)===key&&x.amount>0;});
+    var tr=all.filter(function(x){return tripFood(x)>0;});
+    var bs={};tr.forEach(function(x){var nm=x.store||'ohne Angabe';bs[nm]=(bs[nm]||0)+tripFood(x);});
+    out.push({key:key,d:d,other:otherSum(all),sum:tr.reduce(function(a,x){return a+tripFood(x);},0),n:tr.length,stores:Object.keys(bs).map(function(k){return {name:k,sum:bs[k]};}).sort(function(a,b){return b.sum-a.sum;}),cur:i===0});
   }
   return out;
 }
@@ -2206,7 +2227,7 @@ function budHtml(m,B){
 }
 function renderMonths(){
   var M=monthsData(6),withData=M.filter(function(m){return m.sum>0;});
-  var h='<section class="rtile mon"><h3>Ausgaben pro Monat</h3>';
+  var h='<section class="rtile mon"><h3>Lebensmittel pro Monat</h3>';
   if(withData.length<1){return h+'<p class="rnote" style="margin:0">Sobald ihr bei Einkäufen Beträge eintragt oder Kassenzettel fotografiert, seht ihr hier die Entwicklung über die Monate.</p></section>';}
   var B=S.budget>0?S.budget:0,mx=Math.max(B,Math.max.apply(null,M.map(function(m){return m.sum;}))),sel=S.monSel&&M.some(function(m){return m.key===S.monSel;})?S.monSel:M[M.length-1].key;
   var selM=M.find(function(m){return m.key===sel;});
@@ -2219,7 +2240,8 @@ function renderMonths(){
   h+='<div class="mon-det"><div class="zline"><b>'+esc(fmtMonth.format(selM.d))+(selM.cur?' (läuft noch)':'')+'</b><b>'+esc(fmtEur(selM.sum))+'</b></div>'+
     budHtml(selM,B)+'<p class="rnote" style="margin:2px 0 8px">'+plural(selM.n,'Einkauf','Einkäufe')+' mit Betrag'+(avg&&!selM.cur?' · Schnitt der Vormonate '+esc(fmtEur(avg)):'')+(avg&&selM.cur?' · bisheriger Monatsschnitt '+esc(fmtEur(avg)):'')+'</p>';
   if(selM.stores.length){var smx=selM.stores[0].sum||1;h+='<div class="rb-stores">'+selM.stores.slice(0,6).map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/smx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
-  h+='<p class="rnote">Zählt nur Einkäufe mit eingetragenem Betrag. Tipp auf einen Monat zeigt die Läden.</p></div></section>';
+  if(selM.other.length)h+='<p class="rnote" style="margin-top:8px">'+esc(otherLine(selM.other))+'</p>';
+  h+='<p class="rnote">Zählt nur Lebensmittel aus dem Wocheneinkauf mit eingetragenem Betrag. Supermarkt-Einkäufe zählen komplett. Drogeriemärkte, Baumärkte und andere Listen laufen extra. Tipp auf einen Monat zeigt die Läden.</p></div></section>';
   return h;
 }
 function renderReport(){
