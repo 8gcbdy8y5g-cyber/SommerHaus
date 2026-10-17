@@ -80,13 +80,15 @@ async function main() {
   console.log(`Modus ${mode}, ${tasks.length} Aufgaben, ${subs.length} Handys`);
   if (!DRY) { webpush = (await import('web-push')).default; }
   if (!DRY) webpush.setVapidDetails('mailto:brunosommerfeld@web.de', process.env.VAPID_PUBLIC_KEY, SEC.vapid || process.env.VAPID_PRIVATE_KEY);
+  let ok = 0, bad = 0;
   for (const s of subs) {
     const msgs = mode === 'test' ? [{ title: 'SommerHaus', body: 'Test: Erinnerungen funktionieren auf diesem Handy.', tag: 'test' }] : buildMessages(mode, now.iso, tasks, s);
     for (const m of msgs) {
       if (DRY) { console.log('[Probe]', s.name || '?', JSON.stringify(m)); continue; }
-      try { await webpush.sendNotification(s.sub, JSON.stringify(m), { TTL: 6 * 3600 }); console.log('gesendet an', s.name || 'unbekannt'); }
-      catch (e) { console.log('Fehler bei', s.name || 'unbekannt', e.statusCode || e.message); }
+      try { await webpush.sendNotification(s.sub, JSON.stringify(m), { TTL: 6 * 3600 }); ok++; console.log('gesendet an', s.name || 'unbekannt'); }
+      catch (e) { bad++; console.log('Fehler bei', s.name || 'unbekannt', e.statusCode || e.message); }
     }
   }
+  if (mode === 'test') { console.log(`ok ${ok}, fehler ${bad}, handys ${subs.length}`); if (!subs.length) process.exit(2); if (bad) process.exit(3); }
 }
 if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop())) main().catch(e => { console.error(e.message); process.exit(1); });
