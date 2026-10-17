@@ -292,6 +292,8 @@ span.check{cursor:default}
 .scheck svg{display:none}
 .scheck.done svg{display:block}
 .stitle{padding:10px 0;overflow-wrap:anywhere}
+.stitle.sbtn{border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:text;min-height:44px;width:100%}
+.stitle.sedit{border:0;outline:0;background:var(--fill);border-radius:8px;font:inherit;font-size:16px;color:var(--fg);padding:8px 10px;margin:4px 0;width:100%;box-sizing:border-box;min-width:0}
 .shopitem.done .stitle{text-decoration:line-through;color:var(--fg2)}
 .rowcat{border:0;background:var(--fill);color:var(--fg2);border-radius:999px;font-size:12px;font-weight:600;padding:5px 10px;max-width:132px;-webkit-appearance:none;appearance:none;text-align:center;cursor:pointer;margin-inline:6px 2px}
 .rowcat:disabled{opacity:.6;cursor:default}
@@ -1001,7 +1003,8 @@ function shopRow(x){
   var dis=S.canWrite?'':' disabled';
   return '<li class="shopitem'+(x.done?' done':'')+'" data-id="'+esc(x.id)+'">'+
     '<button type="button" class="scheck'+(x.done?' done':'')+'" data-act="'+(x.done?'shopundo':'shopdone')+'"'+dis+' aria-label="'+(x.done?'Wieder offen: ':'Erledigt: ')+esc(x.title)+'">'+CHECK_SVG+'</button>'+
-    '<span class="stitle">'+esc(x.title)+'</span>'+
+    (S.shopEdit===x.id?'<input class="stitle sedit" id="shopEditIn" value="'+esc(S.shopEditVal)+'" maxlength="80" enterkeyhint="done" aria-label="Neuer Name für '+esc(x.title)+'">':
+      (S.canWrite&&!x.done?'<button type="button" class="stitle sbtn" data-act="shopedit" aria-label="'+esc(x.title)+' umbenennen">'+esc(x.title)+'</button>':'<span class="stitle">'+esc(x.title)+'</span>'))+
     (OFFERS?ofChip(x):'<select class="rowcat"'+dis+' aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(effCat(x))+'</select>')+
     '<button type="button" class="sdel" data-act="shopdel"'+dis+' aria-label="Löschen: '+esc(x.title)+'">&times;</button></li>';
 }
@@ -1026,8 +1029,10 @@ function renderShop(){
   var done=mine.filter(function(x){return x.done;}).sort(function(a,b){return (b.doneAt||0)-(a.doneAt||0);});
   $('shopCount').textContent=open.length?open.length+' offen':'';
   $('shopBest').innerHTML=ofBestHtml(open);
+  var edF=document.activeElement&&document.activeElement.id==='shopEditIn';
   $('shopList').innerHTML=open.length?open.map(shopRow).join(''):'<li class="empty" style="margin:6px 0 8px">'+(S.loading?'Lädt …':'Die Liste ist leer.')+'</li>';
   $('shopForm').hidden=!S.canWrite;
+  if(S.shopEdit){var ei=$('shopEditIn');if(ei&&(edF||S.shopEditFocus)){S.shopEditFocus=false;ei.focus();try{ei.setSelectionRange(ei.value.length,ei.value.length);}catch(e){}}else if(!ei)S.shopEdit=null;}
   var h='';
   if(done.length){
     h+='<div class="shopdonehead"><button type="button" data-act="shopdonetoggle" aria-expanded="'+S.shopDoneOpen+'"><svg class="chev'+(S.shopDoneOpen?' open':'')+'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>Erledigt ('+done.length+')</button>'+
@@ -1653,6 +1658,16 @@ function renderOffers(){
   box.innerHTML=h;
 }
 function rcPendThumb(){return '<div class="rcthumb"><img src="'+RC.pending.data+'" alt=""><span>Kassenzettel ist dabei</span><button type="button" data-act="rcpview">Ansehen</button><button type="button" data-act="rcpdrop">Entfernen</button></div>';}
+function shopEditSave(){
+  var id=S.shopEdit;if(!id)return;
+  var x=S.shop.find(function(y){return y.id===id;}),t=String(S.shopEditVal||'').trim().replace(/\s+/g,' ');
+  S.shopEdit=null;S.shopEditVal='';
+  if(!x||!t||t===x.title){renderShop();return;}
+  var upd={title:t};
+  if(!x.cat||x.cat===guessCat(x.title))upd.cat=guessCat(t);
+  db.collection('shopping').doc(id).update(upd).then(function(){toast('Umbenannt in „'+t+'“.');},fail);
+  renderShop();
+}
 function rcPendingHtml(){
   if(!S.canWrite)return '';
   if(RC.pending)return rcPendThumb()+rcOcrHtml();
@@ -2332,6 +2347,13 @@ $('shopFinish').addEventListener('input',function(ev){
   else if(id==='shopAmt'){S.finishAmt=ev.target.value;if(S.finishErr){S.finishErr='';var fe=$('shopFinish').querySelector('.ferr');if(fe)fe.remove();}}
   else if(id==='shopDate'){S.spontDate=ev.target.value;}
 });
+$('shopList').addEventListener('input',function(ev){if(ev.target.id==='shopEditIn')S.shopEditVal=ev.target.value;});
+$('shopList').addEventListener('keydown',function(ev){
+  if(ev.target.id!=='shopEditIn')return;
+  if(ev.key==='Enter'){ev.preventDefault();shopEditSave();}
+  else if(ev.key==='Escape'){S.shopEdit=null;renderShop();}
+});
+$('shopList').addEventListener('focusout',function(ev){if(ev.target.id==='shopEditIn')setTimeout(function(){if(S.shopEdit&&document.activeElement&&document.activeElement.id!=='shopEditIn')shopEditSave();},0);});
 $('shopFinish').addEventListener('change',function(ev){
   var i=ev.target.getAttribute&&ev.target.getAttribute('data-ocr');if(i==null)return;
   var p=RC.pending;if(!p||!p.ocr||!p.ocr.items)return;
@@ -2633,6 +2655,12 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'rcshoot':rcPick(null);break;
+    case 'shopedit':{
+      var sli=el.closest('[data-id]');if(!sli||!S.canWrite)break;
+      if(S.shopEdit&&S.shopEdit!==sli.dataset.id)shopEditSave();
+      var sx=S.shop.find(function(x){return x.id===sli.dataset.id;});if(!sx)break;
+      S.shopEdit=sx.id;S.shopEditVal=sx.title;S.shopEditFocus=true;renderShop();break;
+    }
     case 'rcocr':rcOcrStart();break;
     case 'tripsheet':openTrips(el.dataset.t);break;
     case 'kpi':openKpi(el.dataset.m);break;
