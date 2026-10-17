@@ -311,6 +311,8 @@ span.check{cursor:default}
 .sg b{font-weight:700;color:var(--accent)}
 .sg i{font-style:normal;font-size:12px;color:var(--fg2);margin-left:6px}
 .sg:active{opacity:.6}
+.sg.fix{background:var(--accent);color:var(--on-accent)}
+.fixq{flex:none;align-self:center;font-size:15px;font-weight:500;margin-right:2px}
 .shopadd .go{width:36px;height:36px;background:var(--fill);color:var(--accent)}
 .vc-top{display:grid;justify-items:center;gap:10px;padding-block:6px 2px;text-align:center}
 .vc-mic{width:76px;height:76px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow)}
@@ -324,6 +326,7 @@ span.check{cursor:default}
 .vc-row input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);flex:none;margin:0}
 .vc-row .vc-name{flex:1;min-width:0;font-size:16px;overflow-wrap:anywhere}
 .vc-row.off .vc-name{color:var(--fg2);text-decoration:line-through}
+.vc-fix{display:block;border:0;background:none;padding:4px 0 0;font-size:13px;font-weight:500;color:var(--accent);text-align:left;cursor:pointer;text-decoration:none}
 .shopdonehead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px}
 .shopdonehead button{border:0;background:none;color:var(--fg2);font-size:14px;font-weight:600;cursor:pointer;min-height:36px;padding:0 4px;display:inline-flex;align-items:center;gap:6px}
 .shopdonehead button:active{opacity:.6}
@@ -1164,8 +1167,55 @@ function suggestFor(q){
   out.sort(function(a,b){return a.rank-b.rank||(a.open?1:0)-(b.open?1:0)||b.n-a.n||b.u-a.u||a.t.localeCompare(b.t,'de');});
   return out.slice(0,6);
 }
-var SG={shop:[],ss:[]};
+/* Tippfehler: Ist ein neues Wort einem bekannten sehr ähnlich, wird nachgefragt, statt es mitzulernen. */
+function lev(a,b){
+  var m=a.length,n=b.length,d=[],i,j;
+  for(i=0;i<=m;i++){d[i]=[i];}
+  for(j=1;j<=n;j++)d[0][j]=j;
+  for(i=1;i<=m;i++)for(j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a.charAt(i-1)===b.charAt(j-1)?0:1));
+  return d[m][n];
+}
+function typoFix(t){
+  var q=nrm(String(t||'').trim());
+  if(q.length<4)return null;
+  var cand=[];
+  histLoad().forEach(function(x){cand.push({t:x.t,c:x.c,n:x.n||1,stem:false});});
+  S.shop.forEach(function(x){if(x.title)cand.push({t:x.title,c:x.cat,n:1,stem:false});});
+  CAT_KW.forEach(function(p){if(p[0].length>=4)cand.push({t:p[0].charAt(0).toUpperCase()+p[0].slice(1),c:p[1],n:0,stem:true});});
+  var best=null,lim=q.length>=8?2:1;
+  for(var i=0;i<cand.length;i++){
+    var k=nrm(cand[i].t.trim());
+    if(k===q)return null;
+    if(k.length<4)continue;
+    if(k.indexOf(q)===0||q.indexOf(k)===0){
+      var ex=k.length>q.length?k.slice(q.length):q.slice(k.length);
+      if(/^(n|e|s|en|er|es|se|ne)$/.test(ex)||(cand[i].stem&&q.indexOf(k)===0&&ex.length>2))continue;
+    }
+    var d=lev(q,k);
+    if(d<1||d>lim)continue;
+    if(cand[i].stem&&Math.abs(k.length-q.length)>1)continue;
+    if(!best||d<best.d||(d===best.d&&cand[i].n>best.n))best={d:d,t:cand[i].t,c:cand[i].c,n:cand[i].n};
+  }
+  return best?{t:best.t,c:CATS.indexOf(best.c)>=0?best.c:guessCat(best.t)}:null;
+}
+var SG={shop:[],ss:[],ok:''};
+function sugConfirm(box,t,fx,formId){
+  box.innerHTML='<span class="fixq">Meintest du „'+esc(fx.t)+'“?</span>'+
+    '<button type="button" class="sg fix" data-fix="1">„'+esc(fx.t)+'“ nehmen</button>'+
+    '<button type="button" class="sg" data-fix="0">„'+esc(t)+'“ lassen</button>';
+  box.hidden=false;box.dataset.fx=JSON.stringify(fx);box.dataset.t=t;box.dataset.form=formId;
+}
+function sugFixClick(ev,box,input,sel){
+  var b=ev.target.closest('.sg[data-fix]');if(!b)return false;
+  var fx=JSON.parse(box.dataset.fx||'null'),t=box.dataset.t||input.value,form=$(box.dataset.form);
+  if(b.dataset.fix==='1'&&fx){input.value=fx.t;sel.value=fx.c;}
+  else SG.ok=String(t).trim().toLowerCase();
+  box.hidden=true;box.innerHTML='';
+  form.dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}));
+  return true;
+}
 function sugRender(box,input,key){
+  box.dataset.fx='';
   var q=input.value,list=suggestFor(q);SG[key]=list;
   if(!list.length){box.hidden=true;box.innerHTML='';return;}
   var ql=q.trim().length;
@@ -1188,12 +1238,14 @@ $('shop-in').addEventListener('input',function(){sugRender($('shopSugg'),this,'s
 $('shop-in').addEventListener('focus',function(){if(this.value)sugRender($('shopSugg'),this,'shop');});
 $('shopSugg').addEventListener('mousedown',function(ev){ev.preventDefault();});
 $('shopSugg').addEventListener('click',function(ev){
+  if(sugFixClick(ev,$('shopSugg'),$('shop-in'),$('shop-cat')))return;
   var b=ev.target.closest('.sg');if(!b)return;
   sugPick('shop',+b.dataset.i,$('shop-in'),$('shop-cat'),function(){shopManual=true;},$('shopSugg'));
 });
 $('ss-title').addEventListener('input',function(){sugRender($('ssSugg'),this,'ss');});
 $('ssSugg').addEventListener('mousedown',function(ev){ev.preventDefault();});
 $('ssSugg').addEventListener('click',function(ev){
+  if(sugFixClick(ev,$('ssSugg'),$('ss-title'),$('ss-cat')))return;
   var b=ev.target.closest('.sg');if(!b)return;
   sugPick('ss',+b.dataset.i,$('ss-title'),$('ss-cat'),function(){ssManual=true;},$('ssSugg'));
 });
@@ -1202,6 +1254,9 @@ $('shopForm').addEventListener('submit',function(ev){
   var t=$('shop-in').value.trim();
   if(!t||!db||!S.canWrite)return;
   var c=$('shop-cat').value;
+  var fx=SG.ok===t.toLowerCase()?null:typoFix(t);
+  if(fx){sugConfirm($('shopSugg'),t,fx,'shopForm');return;}
+  SG.ok='';
   histAdd(t,c);$('shopSugg').hidden=true;$('shopSugg').innerHTML='';
   $('shop-in').value='';shopManual=false;$('shop-cat').value='Sonstiges';
   db.collection('shopping').add({title:t,cat:c,list:S.shopList,done:false,created:Date.now()}).catch(fail);
@@ -1240,7 +1295,8 @@ function vcRender(){
   
   $('vcAsk').textContent=n?(n===1?'Diesen Artikel':'Diese '+n+' Artikel')+' auf „'+L.name+'“ setzen?':'Nichts ausgewählt.';
   $('vcList').innerHTML=VC.items.map(function(it,i){
-    return '<label class="vc-row'+(it.on?'':' off')+'"><input type="checkbox" data-vc="'+i+'"'+(it.on?' checked':'')+'><span class="vc-name">'+esc(it.t)+'</span><select class="rowcat" data-vcc="'+i+'" aria-label="Kategorie für '+esc(it.t)+'">'+catOptions(it.c)+'</select></label>';
+    var fx=typoFix(it.t);
+    return '<label class="vc-row'+(it.on?'':' off')+'"><input type="checkbox" data-vc="'+i+'"'+(it.on?' checked':'')+'><span class="vc-name">'+esc(it.t)+(fx?'<button type="button" class="vc-fix" data-vcfix="'+i+'">Meintest du „'+esc(fx.t)+'“?</button>':'')+'</span><select class="rowcat" data-vcc="'+i+'" aria-label="Kategorie für '+esc(it.t)+'">'+catOptions(it.c)+'</select></label>';
   }).join('');
 }
 function vcSet(on,msg){
@@ -1277,6 +1333,16 @@ $('shopMic').addEventListener('click',function(){
 });
 $('vcMic').addEventListener('click',function(){if(VC.on)window.__vcStop();else vcStart();});
 $('vcText').addEventListener('input',vcRender);
+$('vcList').addEventListener('click',function(ev){
+  var b=ev.target.closest('.vc-fix');if(!b)return;
+  ev.preventDefault();
+  var it=VC.items[+b.dataset.vcfix],fx=it&&typoFix(it.t);if(!fx)return;
+  var re=new RegExp(it.t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i');
+  $('vcText').value=$('vcText').value.replace(re,fx.t);
+  vcRender();
+  VC.items.forEach(function(x){if(x.t.toLowerCase()===fx.t.toLowerCase())x.c=fx.c;});
+  vcRender();
+});
 $('vcList').addEventListener('change',function(ev){
   var t=ev.target;
   if(t.dataset.vc!=null){VC.items[+t.dataset.vc].on=t.checked;vcRender();}
@@ -1288,7 +1354,7 @@ $('voiceSheet').addEventListener('submit',function(ev){
   window.__vcStop();
   var pick=VC.items.filter(function(i){return i.on;});if(!pick.length)return;
   var li=S.shopList,ln=curList().name,t0=Date.now();
-  pick.forEach(function(it){histAdd(it.t,it.c);});
+  pick.forEach(function(it){if(!typoFix(it.t))histAdd(it.t,it.c);});
   Promise.all(pick.map(function(it,k){return db.collection('shopping').add({title:it.t,cat:it.c,list:li,done:false,created:t0+k});})).then(function(){
     closeSheet();render();toast(pick.length+(pick.length===1?' Artikel steht':' Artikel stehen')+' auf „'+ln+'“.');
   },fail);
@@ -1300,6 +1366,9 @@ $('shopSheet').addEventListener('submit',function(ev){
     var t=$('ss-title').value.trim();
     if(!t){$('ss-title').focus();return;}
     var li=$('ss-list').value||DEF_LIST.id,ln=(allLists().find(function(l){return l.id===li;})||DEF_LIST).name;
+    var fx=SG.ok===t.toLowerCase()?null:typoFix(t);
+    if(fx){sugConfirm($('ssSugg'),t,fx,'shopSheet');return;}
+    SG.ok='';
     histAdd(t,$('ss-cat').value);
     db.collection('shopping').add({title:t,cat:$('ss-cat').value,list:li,done:false,created:Date.now()}).then(function(){
       S.shopList=li;try{localStorage.setItem('sommerhaus-shoplist',li);}catch(e){}
