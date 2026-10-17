@@ -399,7 +399,7 @@ span.check{cursor:default}
 .pb.sm{width:24px;height:24px;font-size:12px}
 .pb.pcx{background:var(--fill);color:var(--fg2)}
 .pd{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pc);flex:none}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
+.rchips{display:flex;flex-wrap:wrap;gap:6px}
 .rchip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 11px;font-size:13px;line-height:1.2;background:color-mix(in srgb,var(--pc,var(--fg2)) 16%,transparent);color:var(--fg);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pc,var(--fg2)) 40%,transparent)}
 .rchip i{font-style:normal;font-size:11.5px;color:var(--fg2)}
 .rchip .bd{width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 1px var(--sep)}
@@ -1577,7 +1577,7 @@ function renderReport(){
     if(nUn)segs.push({n:'',l:D.done.filter(function(e){return !e.by;})});
     body+='<div class="sbar" role="img" aria-label="Verteilung der erledigten Aufgaben">'+segs.map(function(g){return '<span class="'+pcls(g.n)+'" style="flex:'+g.l.length+'"></span>';}).join('')+'</div>';
     body+=segs.map(function(g){
-      return '<div class="prow"><div class="phead">'+(g.n?pbadge(g.n):'<span class="pb pcx">?</span>')+'<b>'+esc(g.n||'Ohne Angabe')+'</b><span class="pn">'+g.l.length+' von '+D.done.length+'</span></div><div class="chips">'+
+      return '<div class="prow"><div class="phead">'+(g.n?pbadge(g.n):'<span class="pb pcx">?</span>')+'<b>'+esc(g.n||'Ohne Angabe')+'</b><span class="pn">'+g.l.length+' von '+D.done.length+'</span></div><div class="rchips">'+
         g.l.map(function(e){return '<span class="rchip '+pcls(g.n)+'">'+esc(e.title)+(e.bin?' ↗':'')+'<i>'+esc(dShort(e.date))+'</i></span>';}).join('')+'</div></div>';
     }).join('');
     if(nUn)body+='<p class="rnote">„Ohne Angabe“: wer abgehakt hat, speichert SommerHaus erst seit diesem Update. Ab jetzt steht es dabei.</p>';
@@ -1604,20 +1604,20 @@ function renderReport(){
     if(D.spend.n){
       eb+='<div class="zline spendhead"><b>Ausgaben</b><b>'+esc(fmtEur(D.spend.sum))+'</b></div>'+
         '<p class="rnote">Im Schnitt '+esc(fmtEur(D.spend.avg))+' pro Einkauf'+(D.spend.spontN?', davon spontan '+esc(fmtEur(D.spend.spont)):'')+'.'+(D.spend.missing?' Bei '+plural(D.spend.missing,'Einkauf','Einkäufen')+' fehlt der Betrag.':'')+'</p>'+
-        '<div class="chips" style="margin-top:6px">'+D.spend.byStore.map(function(o){return '<span class="rchip">'+esc(o.name)+'<i>'+esc(fmtEur(o.sum))+'</i></span>';}).join('')+'</div>';
+        '<div class="rchips" style="margin-top:6px">'+D.spend.byStore.map(function(o){return '<span class="rchip">'+esc(o.name)+'<i>'+esc(fmtEur(o.sum))+'</i></span>';}).join('')+'</div>';
     }
-    if(D.multi.length)eb+='<div class="chips" style="margin-top:10px">'+D.multi.map(function(k){return '<span class="rchip">'+esc(k.t)+'<i>'+k.n+'×</i></span>';}).join('')+'</div><p class="rnote">Mehrfach gekauft</p>';
+    if(D.multi.length)eb+='<div class="rchips" style="margin-top:10px">'+D.multi.map(function(k){return '<span class="rchip">'+esc(k.t)+'<i>'+k.n+'×</i></span>';}).join('')+'</div><p class="rnote">Mehrfach gekauft</p>';
     if(D.wait!=null)eb+='<p class="rnote">Ein Artikel stand im Schnitt '+D.wait.toFixed(1).replace('.',',')+' Tage auf der Liste, bis er abgehakt wurde.</p>';
   }else eb='<p class="empty" style="margin:0">Kein Einkauf abgeschlossen.</p>';
-  if(D.rhy.length)eb+='<p class="rnote" style="margin-top:12px">Bald fällig laut Rhythmus</p><div class="chips">'+D.rhy.map(function(x){return '<span class="rchip">'+esc(x.t)+'<i>'+rhEvery(x.every)+'</i></span>';}).join('')+'</div>';
+  if(D.rhy.length)eb+='<p class="rnote" style="margin-top:12px">Bald fällig laut Rhythmus</p><div class="rchips">'+D.rhy.map(function(x){return '<span class="rchip">'+esc(x.t)+'<i>'+rhEvery(x.every)+'</i></span>';}).join('')+'</div>';
   if(D.tripsAll)eb+='<p class="rnote">Insgesamt bisher '+plural(D.tripsAll,'Einkauf','Einkäufe')+', der letzte am '+esc(dLabel(D.lastTrip)).replace(/\.$/,'')+'.</p>';
   h+=rtile('','Einkäufe',eb);
   // Mülltonnen
   var bins=D.done.filter(function(e){return e.bin;}),nbins=D.next.filter(function(r){return r.bin;});
   if(bins.length||nbins.length){
     var bc={yellow:'var(--yellow)',black:'var(--fg)',blue:'var(--blue)'};
-    h+=rtile('','Mülltonnen',(bins.length?'<p class="rnote" style="margin:0 0 6px">Rausgestellt</p><div class="chips">'+bins.map(function(e){return '<span class="rchip"><i class="bd" style="background:'+(bc[e.bin]||'var(--fg2)')+'"></i>'+esc(e.title)+'<i>'+esc(dShort(e.date))+'</i></span>';}).join('')+'</div>':'')+
-      (nbins.length?'<p class="rnote" style="margin:10px 0 6px">Nächste Woche</p><div class="chips">'+nbins.map(function(r){return '<span class="rchip"><i class="bd" style="background:'+(bc[r.bin]||'var(--fg2)')+'"></i>'+esc(r.title)+'<i>'+esc(dShort(r.date))+'</i></span>';}).join('')+'</div>':''));
+    h+=rtile('','Mülltonnen',(bins.length?'<p class="rnote" style="margin:0 0 6px">Rausgestellt</p><div class="rchips">'+bins.map(function(e){return '<span class="rchip"><i class="bd" style="background:'+(bc[e.bin]||'var(--fg2)')+'"></i>'+esc(e.title)+'<i>'+esc(dShort(e.date))+'</i></span>';}).join('')+'</div>':'')+
+      (nbins.length?'<p class="rnote" style="margin:10px 0 6px">Nächste Woche</p><div class="rchips">'+nbins.map(function(r){return '<span class="rchip"><i class="bd" style="background:'+(bc[r.bin]||'var(--fg2)')+'"></i>'+esc(r.title)+'<i>'+esc(dShort(r.date))+'</i></span>';}).join('')+'</div>':''));
   }
   // Nächste Woche
   var nb='',cur='';
