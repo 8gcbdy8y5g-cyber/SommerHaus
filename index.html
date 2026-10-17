@@ -480,6 +480,18 @@ span.check{cursor:default}
 .finish .fq small{color:var(--fg2);font-size:13px}
 .spendhead{margin-top:12px}
 .finish .rcbtn{display:flex;align-items:center;justify-content:center;gap:8px}
+.ocrmsg{margin:0;font-size:14px;color:var(--fg2)}
+.linkbtn{border:0;background:none;color:var(--accent);font:inherit;font-weight:600;padding:0;cursor:pointer}
+.ocrbox{background:var(--fill);border-radius:12px;padding:10px 12px}
+.ocrhead{margin:0 0 6px;font-size:14px}
+.ocrlist{list-style:none;margin:0;padding:0;max-height:260px;overflow:auto}
+.ocrlist label{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14px;cursor:pointer}
+.ocrlist li+li{border-top:1px solid var(--sep)}
+.ocrlist input{width:20px;height:20px;accent-color:var(--accent);flex:none}
+.ocrlist .on{flex:1;min-width:0;display:grid}
+.ocrlist .on i{font-style:normal;font-size:12px;color:var(--green)}
+.ocrlist .op{flex:none;font-variant-numeric:tabular-nums;color:var(--fg2)}
+.finish .fq small{display:block;margin-top:2px}
 .rcthumb{display:flex;align-items:center;gap:10px;background:var(--fill);border-radius:12px;padding:8px 10px}
 .rcthumb img{width:44px;height:58px;object-fit:cover;object-position:top;border-radius:6px;background:#fff;flex:none}
 .rcthumb span{flex:1;font-size:14px;font-weight:600}
@@ -1310,7 +1322,7 @@ function rcClick(ev){
       try{res=rcProcess();}catch(e){$('rcvBar').innerHTML='<p class="rcv-msg">Das hat nicht geklappt. Bitte neu aufnehmen.</p><button type="button" class="rcb" data-rc="cancel">Schließen</button>';return;}
       var tgt=RC.target;RC.target=null;rcShow(false);RC.src=null;
       if(tgt)rcSaveFor(tgt,res);
-      else{RC.pending=res;renderShop();}
+      else{RC.pending=res;renderShop();rcOcrStart();}
     },40);
     return;
   }
@@ -1333,10 +1345,95 @@ function rcOnFile(f){
     rcCropRender();
   },function(){$('rcvStage').innerHTML='<p class="rcv-msg">Das Foto konnte nicht geöffnet werden.</p>';$('rcvBar').innerHTML='<button type="button" class="rcb" data-rc="cancel">Schließen</button>';});
 }
+/* ---------- Kassenzettel lesen: Texterkennung auf dem Handy (Tesseract), Produkte und Summe herausziehen ---------- */
+var OCR={lib:null,worker:null};
+function ocrLib(){
+  if(window.Tesseract)return Promise.resolve(window.Tesseract);
+  if(OCR.lib)return OCR.lib;
+  OCR.lib=new Promise(function(res,rej){
+    var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+    s.onload=function(){window.Tesseract?res(window.Tesseract):rej(new Error('lib'));};
+    s.onerror=function(){OCR.lib=null;rej(new Error('lib'));};
+    document.head.appendChild(s);
+  });
+  return OCR.lib;
+}
+function ocrRun(dataUrl,onStep){
+  return ocrLib().then(function(T){
+    if(OCR.worker)return OCR.worker;
+    onStep&&onStep('Texterkennung wird geladen (nur beim ersten Mal) …');
+    OCR.worker=T.createWorker('deu',1,{logger:function(m){if(m&&m.status==='recognizing text'&&onStep)onStep('Kassenzettel wird gelesen … '+Math.round((m.progress||0)*100)+' %');}}).then(function(w){
+      return w.setParameters({tessedit_pageseg_mode:'6',preserve_interword_spaces:'1'}).then(function(){return w;});
+    },function(e){OCR.worker=null;throw e;});
+    return OCR.worker;
+  }).then(function(w){onStep&&onStep('Kassenzettel wird gelesen …');return w.recognize(dataUrl);}).then(function(r){return (r&&r.data&&r.data.text)||'';});
+}
+var RCP_STOP=/^(summe|zwischensumme|zu zahlen|zuzahlen|gesamt|total|bar|ruckgeld|gegeben|ec|ec-karte|karte|kartenzahlung|girocard|visa|mastercard|maestro|mwst|ust|netto|brutto|steuer|betrag|eur|euro|datum|uhrzeit|kasse|bon|beleg|filiale|markt|tel|telefon|www|ust-id|steuer-nr|st\.?nr|tse|trans|terminal|vielen|danke|ihr einkauf|kundenbeleg|payback|deutschlandcard|coupon|rabatt|pfand|leergut|posten|anzahl)\b/;
+function rcpName(s){
+  s=s.replace(/^\d{4,}\s+/,'').replace(/\s{2,}/g,' ').replace(/[|_]+/g,' ').trim();
+  return s.split(' ').map(function(w){
+    if(/\d/.test(w)||w.length<=1)return w.toLowerCase().replace(/(\d)l\b/,'$1L');
+    return w===w.toUpperCase()?w.charAt(0)+w.slice(1).toLowerCase():w;
+  }).join(' ').replace(/\s+/g,' ').trim();
+}
+function parseReceipt(text){
+  var lines=String(text||'').split(/\r?\n/).map(function(l){return l.replace(/\s+/g,' ').trim();}).filter(Boolean);
+  var items=[],total=null,priceRe=/(-?\d{1,4}[.,]\d{2})(?:\s*(?:€|eur))?(?:\s+[a-z*]{1,2}\d?)?\s*$/i;
+  for(var i=0;i<lines.length;i++){
+    var l=lines[i],n=nrm(l),m=l.match(priceRe);
+    if(/^(summe|zu zahlen|zuzahlen|gesamt|total|gesamtbetrag)/.test(n)&&m){if(total==null)total=parseFloat(m[1].replace(',','.'));if(total!=null)break;continue;}
+    if(!m)continue;
+    if(RCP_STOP.test(n))continue;
+    if(/\d{1,2}[.:]\d{2}[.:]\d{2,4}/.test(l)&&!/[a-z]{3}/i.test(l.replace(/\d/g,'')))continue;
+    if(/^\s*\d+([.,]\d+)?\s*(x|×|\*)\s*\d/i.test(l))continue;
+    if(/\bkg\b.*(x|×)|eur\s*\/\s*kg|€\s*\/\s*kg/i.test(l))continue;
+    var price=parseFloat(m[1].replace(',','.'));if(!(price>0))continue;
+    var name=rcpName(l.slice(0,m.index));
+    if((name.match(/[a-zäöüß]/gi)||[]).length<3)continue;
+    items.push({t:name,p:price});
+  }
+  return {items:items,total:total};
+}
+function rcpMatch(name,list){
+  var rn=' '+nrm(name).replace(/[^a-z0-9 ]+/g,' ')+' ';
+  var best=null;
+  list.forEach(function(x){
+    var w=nrm(String(x.title||'')).replace(/[^a-z0-9 ]+/g,' ').trim().split(/\s+/).pop()||'';
+    var st=w.replace(/(en|n|e|s)$/,'');
+    if(st.length<3)return;
+    if(rn.indexOf(' '+st)>=0||rn.indexOf(st+' ')>=0||(st.length>=5&&rn.indexOf(st)>=0)){if(!best)best=x;}
+  });
+  return best;
+}
+function rcOcrStart(){
+  var p=RC.pending;if(!p||p.ocr&&p.ocr.state==='busy')return;
+  p.ocr={state:'busy',msg:'Kassenzettel wird gelesen …'};renderShop();
+  ocrRun(p.data,function(m){if(RC.pending===p&&p.ocr){p.ocr.msg=m;var e=$('rcOcrMsg');if(e)e.textContent=m;}}).then(function(text){
+    if(RC.pending!==p)return;
+    var r=parseReceipt(text),open=S.shop.filter(function(x){return !x.done&&listOf(x)===curList().id;}),used={};
+    r.items.forEach(function(it){var mt=rcpMatch(it.t,open.filter(function(x){return !used[x.id];}));it.on=true;if(mt){it.m=mt.id;it.mt=mt.title;used[mt.id]=1;}});
+    p.text=text;p.ocr={state:'done',items:r.items,total:r.total};
+    if(r.total&&!String(S.finishAmt||'').trim())S.finishAmt=String(r.total.toFixed(2)).replace('.',',');
+    renderShop();
+  },function(){if(RC.pending!==p)return;p.ocr={state:'err'};renderShop();});
+}
+function rcOcrHtml(){
+  var p=RC.pending;if(!p||!p.ocr)return '';
+  var o=p.ocr;
+  if(o.state==='busy')return '<p class="ocrmsg" id="rcOcrMsg">'+esc(o.msg||'Kassenzettel wird gelesen …')+'</p>';
+  if(o.state==='err')return '<p class="ocrmsg">Den Kassenzettel konnte ich nicht lesen. Prüfe die Internetverbindung oder trag die Artikel von Hand ein. <button type="button" class="linkbtn" data-act="rcocr">Nochmal versuchen</button></p>';
+  if(!o.items.length)return '<p class="ocrmsg">Auf dem Kassenzettel habe ich keine Artikel erkannt.'+(o.total?' Die Summe ('+esc(fmtEur(o.total))+') habe ich übernommen.':'')+'</p>';
+  var on=o.items.filter(function(x){return x.on;}).length,mt=o.items.filter(function(x){return x.on&&x.m;}).length;
+  return '<div class="ocrbox"><p class="ocrhead"><b>'+plural(o.items.length,'Artikel','Artikel')+' erkannt</b>'+(o.total?' · Summe '+esc(fmtEur(o.total)):'')+'</p>'+
+    '<ul class="ocrlist">'+o.items.map(function(x,i){
+      return '<li><label><input type="checkbox" data-ocr="'+i+'"'+(x.on?' checked':'')+'><span class="on">'+esc(x.t)+(x.m?'<i>auf der Liste: '+esc(x.mt)+'</i>':'')+'</span><span class="op">'+esc(fmtEur(x.p))+'</span></label></li>';
+    }).join('')+'</ul><p class="rnote">'+on+' werden als gekauft gespeichert'+(mt?', '+mt+' davon hake ich auf der Liste ab':'')+'. Falsch erkannte Zeilen einfach abwählen.</p></div>';
+}
+function rcOcrItems(p){return p&&p.ocr&&p.ocr.state==='done'?p.ocr.items.filter(function(x){return x.on;}):[];}
 function rcSaveTrip(trip,pend){
   if(!pend)return db.collection('shopTrips').add(trip);
   var rid='';
-  return db.collection('receipts').add({img:pend.data,w:pend.w,h:pend.h,at:Date.now(),date:trip.date,store:trip.store||''}).then(function(ref){
+  return db.collection('receipts').add({img:pend.data,w:pend.w,h:pend.h,at:Date.now(),date:trip.date,store:trip.store||'',text:pend.text||''}).then(function(ref){
     rid=ref.id;trip.receipt=rid;return db.collection('shopTrips').add(trip);
   }).then(function(tref){if(tref&&tref.id)db.collection('receipts').doc(rid).update({trip:tref.id}).catch(function(){});return tref;});
 }
@@ -1555,9 +1652,11 @@ function renderOffers(){
   h+='<section class="rtile rfoot"><p class="rnote" style="margin:0">'+esc(OFFERS.note||'')+'</p></section>';
   box.innerHTML=h;
 }
+function rcPendThumb(){return '<div class="rcthumb"><img src="'+RC.pending.data+'" alt=""><span>Kassenzettel ist dabei</span><button type="button" data-act="rcpview">Ansehen</button><button type="button" data-act="rcpdrop">Entfernen</button></div>';}
 function rcPendingHtml(){
   if(!S.canWrite)return '';
-  if(RC.pending)return '<div class="rcthumb"><img src="'+RC.pending.data+'" alt=""><span>Kassenzettel ist dabei</span><button type="button" data-act="rcpview">Ansehen</button><button type="button" data-act="rcpdrop">Entfernen</button></div>';
+  if(RC.pending)return rcPendThumb()+rcOcrHtml();
+  if(false)return '<div class="rcthumb"><img src="'+RC.pending.data+'" alt=""><span>Kassenzettel ist dabei</span><button type="button" data-act="rcpview">Ansehen</button><button type="button" data-act="rcpdrop">Entfernen</button></div>';
   return '<button type="button" class="fbtn sec rcbtn" data-act="rcshoot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Kassenzettel fotografieren</button>';
 }
 var fmtEurN=new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'});
@@ -1588,17 +1687,17 @@ function renderFinish(L,open,done){
   renderRhythm(L);
   var box=$('shopFinish');
   var trips=S.trips.filter(function(x){return (x.list||DEF_LIST.id)===L.id;}).sort(function(a,b){return (b.at||0)-(a.at||0);});
-  if(!done.length)S.finishAsk=false;
+  if(!done.length&&!open.length)S.finishAsk=false;
   var h='';
-  if(S.canWrite&&done.length){
+  if(S.canWrite&&(done.length||open.length)){
     if(S.finishAsk){
-      h+='<p class="fq"><b>Einkauf abschließen?</b> '+done.length+(done.length===1?' erledigter Artikel wird abgelegt':' erledigte Artikel werden abgelegt')+
-        (open.length?', '+open.length+(open.length===1?' offener bleibt':' offene bleiben')+' für den nächsten Einkauf auf der Liste.':'. Die Liste ist danach leer.')+'</p>'+
+      h+=(!done.length?'<p class="fq"><b>Einkauf abschließen</b><br><small>Fotografiere den Kassenzettel. Ich lese die Artikel aus und hake ab, was auf der Liste steht.</small></p>':'<p class="fq"><b>Einkauf abschließen?</b> '+done.length+(done.length===1?' erledigter Artikel wird abgelegt':' erledigte Artikel werden abgelegt')+
+        (open.length?', '+open.length+(open.length===1?' offener bleibt':' offene bleiben')+' für den nächsten Einkauf auf der Liste.':'. Die Liste ist danach leer.')+'</p>')+
         finFields(false)+
         '<div class="frow"><button type="button" class="fbtn sec" data-act="shopfinishno">Abbrechen</button><button type="button" class="fbtn" data-act="shopfinishgo">Ja, abschließen</button></div>';
     }else{
       h+='<button type="button" class="fbtn" data-act="shopfinish">Einkauf abgeschlossen</button>'+
-        '<span class="fmeta">'+done.length+' erledigt'+(open.length?' · '+open.length+' wandern in den nächsten Einkauf':'')+'</span>';
+        '<span class="fmeta">'+(done.length?done.length+' erledigt'+(open.length?' · '+open.length+' wandern in den nächsten Einkauf':''):'Mit Foto vom Kassenzettel hake ich die Artikel automatisch ab')+'</span>';
     }
   }
   if(S.canWrite){
@@ -2233,6 +2332,11 @@ $('shopFinish').addEventListener('input',function(ev){
   else if(id==='shopAmt'){S.finishAmt=ev.target.value;if(S.finishErr){S.finishErr='';var fe=$('shopFinish').querySelector('.ferr');if(fe)fe.remove();}}
   else if(id==='shopDate'){S.spontDate=ev.target.value;}
 });
+$('shopFinish').addEventListener('change',function(ev){
+  var i=ev.target.getAttribute&&ev.target.getAttribute('data-ocr');if(i==null)return;
+  var p=RC.pending;if(!p||!p.ocr||!p.ocr.items)return;
+  p.ocr.items[+i].on=ev.target.checked;renderShop();
+});
 $('shopFinish').addEventListener('keydown',function(ev){
   if(ev.key!=='Enter')return;
   if(ev.target.id==='shopStore'){ev.preventDefault();var a=$('shopAmt');if(a)a.focus();return;}
@@ -2512,12 +2616,13 @@ document.addEventListener('click',function(ev){
       if((sa==null&&!RC.pending)||sa!==sa){S.finishErr=sa==null?'Bitte den Betrag eintragen oder den Kassenzettel fotografieren.':'Den Betrag habe ich nicht verstanden. Bitte so: 12,40.';renderShop();break;}
       var sd=S.spontDate||todayIso();if(sd>todayIso())sd=todayIso();
       var sl=curList(),sst=storeCanon(S.finishStore);
-      var strip={list:sl.id,listName:sl.name,at:sd===todayIso()?Date.now():parse(sd).getTime()+43200000,date:sd,n:0,items:[],carriedN:0,carried:[],spont:true};
+      var socr=rcOcrItems(RC.pending),sdel=[];
+      var strip={list:sl.id,listName:sl.name,at:sd===todayIso()?Date.now():parse(sd).getTime()+43200000,date:sd,n:socr.length,items:socr.map(function(o){if(o.m)sdel.push(o.m);return {t:o.mt||o.t,c:guessCat(o.mt||o.t),p:o.p,r:1};}),carriedN:0,carried:[],spont:true};
       if(sa)strip.amount=sa;
       if(sst)strip.store=sst;
       var spend=RC.pending;
       resetFin();
-      rcSaveTrip(strip,spend).then(function(){toast('Spontaner Einkauf'+(sst?' bei '+sst:'')+(sa?': '+fmtEur(sa):'')+(spend?', mit Kassenzettel':'')+'.');},fail);
+      rcSaveTrip(strip,spend).then(function(){return Promise.all(sdel.map(function(id){return db.collection('shopping').doc(id).delete();}));}).then(function(){toast('Spontaner Einkauf'+(sst?' bei '+sst:'')+(sa?': '+fmtEur(sa):'')+(spend?', mit Kassenzettel':'')+'.');},fail);
       renderShop();
       break;
     }
@@ -2528,6 +2633,7 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'rcshoot':rcPick(null);break;
+    case 'rcocr':rcOcrStart();break;
     case 'tripsheet':openTrips(el.dataset.t);break;
     case 'kpi':openKpi(el.dataset.m);break;
     case 'ofgo':S.tab='offers';try{localStorage.setItem('sommerhaus-tab',S.tab);}catch(e){}render();window.scrollTo(0,0);break;
@@ -2558,12 +2664,14 @@ document.addEventListener('click',function(ev){
       if(!db||!S.canWrite)break;
       var fl=curList();
       var fmine=S.shop.filter(function(x){return listOf(x)===fl.id;});
-      var fdone=fmine.filter(function(x){return x.done;}),fopen=fmine.filter(function(x){return !x.done;});
-      if(!fdone.length){S.finishAsk=false;renderShop();break;}
+      var focr=rcOcrItems(RC.pending),fmatch={};focr.forEach(function(o){if(o.m)fmatch[o.m]=1;});
+      var fdone=fmine.filter(function(x){return x.done||fmatch[x.id];}),fopen=fmine.filter(function(x){return !x.done&&!fmatch[x.id];});
+      if(!fdone.length&&!focr.length){S.finishErr=RC.pending&&RC.pending.ocr&&RC.pending.ocr.state==='busy'?'Einen Moment, der Kassenzettel wird noch gelesen.':'Hake gekaufte Artikel ab oder fotografiere den Kassenzettel.';renderShop();break;}
       var trip={list:fl.id,listName:fl.name,at:Date.now(),date:todayIso(),n:fdone.length,
-        items:fdone.map(function(x){return {t:x.title,c:effCat(x)||'',cr:x.created||0,d:x.doneAt||0};}),
+        items:fdone.map(function(x){var o=focr.find(function(y){return y.m===x.id;});var it={t:x.title,c:effCat(x)||'',cr:x.created||0,d:x.doneAt||Date.now()};if(o)it.p=o.p;return it;}).concat(focr.filter(function(o){return !o.m;}).map(function(o){return {t:o.t,c:guessCat(o.t),p:o.p,r:1};})),
         carriedN:fopen.length,carried:fopen.map(function(x){return x.title;})};
       var fstore=storeCanon(S.finishStore);if(fstore)trip.store=fstore;
+      trip.n=trip.items.length;
       var famt=parseAmt(S.finishAmt);
       if(famt!==null&&famt!==famt){S.finishErr='Den Betrag habe ich nicht verstanden. Bitte so: 54,30, oder das Feld leer lassen.';renderShop();break;}
       if(famt)trip.amount=famt;
