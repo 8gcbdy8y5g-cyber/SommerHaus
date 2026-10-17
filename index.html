@@ -360,6 +360,35 @@ span.check{cursor:default}
 .kpi b{font-size:24px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
 .kpi span{font-size:11.5px;color:var(--fg2);line-height:1.2}
 .kpi.bad b{color:var(--red)}
+.kpi.kbtn{border:0;font:inherit;color:inherit;cursor:pointer;box-shadow:inset 0 0 0 1.5px var(--accent-soft)}
+.kpi.kbtn span{color:var(--accent);font-weight:600}
+.kpi.kbtn:active{opacity:.6}
+.trow.tlink{cursor:pointer}
+.trow.tlink:active{opacity:.6}
+#tripSheet .tbody{overflow:auto;min-height:0}
+.tlist{list-style:none;margin:0;padding:0;background:var(--card);border-radius:12px;overflow:hidden}
+.tlist li+li{border-top:1px solid var(--sep)}
+.tlist button{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;color:var(--fg);font:inherit;text-align:left;padding:12px 14px;cursor:pointer;min-height:56px}
+.tlist button:active{background:var(--fill)}
+.tlist .tl-main{flex:1;min-width:0;display:grid;gap:2px}
+.tlist .tl-main b{font-size:15px;font-weight:600}
+.tlist .tl-main span{font-size:13px;color:var(--fg2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tlist .tl-amt{font-weight:600;font-variant-numeric:tabular-nums}
+.tlist .tl-rc{color:var(--fg2);flex:none}
+.tlist .chev{color:var(--fg2);flex:none}
+.tsum{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 4px;font-size:14px;color:var(--fg2)}
+.tsum b{color:var(--fg);font-size:17px}
+.tdet{background:var(--card);border-radius:12px;padding:4px 0}
+.tdet .frow{min-height:44px}
+.tdet .fv{flex:1;text-align:right;color:var(--fg2);min-width:0;overflow-wrap:anywhere}
+.titems{margin:0;padding:10px 16px 12px;font-size:14px;line-height:1.5;color:var(--fg)}
+.trc{display:grid;gap:8px}
+.trc img{width:100%;border-radius:10px;background:#fff;box-shadow:0 0 0 1px var(--sep);cursor:zoom-in}
+.trc .rcload{padding:24px;text-align:center;color:var(--fg2);background:var(--card);border-radius:12px;font-size:14px}
+.tact{display:grid;gap:8px}
+.tact button{min-height:48px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;border:0;background:var(--card);color:var(--accent)}
+.tact button.del{color:var(--red)}
+.tact button.del.ask{background:var(--red);color:#fff}
 .sbar{display:flex;height:14px;border-radius:999px;overflow:hidden;gap:2px;margin-bottom:12px;padding:0}
 .sbar span{background:var(--pc);min-width:6px}
 .prow{padding:10px 0;border-top:1px solid var(--sep)}
@@ -583,6 +612,15 @@ span.check{cursor:default}
       </div>
     </fieldset>
   </form>
+
+  <div class="sheet" id="tripSheet" role="dialog" aria-modal="true" aria-labelledby="tripTitle" hidden>
+    <div class="bar">
+      <button type="button" class="barbtn" id="tripBack" data-act="tripback">Schließen</button>
+      <h2 id="tripTitle">Einkäufe</h2>
+      <span></span>
+    </div>
+    <div class="tbody"><div class="sheet-in" id="tripBody"></div></div>
+  </div>
 
   <form class="sheet" id="namesForm" role="dialog" aria-modal="true" aria-labelledby="namesTitle" autocomplete="off" hidden>
     <div class="bar">
@@ -1186,12 +1224,14 @@ function rcViewRender(src,canDelete){
 function rcOpenSaved(rid,tid){
   var t=S.trips.find(function(x){return x.id===tid;})||{};
   RC.view={rid:rid,tid:tid,store:t.store||'',date:t.date||'',amount:t.amount||0,data:''};
-  rcShow(true);rcViewRender('',false);
+  rcShow(true);
+  if(RCC[rid]){RC.view.data=RCC[rid];rcViewRender(RCC[rid],true);return;}
+  rcViewRender('',false);
   db.collection('receipts').doc(rid).get().then(function(d){
     if(!RC.view||RC.view.rid!==rid)return;
     var o=d&&d.exists?d.data():null;
     if(!o||!o.img){RC.view.msg='Der Kassenzettel wurde nicht gefunden.';rcViewRender('',false);return;}
-    RC.view.data=o.img;rcViewRender(o.img,true);
+    RCC[rid]=o.img;RC.view.data=o.img;rcViewRender(o.img,true);
   },function(){if(RC.view){RC.view.msg='Der Kassenzettel konnte nicht geladen werden. Prüfe die Verbindung.';rcViewRender('',false);}});
 }
 function rcShare(){
@@ -1252,6 +1292,83 @@ function rcSaveTrip(trip,pend){
   return db.collection('receipts').add({img:pend.data,w:pend.w,h:pend.h,at:Date.now(),date:trip.date,store:trip.store||''}).then(function(ref){
     rid=ref.id;trip.receipt=rid;return db.collection('shopTrips').add(trip);
   }).then(function(tref){if(tref&&tref.id)db.collection('receipts').doc(rid).update({trip:tref.id}).catch(function(){});return tref;});
+}
+/* ---------- Einkäufe im Wochenbericht: Liste, Details, Kassenzettel, Löschen ---------- */
+var TV={scope:'week',id:null,delAsk:false},RCC={};
+function tvTrips(){
+  var R=repRange(),l=S.trips.slice();
+  if(TV.scope==='week')l=l.filter(function(x){return x.date>=R.from&&x.date<=R.to;});
+  return l.sort(function(a,b){return (b.at||0)-(a.at||0);});
+}
+function openTrips(id){
+  $('form').hidden=true;$('namesForm').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=false;
+  TV.id=id||null;TV.delAsk=false;
+  if(id&&!S.trips.some(function(x){return x.id===id;}))TV.id=null;
+  $('scrim').hidden=false;renderTrips();
+}
+function tripLine(x){
+  var p=[];
+  p.push(x.spont?'spontan':plural(x.n||0,'Artikel','Artikel'));
+  if(x.receipt)p.push('mit Kassenzettel');
+  return p.join(' · ');
+}
+var RC_ICON='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Kassenzettel"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>';
+function renderTrips(){
+  if($('tripSheet').hidden)return;
+  var body=$('tripBody'),h='';
+  var x=TV.id?S.trips.find(function(t){return t.id===TV.id;}):null;
+  if(TV.id&&!x)TV.id=null;
+  if(!x){
+    $('tripTitle').textContent='Einkäufe';$('tripBack').textContent='Schließen';
+    var R=repRange(),l=tvTrips(),sum=l.reduce(function(a,t){return a+(t.amount>0?t.amount:0);},0);
+    h+='<div class="seg" role="group" aria-label="Zeitraum"><button type="button" data-act="tripscope" data-s="week" aria-pressed="'+(TV.scope==='week')+'">'+(S.repWeek==='last'?'Letzte Woche':'Diese Woche')+'</button><button type="button" data-act="tripscope" data-s="all" aria-pressed="'+(TV.scope==='all')+'">Alle</button></div>';
+    h+='<p class="tsum"><span>'+(TV.scope==='week'?esc(dLabel(R.from)).replace(/\.$/,'')+' bis '+esc(dLabel(R.to)):'Alle bisherigen Einkäufe')+' · '+plural(l.length,'Einkauf','Einkäufe')+'</span>'+(sum?'<b>'+esc(fmtEur(sum))+'</b>':'')+'</p>';
+    if(!l.length)h+='<p class="empty" style="margin:4px">Keine Einkäufe in diesem Zeitraum.</p>';
+    else h+='<ul class="tlist">'+l.map(function(t){
+      return '<li><button type="button" data-act="tripopen" data-t="'+esc(t.id)+'"><span class="tl-main"><b>'+esc(dShort(t.date||''))+(t.store?' · '+esc(t.store):'')+'</b><span>'+esc(tripLine(t))+'</span></span>'+
+        (t.receipt?'<span class="tl-rc">'+RC_ICON+'</span>':'')+(t.amount?'<span class="tl-amt">'+esc(fmtEur(t.amount))+'</span>':'')+
+        '<svg class="chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></li>';
+    }).join('')+'</ul>';
+    body.innerHTML=h;return;
+  }
+  $('tripTitle').textContent='Einkauf';$('tripBack').textContent='‹ Einkäufe';
+  var names=(x.items||[]).map(function(y){return y.t;});
+  h+='<div class="tdet">'+
+    '<div class="frow"><span class="fl">Datum</span><span class="fv">'+esc(x.date?fmtLong.format(parse(x.date)):'')+'</span></div>'+
+    '<div class="frow"><span class="fl">Supermarkt</span><span class="fv">'+esc(x.store||'ohne Angabe')+'</span></div>'+
+    '<div class="frow"><span class="fl">Betrag</span><span class="fv">'+(x.amount?esc(fmtEur(x.amount)):'nicht eingetragen')+'</span></div>'+
+    '<div class="frow"><span class="fl">Art</span><span class="fv">'+(x.spont?'Spontaner Einkauf':plural(x.n||0,'Artikel','Artikel')+' von der Liste'+(x.carriedN?', '+x.carriedN+' übernommen':''))+'</span></div>'+
+    '</div>';
+  if(names.length)h+='<div class="stack"><p class="fhead" style="margin:0 0 0 4px">Gekauft</p><div class="tdet"><p class="titems">'+esc(names.join(', '))+'</p></div></div>';
+  h+='<div class="stack trc"><p class="fhead" style="margin:0 0 0 4px">Kassenzettel</p>';
+  if(x.receipt){
+    var im=RCC[x.receipt];
+    h+=im?'<img src="'+im+'" alt="Kassenzettel" data-act="tripzoom">':'<div class="rcload" id="tripRcLoad">Kassenzettel wird geladen …</div>';
+  }else h+='<div class="rcload">Kein Kassenzettel gespeichert.</div>';
+  h+='</div><div class="tact">';
+  if(S.canWrite&&!x.receipt)h+='<button type="button" data-act="rcadd" data-t="'+esc(x.id)+'">Kassenzettel fotografieren</button>';
+  if(x.receipt)h+='<button type="button" data-act="tripzoom">Kassenzettel groß ansehen</button>';
+  if(S.canWrite)h+='<button type="button" class="del'+(TV.delAsk?' ask':'')+'" data-act="tripdel">'+(TV.delAsk?'Wirklich löschen? Nochmal tippen':'Einkauf löschen')+'</button>';
+  h+='</div>';
+  body.innerHTML=h;
+  if(x.receipt&&!RCC[x.receipt]){
+    var rid=x.receipt;
+    db.collection('receipts').doc(rid).get().then(function(d){
+      var o=d&&d.exists?d.data():null;
+      if(o&&o.img){RCC[rid]=o.img;if(TV.id===x.id)renderTrips();}
+      else{var e=$('tripRcLoad');if(e)e.textContent='Der Kassenzettel wurde nicht gefunden.';}
+    },function(){var e=$('tripRcLoad');if(e)e.textContent='Der Kassenzettel konnte nicht geladen werden.';});
+  }
+}
+function tripDelete(x){
+  var data=Object.assign({},x);delete data.id;
+  var tid=x.id,rid=x.receipt||'',undone=false;
+  TV.id=null;TV.delAsk=false;
+  db.collection('shopTrips').doc(tid).delete().then(function(){
+    toast('Einkauf gelöscht.',function(){undone=true;db.collection('shopTrips').doc(tid).set(data).catch(fail);});
+    if(rid)setTimeout(function(){if(!undone){db.collection('receipts').doc(rid).delete().catch(function(){});delete RCC[rid];}},9500);
+  },fail);
+  renderTrips();
 }
 function rcPendingHtml(){
   if(!S.canWrite)return '';
@@ -1451,7 +1568,7 @@ function renderReport(){
   var nUn=D.done.filter(function(e){return !e.by;}).length;
   h+='<section class="rtile rhero"><h3>Wochenbericht</h3><p class="rsub">'+esc(dLabel(R.from))+' bis '+esc(dLabel(R.to))+(R.today<=R.to?' · läuft noch':'')+'</p>'+
     '<div class="seg2"><button type="button" data-act="repweek" data-wk="this" aria-pressed="'+(S.repWeek==='this')+'">Diese Woche</button><button type="button" data-act="repweek" data-wk="last" aria-pressed="'+(S.repWeek==='last')+'">Letzte Woche</button></div>'+
-    '<div class="kpis"><div class="kpi"><b>'+D.done.length+'</b><span>erledigt</span></div><div class="kpi'+(D.over.length?' bad':'')+'"><b>'+D.over.length+'</b><span>überfällig</span></div><div class="kpi"><b>'+D.trips.length+'</b><span>'+(D.trips.length===1?'Einkauf':'Einkäufe')+'</span></div><div class="kpi"><b>'+D.items+'</b><span>Artikel gekauft</span></div></div></section>';
+    '<div class="kpis"><div class="kpi"><b>'+D.done.length+'</b><span>erledigt</span></div><div class="kpi'+(D.over.length?' bad':'')+'"><b>'+D.over.length+'</b><span>überfällig</span></div><button type="button" class="kpi kbtn" data-act="tripsheet" aria-label="Einkäufe ansehen"><b>'+D.trips.length+'</b><span>'+(D.trips.length===1?'Einkauf':'Einkäufe')+' ›</span></button><div class="kpi"><b>'+D.items+'</b><span>Artikel gekauft</span></div></div></section>';
   // Wer hat was gemacht
   var body='';
   if(!D.done.length)body='<p class="empty" style="margin:0">Diese Woche wurde noch nichts abgehakt.</p>';
@@ -1482,7 +1599,7 @@ function renderReport(){
   if(D.trips.length){
     eb+=D.trips.map(function(x){
       var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
-      return '<div class="trow"><div class="tmain"><div class="zline"><b>'+esc(dShort(x.date))+(x.store?' · '+esc(x.store):'')+'</b><span>'+(x.spont?'spontan':plural(x.n||0,'Artikel','Artikel')+(x.carriedN?' · '+x.carriedN+' übernommen':''))+(x.amount?' · '+esc(fmtEur(x.amount)):'')+'</span></div>'+(names?'<div class="tnames">'+esc(names)+'</div>':'')+'</div></div>';
+      return '<div class="trow tlink" role="button" tabindex="0" data-act="tripsheet" data-t="'+esc(x.id)+'"><div class="tmain"><div class="zline"><b>'+esc(dShort(x.date))+(x.store?' · '+esc(x.store):'')+'</b><span>'+(x.spont?'spontan':plural(x.n||0,'Artikel','Artikel')+(x.carriedN?' · '+x.carriedN+' übernommen':''))+(x.amount?' · '+esc(fmtEur(x.amount)):'')+'</span></div>'+(names?'<div class="tnames">'+esc(names)+'</div>':'')+'</div></div>';
     }).join('');
     if(D.spend.n){
       eb+='<div class="zline spendhead"><b>Ausgaben</b><b>'+esc(fmtEur(D.spend.sum))+'</b></div>'+
@@ -1717,7 +1834,7 @@ function openSheet(kind,item,date){
   if(item&&kind==='task'&&item.icon&&BINS[item.icon])kind='bin';
   F.id=item?item.id:null;F.del=false;F.bin=item&&item.icon?item.icon:null;F.kind=null;
   $('btnDelete').textContent='Löschen';
-  $('namesForm').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('form').hidden=false;
+  $('namesForm').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=true;$('form').hidden=false;
   $('kindSeg').hidden=!!item;
   if(!item)fillTpl();
   setKind(kind);
@@ -1749,7 +1866,7 @@ function openSheet(kind,item,date){
   if(S.canWrite&&kind!=='bin'&&!$('nameField').hidden)setTimeout(function(){$('f-title').focus();},30);
 }
 function openNames(){
-  $('form').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('namesForm').hidden=false;
+  $('form').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=true;$('namesForm').hidden=false;
   $('f-names').value=S.members.join(', ');
   $('f-names').disabled=!S.canWrite;
   $('btnNamesSave').hidden=!S.canWrite;
@@ -1770,7 +1887,7 @@ function setShopKind(k){
 }
 function openShopSheet(){
   if(!S.canWrite)return;
-  $('form').hidden=true;$('namesForm').hidden=true;$('voiceSheet').hidden=true;$('shopSheet').hidden=false;
+  $('form').hidden=true;$('namesForm').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=true;$('shopSheet').hidden=false;
   $('ss-title').value='';$('ss-name').value='';$('ssSugg').hidden=true;
   $('ss-cat').innerHTML=catOptions('Sonstiges');ssManual=false;
   $('ss-list').innerHTML=allLists().map(function(l){return '<option value="'+esc(l.id)+'"'+(l.id===S.shopList?' selected':'')+'>'+esc(l.name)+'</option>';}).join('');
@@ -2036,7 +2153,7 @@ function vcStart(){
 }
 $('shopMic').addEventListener('click',function(){
   if(!S.canWrite)return;
-  $('form').hidden=true;$('namesForm').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=false;
+  $('form').hidden=true;$('namesForm').hidden=true;$('shopSheet').hidden=true;$('tripSheet').hidden=true;$('voiceSheet').hidden=false;
   $('vcText').value='';VC.items=[];vcRender();vcSet(false);
   $('scrim').hidden=false;
   vcStart();
@@ -2234,6 +2351,16 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'rcshoot':rcPick(null);break;
+    case 'tripsheet':openTrips(el.dataset.t);break;
+    case 'tripscope':TV.scope=el.dataset.s;renderTrips();break;
+    case 'tripopen':TV.id=el.dataset.t;TV.delAsk=false;renderTrips();$('tripBody').parentNode.scrollTop=0;break;
+    case 'tripback':if(TV.id){TV.id=null;TV.delAsk=false;renderTrips();}else closeSheet();break;
+    case 'tripzoom':{var tz=S.trips.find(function(t){return t.id===TV.id;});if(tz&&tz.receipt)rcOpenSaved(tz.receipt,tz.id);break;}
+    case 'tripdel':{
+      var tx=S.trips.find(function(t){return t.id===TV.id;});if(!tx||!db||!S.canWrite)break;
+      if(!TV.delAsk){TV.delAsk=true;renderTrips();break;}
+      tripDelete(tx);break;
+    }
     case 'rcadd':rcPick(el.dataset.t);break;
     case 'rcopen':rcOpenSaved(el.dataset.r,el.dataset.t);break;
     case 'rcpview':if(RC.pending){RC.view={data:RC.pending.data,store:storeCanon(S.finishStore),date:S.spontAsk?(S.spontDate||todayIso()):todayIso(),amount:parseAmt(S.finishAmt)||0};rcShow(true);rcViewRender(RC.pending.data,false);}break;
@@ -2402,7 +2529,7 @@ render();
     S.log=s.docs.map(toItem);render();
   },onErr);
   db.collection('shopTrips').onSnapshot(function(s){
-    S.trips=s.docs.map(toItem);render();
+    S.trips=s.docs.map(toItem);render();renderTrips();
   },onErr);
   db.collection('events').onSnapshot(function(s){
     S.events=s.docs.map(toItem);render();
