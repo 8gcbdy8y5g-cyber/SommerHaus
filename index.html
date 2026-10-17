@@ -405,6 +405,38 @@ span.check{cursor:default}
 .finish .fq{font-size:14px;line-height:1.4}
 .finish .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .finish .storebox{display:grid;gap:4px}
+.finish .storebox+.storebox{margin-top:6px}
+.finish .ferr{margin:0;font-size:13px;color:var(--red)}
+.finish .fq small{color:var(--fg2);font-size:13px}
+.spendhead{margin-top:12px}
+.finish .rcbtn{display:flex;align-items:center;justify-content:center;gap:8px}
+.rcthumb{display:flex;align-items:center;gap:10px;background:var(--fill);border-radius:12px;padding:8px 10px}
+.rcthumb img{width:44px;height:58px;object-fit:cover;object-position:top;border-radius:6px;background:#fff;flex:none}
+.rcthumb span{flex:1;font-size:14px;font-weight:600}
+.rcthumb button{border:0;background:none;color:var(--accent);font-size:14px;font-weight:600;min-height:40px;padding:0 6px;cursor:pointer}
+.trips .rclink{border:0;background:none;color:var(--accent);font-size:13px;font-weight:600;padding:4px 0 0;cursor:pointer;display:inline-block}
+.rcv{position:fixed;inset:0;z-index:90;background:#141110;color:#fff;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.rcv[hidden]{display:none!important}
+.rcv-top{padding:12px 16px 8px;display:grid;gap:2px}
+.rcv-top b{font-size:17px}
+.rcv-top span{font-size:13px;color:rgba(255,255,255,.7);min-height:16px}
+.rcv-stage{flex:1;min-height:0;display:grid;place-items:center;position:relative;touch-action:none;overflow:hidden}
+.rcv-crop{position:relative}
+.rcv-crop canvas{width:100%;height:100%;display:block;border-radius:4px}
+.rcv-crop svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#rcShade{fill:rgba(0,0,0,.5)}
+#rcPoly{fill:none;stroke:#FF8B5E;stroke-width:2.5}
+.rcv-h{position:absolute;width:48px;height:48px;margin:-24px 0 0 -24px;display:grid;place-items:center;touch-action:none;cursor:grab}
+.rcv-h i{width:22px;height:22px;border-radius:50%;background:#FF8B5E;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.5)}
+.rcv-h.on i{transform:scale(1.3)}
+.rcv-scroll{position:absolute;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:auto;padding:8px 16px 16px;text-align:center}
+.rcv-scroll img{width:100%;max-width:560px;background:#fff;border-radius:4px;cursor:zoom-in}
+.rcv-scroll.zoom img{width:220%;max-width:none;cursor:zoom-out}
+.rcv-msg{margin:0;padding:12px 16px;color:rgba(255,255,255,.8);font-size:15px;text-align:center}
+.rcv-bar{display:flex;flex-wrap:wrap;gap:8px;padding:10px 16px 14px;justify-content:center}
+.rcb{flex:1 1 auto;min-height:46px;border:0;border-radius:12px;background:rgba(255,255,255,.14);color:#fff;font-size:15px;font-weight:600;padding:0 14px;cursor:pointer}
+.rcb.pri{background:#FF8B5E;color:#1A0F0A}
+.rcb.warn{background:#D93A2F}
 .finish .storebox label{font-size:13px;font-weight:600;color:var(--fg2)}
 .finish .storebox input{width:100%;box-sizing:border-box;min-height:48px;border:1px solid var(--sep);border-radius:12px;background:var(--card);color:var(--fg);font-size:16px;padding:0 14px;outline:0}
 .finish .storebox input:focus{border-color:var(--accent)}
@@ -457,6 +489,7 @@ span.check{cursor:default}
     <div class="sugg" id="shopSugg" role="group" aria-label="Vorschläge" hidden></div>
     <div id="shopRhy"></div>
     <div id="shopFinish"></div>
+    <input type="file" id="rcFile" accept="image/*" capture="environment" hidden>
     <div id="shopDone"></div>
     <div id="shopListDel"></div>
   </section>
@@ -706,7 +739,7 @@ function syncDur(){
 }
 
 var now0=new Date();
-var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],log:[],repWeek:'this',shopDoneOpen:false,finishAsk:false,finishStore:'',tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
+var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],log:[],repWeek:'this',shopDoneOpen:false,finishAsk:false,finishStore:'',finishAmt:'',finishErr:'',spontAsk:false,spontDate:'',tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
 var db=null;
 
 var BINS={
@@ -986,6 +1019,269 @@ function storeSuggHtml(q){
     return '<button type="button" class="sg" data-act="storepick" data-i="'+i+'">'+pre+'</button>';
   }).join('');
 }
+/* ---------- Kassenzettel: Foto, Zuschnitt, Scan-Look, Ablage ---------- */
+var RC={pending:null,target:null,src:null,W:0,H:0,q:null,scale:1,mode:'',view:null,delAsk:false};
+window.__RC=RC;
+var RC_MAXW=900,RC_MAXH=2600,RC_LIMIT=900000;
+function rcEl(){
+  var o=$('rcv');if(o)return o;
+  o=document.createElement('div');o.id='rcv';o.className='rcv';o.hidden=true;
+  o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-label','Kassenzettel');
+  o.innerHTML='<div class="rcv-top"><b id="rcvTitle">Kassenzettel</b><span id="rcvHint"></span></div><div class="rcv-stage" id="rcvStage"></div><div class="rcv-bar" id="rcvBar"></div>';
+  document.body.appendChild(o);
+  o.addEventListener('click',rcClick);
+  return o;
+}
+function rcShow(on){var o=rcEl();o.hidden=!on;document.documentElement.style.overflow=on?'hidden':'';if(!on){RC.mode='';RC.view=null;RC.delAsk=false;$('rcvStage').innerHTML='';}}
+function rcPick(target){RC.target=target||null;var inp=$('rcFile');inp.value='';inp.click();}
+function rcLoadFile(f){
+  return new Promise(function(res,rej){
+    var url=URL.createObjectURL(f),im=new Image();
+    im.onload=function(){URL.revokeObjectURL(url);res(im);};
+    im.onerror=function(){URL.revokeObjectURL(url);rej(new Error('Bild nicht lesbar'));};
+    im.src=url;
+  });
+}
+function rcGray(ctx,w,h){
+  var d=ctx.getImageData(0,0,w,h).data,g=new Uint8ClampedArray(w*h);
+  for(var i=0,j=0;i<g.length;i++,j+=4)g[i]=(d[j]*77+d[j+1]*150+d[j+2]*29)>>8;
+  return g;
+}
+function rcOtsu(g){
+  var hist=new Array(256).fill(0),n=g.length,i;
+  for(i=0;i<n;i++)hist[g[i]]++;
+  var sum=0;for(i=0;i<256;i++)sum+=i*hist[i];
+  var sB=0,wB=0,best=0,t=128;
+  for(i=0;i<256;i++){
+    wB+=hist[i];if(!wB)continue;var wF=n-wB;if(!wF)break;
+    sB+=i*hist[i];var mB=sB/wB,mF=(sum-sB)/wF,v=wB*wF*(mB-mF)*(mB-mF);
+    if(v>best){best=v;t=i;}
+  }
+  return t;
+}
+/* Sucht das größte helle Stück (der Zettel) und nimmt seine vier äußersten Ecken. */
+function rcDetect(src,W,H){
+  var s=Math.min(1,360/Math.max(W,H)),w=Math.max(8,Math.round(W*s)),h=Math.max(8,Math.round(H*s));
+  var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');x.drawImage(src,0,0,w,h);
+  var g=rcGray(x,w,h),t=rcOtsu(g),n=w*h,lab=new Int32Array(n),stack=new Int32Array(n),best=null,cur=0;
+  for(var p=0;p<n;p++){
+    if(lab[p]||g[p]<=t)continue;
+    cur++;var sp=0,cnt=0,tl=[0,0],br=[0,0],tr=[0,0],bl=[0,0],a1=1e9,a2=-1e9,a3=-1e9,a4=1e9,edge=0;
+    stack[sp++]=p;lab[p]=cur;
+    while(sp){
+      var q=stack[--sp],qx=q%w,qy=(q/w)|0;cnt++;
+      if(qx===0||qy===0||qx===w-1||qy===h-1)edge++;
+      var sm=qx+qy,df=qx-qy;
+      if(sm<a1){a1=sm;tl=[qx,qy];}if(sm>a2){a2=sm;br=[qx,qy];}
+      if(df>a3){a3=df;tr=[qx,qy];}if(df<a4){a4=df;bl=[qx,qy];}
+      if(qx>0&&!lab[q-1]&&g[q-1]>t){lab[q-1]=cur;stack[sp++]=q-1;}
+      if(qx<w-1&&!lab[q+1]&&g[q+1]>t){lab[q+1]=cur;stack[sp++]=q+1;}
+      if(qy>0&&!lab[q-w]&&g[q-w]>t){lab[q-w]=cur;stack[sp++]=q-w;}
+      if(qy<h-1&&!lab[q+w]&&g[q+w]>t){lab[q+w]=cur;stack[sp++]=q+w;}
+    }
+    if(!best||cnt>best.cnt)best={cnt:cnt,edge:edge,q:[tl,tr,br,bl]};
+  }
+  var full=rcFull(W,H);
+  if(!best)return full;
+  var frac=best.cnt/n;
+  if(frac<0.06||frac>0.95||best.edge>(w+h)*1.2)return full;
+  return best.q.map(function(pt){return [Math.min(W,Math.max(0,(pt[0]+0.5)/s)),Math.min(H,Math.max(0,(pt[1]+0.5)/s))];});
+}
+function rcFull(W,H){var m=Math.round(Math.min(W,H)*0.02);return [[m,m],[W-m,m],[W-m,H-m],[m,H-m]];}
+/* Homographie: bildet das Rechteck (0..w,0..h) auf das Viereck q ab. */
+function rcHomog(w,h,q){
+  var src=[[0,0],[w,0],[w,h],[0,h]],A=[],b=[],i;
+  for(i=0;i<4;i++){
+    var x=src[i][0],y=src[i][1],u=q[i][0],v=q[i][1];
+    A.push([x,y,1,0,0,0,-u*x,-u*y]);b.push(u);
+    A.push([0,0,0,x,y,1,-v*x,-v*y]);b.push(v);
+  }
+  for(var c=0;c<8;c++){
+    var piv=c;for(var r=c+1;r<8;r++)if(Math.abs(A[r][c])>Math.abs(A[piv][c]))piv=r;
+    var tA=A[c];A[c]=A[piv];A[piv]=tA;var tb=b[c];b[c]=b[piv];b[piv]=tb;
+    if(Math.abs(A[c][c])<1e-12)return null;
+    for(r=0;r<8;r++){if(r===c)continue;var f=A[r][c]/A[c][c];if(!f)continue;for(var k=c;k<8;k++)A[r][k]-=f*A[c][k];b[r]-=f*b[c];}
+  }
+  var hm=[];for(i=0;i<8;i++)hm.push(b[i]/A[i][i]);hm.push(1);return hm;
+}
+function rcDist(a,b){return Math.hypot(a[0]-b[0],a[1]-b[1]);}
+function rcProcess(){
+  var q=RC.q,W=RC.W,H=RC.H;
+  var ow=Math.max(rcDist(q[0],q[1]),rcDist(q[3],q[2])),oh=Math.max(rcDist(q[0],q[3]),rcDist(q[1],q[2]));
+  var k=Math.min(1,RC_MAXW/ow,RC_MAXH/oh);ow=Math.max(40,Math.round(ow*k));oh=Math.max(40,Math.round(oh*k));
+  var sc=document.createElement('canvas');sc.width=W;sc.height=H;var sx=sc.getContext('2d');sx.drawImage(RC.src,0,0,W,H);
+  var g=rcGray(sx,W,H),hm=rcHomog(ow,oh,q);
+  var out=new Float32Array(ow*oh);
+  for(var y=0;y<oh;y++){
+    for(var x=0;x<ow;x++){
+      var dz=hm[6]*x+hm[7]*y+1,u=(hm[0]*x+hm[1]*y+hm[2])/dz,v=(hm[3]*x+hm[4]*y+hm[5])/dz;
+      var x0=Math.floor(u),y0=Math.floor(v);
+      if(x0<0||y0<0||x0>=W-1||y0>=H-1){out[y*ow+x]=255;continue;}
+      var fx=u-x0,fy=v-y0,i0=y0*W+x0;
+      out[y*ow+x]=(g[i0]*(1-fx)+g[i0+1]*fx)*(1-fy)+(g[i0+W]*(1-fx)+g[i0+W+1]*fx)*fy;
+    }
+  }
+  /* Hintergrund ausgleichen: jeden Punkt durch den örtlichen Mittelwert teilen, dann Kontrast anheben. */
+  var r=Math.max(8,Math.round(ow/28)),ii=new Float64Array((ow+1)*(oh+1));
+  for(y=0;y<oh;y++){var rs=0;for(x=0;x<ow;x++){rs+=out[y*ow+x];ii[(y+1)*(ow+1)+x+1]=ii[y*(ow+1)+x+1]+rs;}}
+  var c=document.createElement('canvas');c.width=ow;c.height=oh;var cx=c.getContext('2d'),img=cx.createImageData(ow,oh),d=img.data;
+  for(y=0;y<oh;y++){
+    var ya=Math.max(0,y-r),yb=Math.min(oh,y+r+1);
+    for(x=0;x<ow;x++){
+      var xa=Math.max(0,x-r),xb=Math.min(ow,x+r+1);
+      var s=ii[yb*(ow+1)+xb]-ii[ya*(ow+1)+xb]-ii[yb*(ow+1)+xa]+ii[ya*(ow+1)+xa],m=s/((yb-ya)*(xb-xa));
+      var vv=out[y*ow+x]/(m+1),o=vv>=0.9?255:vv<=0.5?0:Math.round((vv-0.5)/0.4*255);
+      var j=(y*ow+x)*4;d[j]=d[j+1]=d[j+2]=o;d[j+3]=255;
+    }
+  }
+  cx.putImageData(img,0,0);
+  var qual=0.72,data=c.toDataURL('image/jpeg',qual);
+  while(data.length>RC_LIMIT&&qual>0.35){qual-=0.08;data=c.toDataURL('image/jpeg',qual);}
+  while(data.length>RC_LIMIT){
+    var c2=document.createElement('canvas');c2.width=Math.round(c.width*0.8);c2.height=Math.round(c.height*0.8);
+    c2.getContext('2d').drawImage(c,0,0,c2.width,c2.height);c=c2;data=c.toDataURL('image/jpeg',0.6);
+  }
+  return {data:data,w:c.width,h:c.height};
+}
+function rcCropRender(){
+  var st=$('rcvStage');RC.mode='crop';
+  $('rcvTitle').textContent='Kassenzettel zuschneiden';
+  $('rcvHint').textContent='Zieh die Ecken auf die Ränder des Zettels.';
+  var sw=st.clientWidth-24,sh=st.clientHeight-24,sc=Math.min(sw/RC.W,sh/RC.H);RC.scale=sc;
+  var dw=Math.round(RC.W*sc),dh=Math.round(RC.H*sc),dpr=Math.min(2,window.devicePixelRatio||1);
+  st.innerHTML='<div class="rcv-crop" id="rcCrop" style="width:'+dw+'px;height:'+dh+'px"><canvas id="rcCv" width="'+Math.round(dw*dpr)+'" height="'+Math.round(dh*dpr)+'"></canvas>'+
+    '<svg viewBox="0 0 '+dw+' '+dh+'" aria-hidden="true"><path id="rcShade" fill-rule="evenodd"/><polygon id="rcPoly"/></svg>'+
+    [0,1,2,3].map(function(i){return '<div class="rcv-h" data-h="'+i+'" role="slider" aria-label="Ecke '+(i+1)+'" tabindex="0"><i></i></div>';}).join('')+'</div>';
+  $('rcCv').getContext('2d').drawImage(RC.src,0,0,Math.round(dw*dpr),Math.round(dh*dpr));
+  $('rcvBar').innerHTML='<button type="button" class="rcb" data-rc="cancel">Abbrechen</button><button type="button" class="rcb" data-rc="again">Neu aufnehmen</button><button type="button" class="rcb" data-rc="full">Ganzes Bild</button><button type="button" class="rcb pri" data-rc="ok">Übernehmen</button>';
+  rcCropDraw();
+  var box=$('rcCrop');
+  box.querySelectorAll('.rcv-h').forEach(function(hd){
+    hd.addEventListener('pointerdown',function(ev){
+      ev.preventDefault();var i=+hd.dataset.h;hd.setPointerCapture(ev.pointerId);hd.classList.add('on');
+      var mv=function(e){var rc=box.getBoundingClientRect();RC.q[i]=[Math.min(RC.W,Math.max(0,(e.clientX-rc.left)/RC.scale)),Math.min(RC.H,Math.max(0,(e.clientY-rc.top)/RC.scale))];rcCropDraw();};
+      var up=function(){hd.classList.remove('on');hd.removeEventListener('pointermove',mv);hd.removeEventListener('pointerup',up);hd.removeEventListener('pointercancel',up);};
+      hd.addEventListener('pointermove',mv);hd.addEventListener('pointerup',up);hd.addEventListener('pointercancel',up);
+    });
+  });
+}
+function rcCropDraw(){
+  var sc=RC.scale,pts=RC.q.map(function(p){return [p[0]*sc,p[1]*sc];}),box=$('rcCrop');if(!box)return;
+  var w=box.clientWidth,h=box.clientHeight,poly=pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ');
+  $('rcPoly').setAttribute('points',poly);
+  $('rcShade').setAttribute('d','M0 0H'+w+'V'+h+'H0Z M'+pts.map(function(p){return p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' L')+'Z');
+  box.querySelectorAll('.rcv-h').forEach(function(hd,i){hd.style.left=pts[i][0]+'px';hd.style.top=pts[i][1]+'px';});
+}
+function rcViewRender(src,canDelete){
+  RC.mode='view';
+  $('rcvTitle').textContent='Kassenzettel';
+  var v=RC.view||{};
+  $('rcvHint').textContent=[v.store,v.date?dLabel(v.date):'',v.amount?fmtEur(v.amount):''].filter(Boolean).join(' · ');
+  $('rcvStage').innerHTML=src?'<div class="rcv-scroll" id="rcScroll"><img id="rcImg" src="'+src+'" alt="Kassenzettel"></div>':'<p class="rcv-msg">'+esc(v.msg||'Lädt …')+'</p>';
+  var bar='<button type="button" class="rcb" data-rc="close">Schließen</button>';
+  if(src)bar+='<button type="button" class="rcb" data-rc="share">Teilen</button>';
+  if(src&&canDelete&&S.canWrite)bar+='<button type="button" class="rcb'+(RC.delAsk?' warn':'')+'" data-rc="del">'+(RC.delAsk?'Wirklich löschen?':'Löschen')+'</button>';
+  $('rcvBar').innerHTML=bar;
+}
+function rcOpenSaved(rid,tid){
+  var t=S.trips.find(function(x){return x.id===tid;})||{};
+  RC.view={rid:rid,tid:tid,store:t.store||'',date:t.date||'',amount:t.amount||0,data:''};
+  rcShow(true);rcViewRender('',false);
+  db.collection('receipts').doc(rid).get().then(function(d){
+    if(!RC.view||RC.view.rid!==rid)return;
+    var o=d&&d.exists?d.data():null;
+    if(!o||!o.img){RC.view.msg='Der Kassenzettel wurde nicht gefunden.';rcViewRender('',false);return;}
+    RC.view.data=o.img;rcViewRender(o.img,true);
+  },function(){if(RC.view){RC.view.msg='Der Kassenzettel konnte nicht geladen werden. Prüfe die Verbindung.';rcViewRender('',false);}});
+}
+function rcShare(){
+  var v=RC.view;if(!v||!v.data)return;
+  var name='Kassenzettel'+(v.store?'_'+v.store.replace(/[^A-Za-z0-9ÄÖÜäöüß-]+/g,'_'):'')+(v.date?'_'+v.date:'')+'.jpg';
+  fetch(v.data).then(function(r){return r.blob();}).then(function(bl){
+    var f=new File([bl],name,{type:'image/jpeg'});
+    if(navigator.canShare&&navigator.canShare({files:[f]}))return navigator.share({files:[f],title:'Kassenzettel'}).catch(function(){});
+    var a=document.createElement('a');a.href=v.data;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  });
+}
+function rcSaveFor(tid,pend){
+  var t=S.trips.find(function(x){return x.id===tid;});if(!t||!db)return Promise.resolve();
+  return db.collection('receipts').add({img:pend.data,w:pend.w,h:pend.h,at:Date.now(),date:t.date||todayIso(),store:t.store||'',trip:tid}).then(function(ref){
+    return db.collection('shopTrips').doc(tid).update({receipt:ref.id});
+  }).then(function(){toast('Kassenzettel gespeichert.');},fail);
+}
+function rcClick(ev){
+  var b=ev.target.closest('[data-rc]');
+  if(!b){if(RC.mode==='view'&&ev.target.id==='rcImg'){$('rcScroll').classList.toggle('zoom');}return;}
+  var a=b.dataset.rc;
+  if(a==='cancel'||a==='close'){if(RC.mode!=='view')RC.target=null;RC.src=null;rcShow(false);return;}
+  if(a==='again'){rcShow(false);rcPick(RC.target);return;}
+  if(a==='full'){RC.q=rcFull(RC.W,RC.H);rcCropDraw();return;}
+  if(a==='ok'){
+    $('rcvBar').innerHTML='<p class="rcv-msg">Wird bearbeitet …</p>';
+    setTimeout(function(){
+      var res;
+      try{res=rcProcess();}catch(e){$('rcvBar').innerHTML='<p class="rcv-msg">Das hat nicht geklappt. Bitte neu aufnehmen.</p><button type="button" class="rcb" data-rc="cancel">Schließen</button>';return;}
+      var tgt=RC.target;RC.target=null;rcShow(false);RC.src=null;
+      if(tgt)rcSaveFor(tgt,res);
+      else{RC.pending=res;renderShop();}
+    },40);
+    return;
+  }
+  if(a==='share'){rcShare();return;}
+  if(a==='del'){
+    if(!RC.delAsk){RC.delAsk=true;rcViewRender(RC.view.data,true);return;}
+    var v=RC.view;rcShow(false);
+    db.collection('receipts').doc(v.rid).delete().then(function(){return db.collection('shopTrips').doc(v.tid).update({receipt:''});}).then(function(){toast('Kassenzettel gelöscht.');},fail);
+  }
+}
+function rcOnFile(f){
+  if(!f)return;
+  rcShow(true);RC.mode='load';$('rcvTitle').textContent='Kassenzettel';$('rcvHint').textContent='';
+  $('rcvStage').innerHTML='<p class="rcv-msg">Foto wird geladen …</p>';$('rcvBar').innerHTML='';
+  rcLoadFile(f).then(function(im){
+    var W=im.naturalWidth,H=im.naturalHeight,k=Math.min(1,2400/Math.max(W,H));
+    W=Math.round(W*k);H=Math.round(H*k);
+    var c=document.createElement('canvas');c.width=W;c.height=H;c.getContext('2d').drawImage(im,0,0,W,H);
+    RC.src=c;RC.W=W;RC.H=H;RC.q=rcDetect(c,W,H);
+    rcCropRender();
+  },function(){$('rcvStage').innerHTML='<p class="rcv-msg">Das Foto konnte nicht geöffnet werden.</p>';$('rcvBar').innerHTML='<button type="button" class="rcb" data-rc="cancel">Schließen</button>';});
+}
+function rcSaveTrip(trip,pend){
+  if(!pend)return db.collection('shopTrips').add(trip);
+  var rid='';
+  return db.collection('receipts').add({img:pend.data,w:pend.w,h:pend.h,at:Date.now(),date:trip.date,store:trip.store||''}).then(function(ref){
+    rid=ref.id;trip.receipt=rid;return db.collection('shopTrips').add(trip);
+  }).then(function(tref){if(tref&&tref.id)db.collection('receipts').doc(rid).update({trip:tref.id}).catch(function(){});return tref;});
+}
+function rcPendingHtml(){
+  if(!S.canWrite)return '';
+  if(RC.pending)return '<div class="rcthumb"><img src="'+RC.pending.data+'" alt=""><span>Kassenzettel ist dabei</span><button type="button" data-act="rcpview">Ansehen</button><button type="button" data-act="rcpdrop">Entfernen</button></div>';
+  return '<button type="button" class="fbtn sec rcbtn" data-act="rcshoot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Kassenzettel fotografieren</button>';
+}
+var fmtEurN=new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'});
+function fmtEur(v){return fmtEurN.format(v||0);}
+function parseAmt(v){
+  var t=String(v==null?'':v).replace(/€|eur(o)?/gi,'').replace(/\s+/g,'');
+  if(!t)return null;
+  if(!/^\d+([.,]\d+)*$/.test(t))return NaN;
+  var c=t.lastIndexOf(','),d=t.lastIndexOf('.');
+  if(c>=0&&d>=0){var dec=Math.max(c,d);t=t.slice(0,dec).replace(/[.,]/g,'')+'.'+t.slice(dec+1);}
+  else if(c>=0||d>=0){
+    var pos=Math.max(c,d),after=t.length-pos-1;
+    if((t.match(/[.,]/g)||[]).length>1||after>2)return NaN;
+    else t=t.replace(',','.');
+  }
+  var n=Math.round(parseFloat(t)*100)/100;
+  return isFinite(n)&&n>0&&n<=9999.99?n:NaN;
+}
+function resetFin(){RC.pending=null;S.finishAsk=false;S.spontAsk=false;S.finishStore='';S.finishAmt='';S.finishErr='';S.spontDate='';}
+function finFields(withDate){
+  return (withDate?'<div class="storebox"><label for="shopDate">Datum</label><input type="date" id="shopDate" value="'+esc(S.spontDate||todayIso())+'" max="'+todayIso()+'"></div>':'')+
+    '<div class="storebox"><label for="shopStore">Supermarkt</label><input type="text" id="shopStore" value="'+esc(S.finishStore)+'" placeholder="z. B. Aldi, Rewe, Lidl" autocomplete="off" autocapitalize="words" enterkeyhint="next" maxlength="40"><div class="sugg" id="storeSugg" role="group" aria-label="Supermarkt-Vorschläge">'+storeSuggHtml(S.finishStore)+'</div></div>'+
+    '<div class="storebox"><label for="shopAmt">Betrag in Euro'+(withDate?'':' (optional)')+'</label><input type="text" id="shopAmt" inputmode="decimal" value="'+esc(S.finishAmt)+'" placeholder="z. B. 54,30" autocomplete="off" enterkeyhint="done" maxlength="12"></div>'+
+    rcPendingHtml()+
+    (S.finishErr?'<p class="ferr">'+esc(S.finishErr)+'</p>':'');
+}
 function renderFinish(L,open,done){
   renderRhythm(L);
   var box=$('shopFinish');
@@ -996,11 +1292,19 @@ function renderFinish(L,open,done){
     if(S.finishAsk){
       h+='<p class="fq"><b>Einkauf abschließen?</b> '+done.length+(done.length===1?' erledigter Artikel wird abgelegt':' erledigte Artikel werden abgelegt')+
         (open.length?', '+open.length+(open.length===1?' offener bleibt':' offene bleiben')+' für den nächsten Einkauf auf der Liste.':'. Die Liste ist danach leer.')+'</p>'+
-        '<div class="storebox"><label for="shopStore">Supermarkt</label><input type="text" id="shopStore" value="'+esc(S.finishStore)+'" placeholder="z. B. Aldi, Rewe, Lidl" autocomplete="off" autocapitalize="words" enterkeyhint="done" maxlength="40"><div class="sugg" id="storeSugg" role="group" aria-label="Supermarkt-Vorschläge">'+storeSuggHtml(S.finishStore)+'</div></div>'+
+        finFields(false)+
         '<div class="frow"><button type="button" class="fbtn sec" data-act="shopfinishno">Abbrechen</button><button type="button" class="fbtn" data-act="shopfinishgo">Ja, abschließen</button></div>';
     }else{
       h+='<button type="button" class="fbtn" data-act="shopfinish">Einkauf abgeschlossen</button>'+
         '<span class="fmeta">'+done.length+' erledigt'+(open.length?' · '+open.length+' wandern in den nächsten Einkauf':'')+'</span>';
+    }
+  }
+  if(S.canWrite){
+    if(S.spontAsk){
+      h+='<p class="fq"><b>Spontaner Einkauf</b><br><small>Ohne Liste, zum Beispiel Bäcker, Tankstelle oder ein Einkauf unterwegs.</small></p>'+finFields(true)+
+        '<div class="frow"><button type="button" class="fbtn sec" data-act="spontno">Abbrechen</button><button type="button" class="fbtn" data-act="spontgo">Eintragen</button></div>';
+    }else{
+      h+='<button type="button" class="fbtn sec" data-act="spont">Spontaner Einkauf eintragen</button>';
     }
   }
   if(trips.length){
@@ -1009,14 +1313,15 @@ function renderFinish(L,open,done){
       '<button type="button" data-act="tripstoggle" aria-expanded="'+S.tripsOpen+'">'+(S.tripsOpen?'Verlauf ausblenden':'Verlauf')+'</button></div>';
     if(S.tripsOpen)h+='<ul class="trips">'+trips.slice(0,30).map(function(x,i){
       var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
-      return '<li><b>Einkauf '+(trips.length-i)+' · '+esc(x.date?fmtShort.format(parse(x.date)):'')+'</b>'+(x.store?' · <span class="shopname">'+esc(x.store)+'</span>':'')+' · '+(x.n||0)+(x.n===1?' Artikel':' Artikel')+
-        (x.carriedN?', '+x.carriedN+' übernommen':'')+(names?'<br>'+esc(names):'')+'</li>';
+      var tl=x.spont?' · spontan':' · '+(x.n||0)+' Artikel'+(x.carriedN?', '+x.carriedN+' übernommen':'');
+      return '<li><b>Einkauf '+(trips.length-i)+' · '+esc(x.date?fmtShort.format(parse(x.date)):'')+'</b>'+(x.store?' · <span class="shopname">'+esc(x.store)+'</span>':'')+tl+(x.amount?' · <span class="shopname">'+esc(fmtEur(x.amount))+'</span>':'')+(names?'<br>'+esc(names):'')+
+        (x.receipt?'<br><button type="button" class="rclink" data-act="rcopen" data-r="'+esc(x.receipt)+'" data-t="'+esc(x.id)+'">Kassenzettel ansehen</button>':(S.canWrite?'<br><button type="button" class="rclink" data-act="rcadd" data-t="'+esc(x.id)+'">+ Kassenzettel</button>':''))+'</li>';
     }).join('')+'</ul>';
   }
-  var hadFocus=document.activeElement&&document.activeElement.id==='shopStore';
+  var hadFocus=document.activeElement&&/^shop(Store|Amt)$/.test(document.activeElement.id)?document.activeElement.id:'';
   box.className=h?'finish':'';
   box.innerHTML=h;
-  if(hadFocus){var si=$('shopStore');if(si){si.focus();try{si.setSelectionRange(si.value.length,si.value.length);}catch(e){}}}
+  if(hadFocus){var si=$(hadFocus);if(si){si.focus();try{si.setSelectionRange(si.value.length,si.value.length);}catch(e){}}}
 }
 var WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
 var REC={day:['täglich','alle %n Tage'],week:['wöchentlich','alle %n Wochen'],month:['monatlich','alle %n Monate']};
@@ -1061,6 +1366,16 @@ function repData(){
   D.multi=Object.keys(cnt).filter(function(k){return cnt[k]>1;}).sort(function(a,b){return cnt[b]-cnt[a];}).map(function(k){return {t:k,n:cnt[k]};});
   var waits=[];trips.forEach(function(x){(x.items||[]).forEach(function(y){if(y.cr&&y.d&&y.d>=y.cr)waits.push((y.d-y.cr)/864e5);});});
   D.wait=waits.length?waits.reduce(function(a,b){return a+b;},0)/waits.length:null;
+  var sp={sum:0,n:0,spont:0,spontN:0,listN:trips.filter(function(x){return !x.spont;}).length,missing:0,byStore:[]},bs={};
+  trips.forEach(function(x){
+    if(!(x.amount>0)){sp.missing++;return;}
+    sp.sum+=x.amount;sp.n++;
+    if(x.spont){sp.spont+=x.amount;sp.spontN++;}
+    var nm=x.store||'ohne Angabe',o=bs[nm]||(bs[nm]={name:nm,sum:0,n:0});o.sum+=x.amount;o.n++;
+  });
+  sp.avg=sp.n?sp.sum/sp.n:0;
+  sp.byStore=Object.keys(bs).map(function(k){return bs[k];}).sort(function(a,b){return b.sum-a.sum;});
+  D.spend=sp;
   D.tripsAll=S.trips.length;
   var lastT=S.trips.slice().sort(function(a,b){return (b.at||0)-(a.at||0);})[0];D.lastTrip=lastT?lastT.date:'';
   D.onList=S.shop.filter(function(x){return !x.done;}).map(function(x){return x.title;});
@@ -1100,10 +1415,15 @@ function buildReport(){
   L.push('EINKÄUFE');
   if(!D.trips.length)L.push('Kein Einkauf abgeschlossen.');
   else{
-    L.push(plural(D.trips.length,'Einkauf','Einkäufe')+' abgeschlossen, insgesamt '+plural(D.items,'Artikel','Artikel')+' ('+(D.items/D.trips.length).toFixed(1).replace('.',',')+' pro Einkauf).');
+    L.push(plural(D.trips.length,'Einkauf','Einkäufe')+' abgeschlossen'+(D.spend.spontN||D.trips.length-D.spend.listN?' (davon '+(D.trips.length-D.spend.listN)+' spontan)':'')+', insgesamt '+plural(D.items,'Artikel','Artikel')+(D.spend.listN?' ('+(D.items/D.spend.listN).toFixed(1).replace('.',',')+' pro Listeneinkauf)':'')+'.');
+    if(D.spend.n){
+      L.push('Ausgaben: '+fmtEur(D.spend.sum)+' bei '+plural(D.spend.n,'Einkauf','Einkäufen')+' mit Betrag, im Schnitt '+fmtEur(D.spend.avg)+(D.spend.spontN?', davon spontan '+fmtEur(D.spend.spont):'')+'.');
+      L.push('Nach Supermarkt: '+D.spend.byStore.map(function(o){return o.name+' '+fmtEur(o.sum)+' ('+o.n+'x)';}).join(', ')+'.');
+    }
+    if(D.spend.missing)L.push('Bei '+plural(D.spend.missing,'Einkauf','Einkäufen')+' fehlt der Betrag.');
     D.trips.forEach(function(x,i){
       var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
-      L.push('- '+(D.trips.length>1?(i+1)+'. ':'')+dLabel(x.date)+(x.store?', '+x.store:'')+': '+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?', '+plural(x.carriedN,'Artikel','Artikel')+' übernommen':'')+(names?' ('+names+')':''));
+      L.push('- '+(D.trips.length>1?(i+1)+'. ':'')+dLabel(x.date)+(x.store?', '+x.store:'')+(x.amount?', '+fmtEur(x.amount):'')+': '+(x.spont?'spontan':plural(x.n||0,'Artikel','Artikel'))+(x.carriedN?', '+plural(x.carriedN,'Artikel','Artikel')+' übernommen':'')+(names?' ('+names+')':''));
     });
     if(D.multi.length)L.push('Mehrfach gekauft: '+D.multi.map(function(k){return k.t+' ('+k.n+'x)';}).join(', ')+'.');
     if(D.wait!=null)L.push('Ein Artikel stand im Schnitt '+D.wait.toFixed(1).replace('.',',')+' Tage auf der Liste, bis er abgehakt wurde.');
@@ -1162,8 +1482,13 @@ function renderReport(){
   if(D.trips.length){
     eb+=D.trips.map(function(x){
       var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
-      return '<div class="trow"><div class="tmain"><div class="zline"><b>'+esc(dShort(x.date))+(x.store?' · '+esc(x.store):'')+'</b><span>'+plural(x.n||0,'Artikel','Artikel')+(x.carriedN?' · '+x.carriedN+' übernommen':'')+'</span></div>'+(names?'<div class="tnames">'+esc(names)+'</div>':'')+'</div></div>';
+      return '<div class="trow"><div class="tmain"><div class="zline"><b>'+esc(dShort(x.date))+(x.store?' · '+esc(x.store):'')+'</b><span>'+(x.spont?'spontan':plural(x.n||0,'Artikel','Artikel')+(x.carriedN?' · '+x.carriedN+' übernommen':''))+(x.amount?' · '+esc(fmtEur(x.amount)):'')+'</span></div>'+(names?'<div class="tnames">'+esc(names)+'</div>':'')+'</div></div>';
     }).join('');
+    if(D.spend.n){
+      eb+='<div class="zline spendhead"><b>Ausgaben</b><b>'+esc(fmtEur(D.spend.sum))+'</b></div>'+
+        '<p class="rnote">Im Schnitt '+esc(fmtEur(D.spend.avg))+' pro Einkauf'+(D.spend.spontN?', davon spontan '+esc(fmtEur(D.spend.spont)):'')+'.'+(D.spend.missing?' Bei '+plural(D.spend.missing,'Einkauf','Einkäufen')+' fehlt der Betrag.':'')+'</p>'+
+        '<div class="chips" style="margin-top:6px">'+D.spend.byStore.map(function(o){return '<span class="rchip">'+esc(o.name)+'<i>'+esc(fmtEur(o.sum))+'</i></span>';}).join('')+'</div>';
+    }
     if(D.multi.length)eb+='<div class="chips" style="margin-top:10px">'+D.multi.map(function(k){return '<span class="rchip">'+esc(k.t)+'<i>'+k.n+'×</i></span>';}).join('')+'</div><p class="rnote">Mehrfach gekauft</p>';
     if(D.wait!=null)eb+='<p class="rnote">Ein Artikel stand im Schnitt '+D.wait.toFixed(1).replace('.',',')+' Tage auf der Liste, bis er abgehakt wurde.</p>';
   }else eb='<p class="empty" style="margin:0">Kein Einkauf abgeschlossen.</p>';
@@ -1606,15 +1931,20 @@ function sugPick(key,i,input,sel,setManual,box){
 $('shop-in').addEventListener('input',function(){sugRender($('shopSugg'),this,'shop');});
 $('shop-in').addEventListener('focus',function(){if(this.value)sugRender($('shopSugg'),this,'shop');});
 $('shopSugg').addEventListener('mousedown',function(ev){ev.preventDefault();});
+$('rcFile').addEventListener('change',function(ev){rcOnFile(ev.target.files&&ev.target.files[0]);});
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&$('rcv')&&!$('rcv').hidden)rcShow(false);});
 $('shopFinish').addEventListener('input',function(ev){
-  if(ev.target.id!=='shopStore')return;
-  S.finishStore=ev.target.value;
-  var sg=$('storeSugg');if(sg)sg.innerHTML=storeSuggHtml(S.finishStore);
+  var id=ev.target.id;
+  if(id==='shopStore'){S.finishStore=ev.target.value;var sg=$('storeSugg');if(sg)sg.innerHTML=storeSuggHtml(S.finishStore);}
+  else if(id==='shopAmt'){S.finishAmt=ev.target.value;if(S.finishErr){S.finishErr='';var fe=$('shopFinish').querySelector('.ferr');if(fe)fe.remove();}}
+  else if(id==='shopDate'){S.spontDate=ev.target.value;}
 });
 $('shopFinish').addEventListener('keydown',function(ev){
-  if(ev.target.id!=='shopStore'||ev.key!=='Enter')return;
+  if(ev.key!=='Enter')return;
+  if(ev.target.id==='shopStore'){ev.preventDefault();var a=$('shopAmt');if(a)a.focus();return;}
+  if(ev.target.id!=='shopAmt')return;
   ev.preventDefault();
-  var go=$('shopFinish').querySelector('[data-act="shopfinishgo"]');if(go)go.click();
+  var go=$('shopFinish').querySelector('[data-act="shopfinishgo"],[data-act="spontgo"]');if(go)go.click();
 });
 $('shopFinish').addEventListener('mousedown',function(ev){if(ev.target.closest&&ev.target.closest('#storeSugg'))ev.preventDefault();});
 $('shopSugg').addEventListener('click',function(ev){
@@ -1879,13 +2209,35 @@ document.addEventListener('click',function(ev){
       renderShop();toast(rx.t+': die nächsten Tage kein Vorschlag.');
       break;
     }
-    case 'shopfinish':if(S.canWrite){S.finishAsk=true;renderShop();}break;
-    case 'shopfinishno':S.finishAsk=false;S.finishStore='';renderShop();break;
+    case 'shopfinish':if(S.canWrite){resetFin();S.finishAsk=true;renderShop();}break;
+    case 'spont':if(S.canWrite){resetFin();S.spontAsk=true;renderShop();}break;
+    case 'spontno':resetFin();renderShop();break;
+    case 'spontgo':{
+      if(!db||!S.canWrite)break;
+      var sa=parseAmt(S.finishAmt);
+      if((sa==null&&!RC.pending)||sa!==sa){S.finishErr=sa==null?'Bitte den Betrag eintragen oder den Kassenzettel fotografieren.':'Den Betrag habe ich nicht verstanden. Bitte so: 12,40.';renderShop();break;}
+      var sd=S.spontDate||todayIso();if(sd>todayIso())sd=todayIso();
+      var sl=curList(),sst=storeCanon(S.finishStore);
+      var strip={list:sl.id,listName:sl.name,at:sd===todayIso()?Date.now():parse(sd).getTime()+43200000,date:sd,n:0,items:[],carriedN:0,carried:[],spont:true};
+      if(sa)strip.amount=sa;
+      if(sst)strip.store=sst;
+      var spend=RC.pending;
+      resetFin();
+      rcSaveTrip(strip,spend).then(function(){toast('Spontaner Einkauf'+(sst?' bei '+sst:'')+(sa?': '+fmtEur(sa):'')+(spend?', mit Kassenzettel':'')+'.');},fail);
+      renderShop();
+      break;
+    }
+    case 'shopfinishno':resetFin();renderShop();break;
     case 'storepick':{
       var sm=storeMatches(S.finishStore)[+el.dataset.i];
       if(sm){S.finishStore=sm;renderShop();var si2=$('shopStore');if(si2)si2.focus();}
       break;
     }
+    case 'rcshoot':rcPick(null);break;
+    case 'rcadd':rcPick(el.dataset.t);break;
+    case 'rcopen':rcOpenSaved(el.dataset.r,el.dataset.t);break;
+    case 'rcpview':if(RC.pending){RC.view={data:RC.pending.data,store:storeCanon(S.finishStore),date:S.spontAsk?(S.spontDate||todayIso()):todayIso(),amount:parseAmt(S.finishAmt)||0};rcShow(true);rcViewRender(RC.pending.data,false);}break;
+    case 'rcpdrop':RC.pending=null;renderShop();break;
     case 'tripstoggle':S.tripsOpen=!S.tripsOpen;renderShop();break;
     case 'shopfinishgo':{
       if(!db||!S.canWrite)break;
@@ -1897,11 +2249,15 @@ document.addEventListener('click',function(ev){
         items:fdone.map(function(x){return {t:x.title,c:effCat(x)||'',cr:x.created||0,d:x.doneAt||0};}),
         carriedN:fopen.length,carried:fopen.map(function(x){return x.title;})};
       var fstore=storeCanon(S.finishStore);if(fstore)trip.store=fstore;
-      S.finishAsk=false;S.finishStore='';
-      db.collection('shopTrips').add(trip).then(function(){
+      var famt=parseAmt(S.finishAmt);
+      if(famt!==null&&famt!==famt){S.finishErr='Den Betrag habe ich nicht verstanden. Bitte so: 54,30, oder das Feld leer lassen.';renderShop();break;}
+      if(famt)trip.amount=famt;
+      var fpend=RC.pending;
+      resetFin();
+      rcSaveTrip(trip,fpend).then(function(){
         return Promise.all(fdone.map(function(x){return db.collection('shopping').doc(x.id).delete();}));
       }).then(function(){
-        toast('Einkauf'+(fstore?' bei '+fstore:'')+' abgeschlossen'+(fopen.length?'. '+fopen.length+(fopen.length===1?' Artikel bleibt':' Artikel bleiben')+' auf der Liste.':'.'));
+        toast('Einkauf'+(fstore?' bei '+fstore:'')+(famt?' ('+fmtEur(famt)+')':'')+' abgeschlossen'+(fopen.length?'. '+fopen.length+(fopen.length===1?' Artikel bleibt':' Artikel bleiben')+' auf der Liste.':'.'));
       },fail);
       renderShop();
       break;
@@ -1917,7 +2273,7 @@ document.addEventListener('click',function(ev){
       render();window.scrollTo(0,0);break;
     case 'shopkind':setShopKind(el.dataset.k);break;
     case 'shoplist':
-      S.shopList=el.dataset.l;S.delList=false;S.finishAsk=false;S.finishStore='';
+      S.shopList=el.dataset.l;S.delList=false;resetFin();
       try{localStorage.setItem('sommerhaus-shoplist',S.shopList);}catch(e){}
       renderShop();break;
     case 'shoplistdel':{
