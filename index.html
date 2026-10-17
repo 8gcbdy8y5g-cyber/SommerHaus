@@ -414,6 +414,13 @@ span.check{cursor:default}
 .lrow .lt{flex:1;min-width:0}.lrow .lt em{font-style:normal;color:var(--fg2)}
 .lrow .lr{font-size:12.5px;color:var(--fg2);white-space:nowrap}
 .warn .lrow .lr{color:var(--red);font-weight:600}
+.daysum{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:10px;border:0;background:var(--fill);color:var(--fg);font:inherit;font-size:15px;text-align:left;border-radius:12px;padding:10px 12px 10px 14px;min-height:46px;cursor:pointer}
+.daysum b{font-weight:700}
+.daysum .dsover{color:var(--red);font-weight:600}
+.daysum .chev{flex:none;color:var(--fg2);transition:transform .15s}
+.daysum .chev.open{transform:rotate(90deg)}
+.daysum:active{opacity:.7}
+.daysum[disabled]{cursor:default}
 .dayh{margin-top:10px;font-size:12.5px;font-weight:700;color:var(--fg2)}
 .dayh:first-child{margin-top:0}
 .rleg{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;margin-bottom:6px}
@@ -777,7 +784,7 @@ function syncDur(){
 }
 
 var now0=new Date();
-var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],log:[],repWeek:'this',shopDoneOpen:false,finishAsk:false,finishStore:'',finishAmt:'',finishErr:'',spontAsk:false,spontDate:'',tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
+var S={tasks:[],events:[],members:[],loading:true,canWrite:true,view:'cal',calMode:'month',tab:'cal',lists:[],shopList:'wocheneinkauf',shopKind:'item',delList:false,shop:[],trips:[],log:[],repWeek:'this',shopDoneOpen:false,dayOpen:false,finishAsk:false,finishStore:'',finishAmt:'',finishErr:'',spontAsk:false,spontDate:'',tripsOpen:false,selected:todayIso(),month:{y:now0.getFullYear(),m:now0.getMonth()}};
 var db=null;
 
 var BINS={
@@ -1638,10 +1645,17 @@ function renderDay(today){
   var h='<div class="cal-head"><h2>'+esc(fmtLong.format(parse(ds)))+(ds===today?'<span class="tag">Heute</span>':'')+'</h2>'+
     '<div class="nav"><button type="button" class="btn round" data-act="dayprev" aria-label="Vorheriger Tag">'+CHEV_L+'</button>'+
     '<button type="button" class="btn round" data-act="daynext" aria-label="Nächster Tag">'+CHEV_R+'</button></div></div>';
-  if(S.loading)h+='<p class="empty">Lädt …</p>';
-  else if(!it.e.length&&!it.t.length&&!done.length)h+='<p class="empty">'+(ds===today?'Für heute ist nichts offen.':'Für diesen Tag ist nichts geplant.')+'</p>';
-  else{
-    h+='<div style="margin-top:8px">'+it.e.map(function(e){return eventRow(e);}).join('')+it.t.map(function(t){return taskRow(t,today);}).join('')+done.map(doneRow).join('')+'</div>';
+  var nt=it.t.length,ne=it.e.length,nd=done.length,nover=it.t.filter(function(t){return t.due&&t.due<today;}).length;
+  var parts=[];
+  if(nt)parts.push('<b>'+nt+'</b> '+(nt===1?'Aufgabe':'Aufgaben')+' offen'+(nover?' <span class="dsover">('+nover+' überfällig)</span>':''));
+  if(ne)parts.push('<b>'+ne+'</b> '+(ne===1?'Termin':'Termine'));
+  if(nd)parts.push(nd+' erledigt');
+  var summ=S.loading?'Lädt …':parts.length?parts.join(' · '):(ds===today?'Für heute ist nichts offen.':'Für diesen Tag ist nichts geplant.');
+  var canOpen=!S.loading;
+  h+='<button type="button" class="daysum'+(S.dayOpen?' open':'')+'" data-act="daytoggle" aria-expanded="'+S.dayOpen+'"'+(canOpen?'':' disabled')+'><span>'+summ+'</span><svg class="chev'+(S.dayOpen?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>';
+  if(!S.dayOpen||S.loading){$('day').innerHTML=h;return;}
+  if(ne||nt||nd){
+    h+='<div style="margin-top:4px">'+it.e.map(function(e){return eventRow(e);}).join('')+it.t.map(function(t){return taskRow(t,today);}).join('')+done.map(doneRow).join('')+'</div>';
   }
   if(S.canWrite)h+='<div class="addrow"><button type="button" class="btn small" data-act="add-task" data-date="'+ds+'">Aufgabe</button><button type="button" class="btn small" data-act="add-event" data-date="'+ds+'">Termin</button></div>';
   $('day').innerHTML=h;
@@ -2390,6 +2404,7 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'shopdonetoggle':S.shopDoneOpen=!S.shopDoneOpen;renderShop();break;
+    case 'daytoggle':S.dayOpen=!S.dayOpen;try{localStorage.setItem('sommerhaus-dayopen',S.dayOpen?'1':'0');}catch(e){}render();break;
     case 'dayprev':case 'daynext':goTo(addDays(S.selected,act==='daynext'?1:-1));render();break;
     case 'view':S.view=el.dataset.view;render();break;
     case 'add-task':openSheet('task',null,el.dataset.date);break;
@@ -2494,6 +2509,7 @@ function setTheme(t,save){
 (function(){try{
   if(localStorage.getItem('sommerhaus-calmode')==='week')S.calMode='week';
   if(localStorage.getItem('sommerhaus-tab')==='shop')S.tab='shop';
+  if(localStorage.getItem('sommerhaus-dayopen')==='1')S.dayOpen=true;
   var sl=localStorage.getItem('sommerhaus-shoplist');if(sl)S.shopList=sl;
 }catch(e){}})();
 
