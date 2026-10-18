@@ -2492,8 +2492,14 @@ function fillTpl(){
   $('f-tpl').value='';
   $('nameField').hidden=true;
 }
+function knownNames(){
+  if(S.members.length)return S.members.slice();
+  var seen={},out=[];
+  S.tasks.concat(S.events).forEach(function(x){var w=whoTxt(x.who);if(w&&!seen[w]&&w.length<=20&&!/[,&]/.test(w)){seen[w]=1;out.push(w);}});
+  return out.sort(function(a,b){return a.localeCompare(b,'de');});
+}
 function fillWho(cur){
-  var names=S.members.slice();
+  var names=knownNames();
   if(cur&&names.indexOf(cur)<0)names.push(cur);
   $('f-who').innerHTML='<option value="">Alle / offen</option>'+names.map(function(n){return '<option value="'+esc(n)+'">'+esc(n)+'</option>';}).join('');
   $('f-who').value=cur||'';
@@ -2594,7 +2600,7 @@ function renderPushBox(){
 }
 function openNames(){
   $('form').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=true;$('namesForm').hidden=false;
-  $('f-names').value=S.members.join(', ');
+  $('f-names').value=knownNames().join(', ');
   $('f-names').disabled=!S.canWrite;
   $('budgetNote').textContent='Im Überblick seht ihr dann bei „Ausgaben pro Monat“, wie viel noch übrig ist. Feld leer lassen für kein Budget.';$('f-budget').value=S.budget>0?String(S.budget).replace('.',','):'';$('f-budget').disabled=!S.canWrite;
   $('btnNamesSave').hidden=!S.canWrite;
