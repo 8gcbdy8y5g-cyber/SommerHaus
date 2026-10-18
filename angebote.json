@@ -1,35 +1,11 @@
 {
  "week": "Mo., 19. Okt. bis Sa., 24. Okt. 2026",
- "updated": "17.10.2026",
- "note": "Preise laut Prospekt, ohne Gewähr. Nicht jedes Angebot gilt in jeder Filiale. Quelle: rabatt-kompass.de, Stand 17.10.2026. Für diese Woche waren noch nicht alle Prospekte als Text verfügbar, die Liste ist deshalb unvollständig.",
+ "updated": "18.10.2026",
+ "validFrom": "2026-10-19",
+ "validTo": "2026-10-24",
+ "source": "rabatt-kompass.de, kaufland.de, rewe.de, prospektderwoche.de, discounto.de",
+ "note": "Preise laut Prospekt, ohne Gewähr. Nicht jedes Angebot gilt in jeder Filiale. Stand 18.10.2026. Edeka und Globus Bochum hatten keine Prospektpreise als Text, sie fehlen diese Woche.",
  "offers": [
-  {
-   "store": "Netto Marken-Discount",
-   "product": "Weihenstephan Butter oder Die Streichzarte",
-   "price": 0.99,
-   "item": "Butter",
-   "kw": [
-    "butter"
-   ]
-  },
-  {
-   "store": "Globus",
-   "product": "Jeden Tag Butter",
-   "price": 1.11,
-   "item": "Butter",
-   "kw": [
-    "butter"
-   ]
-  },
-  {
-   "store": "Netto",
-   "product": "Hemme Frische Vollmilch 3,7 % oder Frischmilch 1,8 %",
-   "price": 1.19,
-   "item": "Milch",
-   "kw": [
-    "milch"
-   ]
-  },
   {
    "store": "Lidl",
    "product": "Bioland Frische Vollmilch",
@@ -37,34 +13,8 @@
    "item": "Milch",
    "kw": [
     "milch"
-   ]
-  },
-  {
-   "store": "Kaufland",
-   "product": "Landliebe frische Weidemilch",
-   "price": 1.49,
-   "item": "Milch",
-   "kw": [
-    "milch"
-   ]
-  },
-  {
-   "store": "Netto Marken-Discount",
-   "product": "Bananen",
-   "price": 1,
-   "item": "Bananen",
-   "kw": [
-    "banane"
-   ]
-  },
-  {
-   "store": "Netto Marken-Discount",
-   "product": "Chiquita Bananen",
-   "price": 1.99,
-   "item": "Bananen",
-   "kw": [
-    "banane"
-   ]
+   ],
+   "valid": "19.–24.10."
   },
   {
    "store": "Aldi Nord",
@@ -73,35 +23,8 @@
    "item": "Eier",
    "kw": [
     "eier"
-   ]
-  },
-  {
-   "store": "Globus",
-   "product": "Globus 10 frische Eier",
-   "price": 2.89,
-   "item": "Eier",
-   "kw": [
-    "eier"
-   ]
-  },
-  {
-   "store": "Netto",
-   "product": "Freilandeier, 15er-Pack",
-   "price": 3.99,
-   "item": "Eier",
-   "kw": [
-    "eier"
-   ]
-  },
-  {
-   "store": "Netto",
-   "product": "Deutsche Äpfel Elstar, neue Ernte",
-   "price": 1.59,
-   "item": "Äpfel",
-   "kw": [
-    "apfel",
-    "äpfel"
-   ]
+   ],
+   "valid": "19.–24.10."
   },
   {
    "store": "Netto Marken-Discount",
@@ -111,39 +34,8 @@
    "kw": [
     "hackfleisch",
     "hack"
-   ]
-  },
-  {
-   "store": "Kaufland",
-   "product": "K-Purland Hackfleisch gemischt",
-   "price": 3.49,
-   "item": "Hackfleisch",
-   "kw": [
-    "hackfleisch",
-    "hack"
-   ]
-  },
-  {
-   "store": "Kaufland",
-   "product": "K-Classic Toilettenpapier Super Soft",
-   "price": 4.85,
-   "item": "Toilettenpapier",
-   "kw": [
-    "toilettenpapier",
-    "klopapier"
    ],
-   "valid": "bis 31.10."
-  },
-  {
-   "store": "Kaufland",
-   "product": "K-Classic Taschentücher",
-   "price": 2.75,
-   "item": "Taschentücher",
-   "kw": [
-    "taschentucher",
-    "taschentuch"
-   ],
-   "valid": "bis 31.10."
+   "valid": "19.–24.10."
   },
   {
    "store": "Kaufland",
@@ -154,9 +46,577 @@
     "orangensaft"
    ],
    "valid": "bis 31.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Leerdammer",
+   "price": 1.49,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "leerdammer"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Gouda Jung Stück",
+   "price": 2.99,
+   "item": "Gouda",
+   "kw": [
+    "käse",
+    "gouda"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Melitta Auslese, Harmonie oder Barista 500 g",
+   "price": 4.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "melitta"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Bananen",
+   "price": 1.0,
+   "item": "Bananen",
+   "kw": [
+    "banane"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Menge nicht angegeben"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Weihenstephan Butter oder Streichzart",
+   "price": 0.99,
+   "item": "Butter",
+   "kw": [
+    "butter",
+    "weihenstephan"
+   ],
+   "valid": "19.–24.10.",
+   "note": "evtl. nur mit Netto-App"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Zott Sahnejoghurt",
+   "price": 0.44,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "sahnejoghurt",
+    "zott"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Schinkenfleischwurst",
+   "price": 2.49,
+   "item": "Fleischwurst",
+   "kw": [
+    "wurst",
+    "fleischwurst",
+    "aufschnitt"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Landliebe Frische Weidemilch 3,8 %, 1,5 l",
+   "price": 1.49,
+   "item": "Milch",
+   "kw": [
+    "milch",
+    "weidemilch",
+    "vollmilch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 1,00 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Landliebe Butter oder Die Streichzarte, 250 g",
+   "price": 1.29,
+   "item": "Butter",
+   "kw": [
+    "butter"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 5,16 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Danone Activia, 4 x 115 g",
+   "price": 1.49,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "activia"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bergader Schnittkäse, 130–170 g",
+   "price": 1.49,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "schnittkäse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Golden Toast Toastbrot, 500 g",
+   "price": 1.11,
+   "item": "Toast",
+   "kw": [
+    "toast",
+    "toastbrot"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 2,22 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Tafeläpfel, lose, je kg",
+   "price": 1.99,
+   "item": "Äpfel",
+   "kw": [
+    "apfel",
+    "äpfel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bio-Gurke, Stück",
+   "price": 0.79,
+   "item": "Gurke",
+   "kw": [
+    "gurke"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Paprika rot, 500 g",
+   "price": 1.49,
+   "item": "Paprika",
+   "kw": [
+    "paprika"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 2,98 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Speisekartoffeln, 2,5 kg",
+   "price": 2.79,
+   "item": "Kartoffeln",
+   "kw": [
+    "kartoffel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 1,12 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Zwiebeln, 2 kg",
+   "price": 1.49,
+   "item": "Zwiebeln",
+   "kw": [
+    "zwiebel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 0,75 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Purland Hackfleisch gemischt, 500 g",
+   "price": 3.49,
+   "item": "Hackfleisch",
+   "kw": [
+    "hackfleisch",
+    "hack"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 6,98 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Purland Hähnchen-Unterschenkel, 600 g",
+   "price": 2.99,
+   "item": "Hähnchen",
+   "kw": [
+    "hähnchen",
+    "hähnchenschenkel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 4,99 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Original Wagner Steinofen-Pizza oder Flammkuchen",
+   "price": 1.79,
+   "item": "Tiefkühlpizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Oral-B Zahncreme, 75 ml",
+   "price": 2.99,
+   "item": "Zahnpasta",
+   "kw": [
+    "zahnpasta",
+    "zahncreme"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Fa Duschgel, 250 ml",
+   "price": 0.99,
+   "item": "Duschgel",
+   "kw": [
+    "duschgel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 3,96 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Küchentücher, 8 x 64 Blatt",
+   "price": 3.99,
+   "item": "Küchenrolle",
+   "kw": [
+    "küchenrolle",
+    "küchentuch",
+    "küchentücher"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Toilettenpapier Soft XXL",
+   "price": 5.99,
+   "item": "Toilettenpapier",
+   "kw": [
+    "toilettenpapier",
+    "klopapier"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Dallmayr Classic, 500 g",
+   "price": 6.49,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "dallmayr"
+   ],
+   "valid": "19.–24.10.",
+   "note": "mit Kaufland Card 5,99 €"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Vilsa Mineralwasser, 6 x 0,75 l",
+   "price": 3.36,
+   "item": "Mineralwasser",
+   "kw": [
+    "wasser",
+    "mineralwasser"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Rewe",
+   "product": "Meggle Feine Butter oder Streichzart, 250 g",
+   "price": 1.29,
+   "item": "Butter",
+   "kw": [
+    "butter"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 5,16 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Weihenstephan Rahmjoghurt",
+   "price": 0.55,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "rahmjoghurt"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Philadelphia, 195 g",
+   "price": 1.11,
+   "item": "Frischkäse",
+   "kw": [
+    "frischkäse",
+    "philadelphia"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Rote Tafeläpfel",
+   "price": 1.49,
+   "item": "Äpfel",
+   "kw": [
+    "apfel",
+    "äpfel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Menge nicht angegeben"
+  },
+  {
+   "store": "Rewe",
+   "product": "Rewe Bio Rinder-Hackfleisch",
+   "price": 4.99,
+   "item": "Hackfleisch",
+   "kw": [
+    "hackfleisch",
+    "hack",
+    "rinderhack"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Ponnath Schinkenplatte oder Prosciutto Cotto",
+   "price": 2.29,
+   "item": "Aufschnitt",
+   "kw": [
+    "aufschnitt",
+    "schinken"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Hohes C Saft",
+   "price": 1.79,
+   "item": "Saft",
+   "kw": [
+    "saft",
+    "orangensaft"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Wagner Die Backfrische Mozzarella oder Big City Salami",
+   "price": 1.99,
+   "item": "Tiefkühlpizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Zewa Wisch&Weg Original",
+   "price": 2.49,
+   "item": "Küchenrolle",
+   "kw": [
+    "küchenrolle",
+    "küchentuch",
+    "zewa"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Rispentomaten",
+   "price": 1.89,
+   "item": "Tomaten",
+   "kw": [
+    "tomate",
+    "rispentomate"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Menge nicht angegeben"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Speisekartoffeln",
+   "price": 1.49,
+   "item": "Kartoffeln",
+   "kw": [
+    "kartoffel",
+    "speisekartoffel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Menge nicht angegeben"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Wagner Flammkuchen oder Steinofenpizza, 300/320 g",
+   "price": 1.66,
+   "item": "Tiefkühlpizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza",
+    "flammkuchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Wagner Piccolinis",
+   "price": 1.66,
+   "item": "Tiefkühlpizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza",
+    "piccolini"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Tandil Waschmittel",
+   "price": 2.95,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "tandil"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Speisekartoffeln festkochend",
+   "price": 2.19,
+   "item": "Kartoffeln",
+   "kw": [
+    "kartoffel",
+    "speisekartoffel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Menge nicht angegeben"
+  },
+  {
+   "store": "Lidl",
+   "product": "Bio Cocktailstrauchtomaten",
+   "price": 2.99,
+   "item": "Tomaten",
+   "kw": [
+    "tomate",
+    "cocktailtomate",
+    "strauchtomate"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Lavazza Caffè Ganze Bohnen, 1 kg",
+   "price": 12.88,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "kaffeebohne",
+    "lavazza"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur mit Lidl Plus"
+  },
+  {
+   "store": "Penny",
+   "product": "Melitta Auslese, 500 g",
+   "price": 5.55,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "melitta"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Chiquita Bananen",
+   "price": 1.99,
+   "item": "Bananen",
+   "kw": [
+    "banane"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Deutsche rote Äpfel",
+   "price": 2.49,
+   "item": "Äpfel",
+   "kw": [
+    "apfel",
+    "äpfel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Vollkornbrot mit Sonnenblumenkernen",
+   "price": 1.19,
+   "item": "Brot",
+   "kw": [
+    "brot",
+    "vollkornbrot"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Zewa Ultra Soft Toilettenpapier",
+   "price": 3.99,
+   "item": "Toilettenpapier",
+   "kw": [
+    "toilettenpapier",
+    "klopapier",
+    "zewa"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Norma",
+   "product": "Daunasoft Toilettenpapier",
+   "price": 3.75,
+   "item": "Toilettenpapier",
+   "kw": [
+    "toilettenpapier",
+    "klopapier"
+   ],
+   "valid": "19.–25.10."
+  },
+  {
+   "store": "Norma",
+   "product": "Gouda XXL, 600 g",
+   "price": 2.99,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "gouda"
+   ],
+   "valid": "ab 19.10."
   }
- ],
- "validFrom": "2026-10-19",
- "validTo": "2026-10-24",
- "source": "rabatt-kompass.de"
+ ]
 }
