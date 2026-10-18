@@ -2130,6 +2130,7 @@ function pdot(name){return '<i class="pd '+pcls(name)+'" title="'+esc(name||'ohn
 function pbadge(name,sm){return name?'<span class="pb '+pcls(name)+(sm?' sm':'')+'" title="'+esc(name)+'">'+esc(name.trim().charAt(0).toUpperCase())+'</span>':'';}
 /* Ausgaben trennen: Supermarkt-Einkäufe vom Wocheneinkauf zählen komplett; andere Listen, Drogeriemärkte und Baumärkte laufen extra. */
 var BAU_STORES=/(^|\s)(bauhaus|hornbach|obi|toom|hagebau|hagebaumarkt|hellweg|globus baumarkt|bauking|raiffeisen|sonderpreis baumarkt|baustoffshop)(\s|$)/;
+var EAT_STORES=/d(o|ö|oe)ner|kebap|kebab|pizz|imbiss|imbiß|restaurant|ristorante|trattoria|osteria|bistro|burger|mc ?donald|kfc|subway|sushi|grill|gyros|falafel|pommes|currywurst|steakhouse|wok|ramen|lieferando|wolt|vapiano|nordsee|schnellrestaurant|gasthaus|gaststätte|gaststaette|brauhaus|kantine|mensa|eiscafe|eiscaf|eisdiele|biergarten/;
 var DROG_STORES=/(^|\s)(dm|rossmann|müller|mueller|budni|budnikowsky)(\s|$)/;
 function listName(id){var l=allLists().find(function(x){return x.id===id;});return l?l.name:'Andere Liste';}
 function tripSplit(x){
@@ -2139,6 +2140,7 @@ function tripSplit(x){
   var st=nrm(String(x.store||'')).replace(/[^a-z0-9äöüß]+/g,' ').trim();
   if(DROG_STORES.test(st))return {food:0,other:[{name:'Drogerie',sum:amt}]};
   if(BAU_STORES.test(st))return {food:0,other:[{name:'Baumarkt',sum:amt}]};
+  if(EAT_STORES.test(st))return {food:0,other:[{name:'Essen gehen',sum:amt}]};
   return {food:amt,other:[]};
 }
 function tripFood(x){return tripSplit(x).food;}
@@ -2306,7 +2308,7 @@ function renderMonths(){
     budHtml(selM,B)+'<p class="rnote" style="margin:2px 0 8px">'+plural(selM.n,'Einkauf','Einkäufe')+' mit Betrag'+(avg&&!selM.cur?' · Schnitt der Vormonate '+esc(fmtEur(avg)):'')+(avg&&selM.cur?' · bisheriger Monatsschnitt '+esc(fmtEur(avg)):'')+'</p>';
   if(selM.stores.length){var smx=selM.stores[0].sum||1;h+='<div class="rb-stores">'+selM.stores.slice(0,6).map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/smx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
   if(selM.other.length)h+='<p class="rnote" style="margin-top:8px">'+esc(otherLine(selM.other))+'</p>';
-  h+='<p class="rnote">Zählt nur Lebensmittel aus dem Wocheneinkauf mit eingetragenem Betrag. Supermarkt-Einkäufe zählen komplett. Drogeriemärkte, Baumärkte und andere Listen laufen extra. Tipp auf einen Monat zeigt die Läden.</p></div></section>';
+  h+='<p class="rnote">Zählt nur Lebensmittel aus dem Wocheneinkauf mit eingetragenem Betrag. Supermarkt-Einkäufe zählen komplett. Essen gehen, Drogeriemärkte, Baumärkte und andere Listen laufen extra. Tipp auf einen Monat zeigt die Läden.</p></div></section>';
   return h;
 }
 function renderReport(){
