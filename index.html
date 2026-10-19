@@ -411,6 +411,12 @@ span.check{cursor:default}
 .kpis.k3{grid-template-columns:repeat(3,1fr)}
 .kpis.k22{grid-template-columns:repeat(2,1fr)}
 .ofgrp{padding:10px 0;border-top:1px solid var(--sep)}
+.ofsth{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;font:inherit;color:var(--fg);padding:4px 0;min-height:40px;cursor:pointer;text-align:left}
+.ofsth b{font-size:15px;flex:1;min-width:0}
+.ofsth span{font-size:12.5px;color:var(--fg2);white-space:nowrap}
+.ofsth .chev{flex:none;color:var(--fg2);transition:transform .2s}
+.ofsth .chev.open{transform:rotate(90deg)}
+.ofstb{margin-top:4px}
 .ofgrp:first-of-type{border-top:0;padding-top:2px}
 .ofhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:4px}
 .ofhead b{font-size:15px}
@@ -1978,9 +1984,12 @@ function renderOffers(){
   }
   // Alle Angebote nach Laden
   var by={};OFFERS.offers.forEach(function(o){(by[o.store]=by[o.store]||[]).push(o);});
-  var ab=Object.keys(by).sort().map(function(s){
-    return '<div class="ofgrp"><div class="ofhead"><b>'+esc(s)+'</b><span>'+plural(by[s].length,'Angebot','Angebote')+'</span></div>'+by[s].sort(function(a,b){return a.product.localeCompare(b.product,'de');}).map(function(o){return ofRow(o,true);}).join('')+'</div>';
-  }).join('');
+  S.ofStore=S.ofStore||{};
+  var ab=Object.keys(by).sort(function(a,b){return by[b].length-by[a].length||a.localeCompare(b,'de');}).map(function(st){
+    var op=!!S.ofStore[st],fv=by[st].filter(function(o){return isFav(o.item)||(S.favs||[]).some(function(f){return ofMatch(f,o);});}).length;
+    return '<div class="ofgrp ofstore'+(op?' open':'')+'"><button type="button" class="ofsth" data-act="ofstore" data-s="'+esc(st)+'" aria-expanded="'+op+'"><b>'+esc(st)+'</b><span>'+(fv?'★ '+fv+' · ':'')+plural(by[st].length,'Angebot','Angebote')+'</span><svg class="chev'+(op?' open':'')+'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'+
+      (op?'<div class="ofstb">'+by[st].sort(function(a,b){return a.product.localeCompare(b.product,'de');}).map(function(o){return ofRow(o,true);}).join('')+'</div>':'')+'</div>';
+  }).join('')+'<p class="rnote">Tipp auf einen Laden klappt seine Angebote auf.</p>';
   h+=ofFold('all','Alle Angebote',plural(OFFERS.offers.length,'Angebot','Angebote'),ab);
   h+='<section class="rtile rfoot"><p class="rnote" style="margin:0">'+esc(OFFERS.note||'')+'</p></section>';
   box.innerHTML=h;
@@ -3285,6 +3294,7 @@ document.addEventListener('click',function(ev){
     case 'tripsheet':openTrips(el.dataset.t);break;
     case 'kpi':openKpi(el.dataset.m);break;
     case 'ofgo':S.tab='offers';try{localStorage.setItem('sommerhaus-tab',S.tab);}catch(e){}render();window.scrollTo(0,0);break;
+    case 'ofstore':S.ofStore=S.ofStore||{};S.ofStore[el.dataset.s]=!S.ofStore[el.dataset.s];renderOffers();break;
     case 'offold':S.ofOpen=S.ofOpen||{};S.ofOpen[el.dataset.k]=!S.ofOpen[el.dataset.k];renderOffers();break;
     case 'favtoggle':favToggle(el.dataset.t);break;
     case 'ofadd':{
