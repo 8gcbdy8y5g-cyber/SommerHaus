@@ -3,8 +3,8 @@
  "updated": "19.10.2026",
  "validFrom": "2026-10-19",
  "validTo": "2026-10-24",
- "source": "rabatt-kompass.de, kaufland.de, rewe.de, prospektderwoche.de, discounto.de, marktguru.de, kaufda.de, meinprospekt.de",
- "note": "Preise laut Prospekt, ohne Gewähr. Nicht jedes Angebot gilt in jeder Filiale. Stand 19.10.2026, Getränke nachgetragen. Edeka und Globus Bochum hatten keine Prospektpreise als Text, sie fehlen diese Woche.",
+ "source": "kaufland.de, rewe.de, edeka.de, rabatt-kompass.de, discounto.de, marktguru.de, aktionspreis.de, rabatprospekt.de, prospektangebote.de, prospektderwoche.de, meinprospekt.de, kaufda.de, mydealz.de",
+ "note": "Preise laut Prospekt, ohne Gewähr. Nicht jedes Angebot gilt in jeder Filiale. Stand 19.10.2026 nach gründlicher Recherche. Vollständig ist vor allem Kaufland; bei Edeka fehlen Fleisch, Wurst, Fisch, Tiefkühl, Süßes und Drogerie, bei Globus, Netto und Norma sind nur Teile des Prospekts lesbar. Getränkemärkte (trinkgut, Trink & Spare, Getränkewelt) hatten ihre Prospekte nur als Bild.",
  "offers": [
   {
    "store": "Lidl",
@@ -471,18 +471,6 @@
   },
   {
    "store": "Aldi Nord",
-   "product": "Wagner Flammkuchen oder Steinofenpizza, 300/320 g",
-   "price": 1.66,
-   "item": "Tiefkühlpizza",
-   "kw": [
-    "pizza",
-    "tiefkühlpizza",
-    "flammkuchen"
-   ],
-   "valid": "19.–24.10."
-  },
-  {
-   "store": "Aldi Nord",
    "product": "Wagner Piccolinis",
    "price": 1.66,
    "item": "Tiefkühlpizza",
@@ -527,19 +515,6 @@
     "strauchtomate"
    ],
    "valid": "19.–24.10."
-  },
-  {
-   "store": "Lidl",
-   "product": "Lavazza Caffè Ganze Bohnen, 1 kg",
-   "price": 12.88,
-   "item": "Kaffee",
-   "kw": [
-    "kaffee",
-    "kaffeebohne",
-    "lavazza"
-   ],
-   "valid": "19.–24.10.",
-   "note": "nur mit Lidl Plus"
   },
   {
    "store": "Penny",
@@ -778,14 +753,14 @@
   {
    "store": "Penny",
    "product": "Red Bull Energy Drink, 0,25 l",
-   "price": 0.88,
+   "price": 0.99,
    "item": "Red Bull",
    "kw": [
     "red bull",
     "energy"
    ],
    "valid": "19.–24.10.",
-   "note": "nur mit Penny App"
+   "note": "mit Penny App 0,88 €"
   },
   {
    "store": "Penny",
@@ -858,6 +833,9198 @@
    ],
    "valid": "bis 24.10.",
    "note": "nur mit Kaufland Card"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kulturheidelbeeren, 125-g-Schale",
+   "price": 1.79,
+   "item": "Heidelbeeren",
+   "kw": [
+    "heidelbeere",
+    "beere"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bio-Bananen, je kg",
+   "price": 1.79,
+   "item": "Bananen",
+   "kw": [
+    "banane",
+    "bio"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kaki, Stück",
+   "price": 0.49,
+   "item": "Kaki",
+   "kw": [
+    "kaki"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Clementinen XXL, 2,3-kg-Kiste",
+   "price": 3.99,
+   "item": "Clementinen",
+   "kw": [
+    "clementine",
+    "mandarine"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Papaya, Stück",
+   "price": 2.49,
+   "item": "Papaya",
+   "kw": [
+    "papaya"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kiwi Sungold, Stück",
+   "price": 0.79,
+   "item": "Kiwi",
+   "kw": [
+    "kiwi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Honigmelone, Stück",
+   "price": 2.49,
+   "item": "Melone",
+   "kw": [
+    "melone",
+    "honigmelone"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Tafelbirnen, lose, je kg",
+   "price": 2.49,
+   "item": "Birnen",
+   "kw": [
+    "birne"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Tafelbirnen Rocha, 1 kg",
+   "price": 1.99,
+   "item": "Birnen",
+   "kw": [
+    "birne"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Tafeläpfel rot, 1 kg",
+   "price": 1.99,
+   "item": "Äpfel",
+   "kw": [
+    "apfel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bioland Tafeläpfel, 1 kg",
+   "price": 2.79,
+   "item": "Äpfel",
+   "kw": [
+    "apfel",
+    "bio"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bioland Tafelbirnen, 500 g",
+   "price": 1.99,
+   "item": "Birnen",
+   "kw": [
+    "birne",
+    "bio"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kürbis, lose, je kg",
+   "price": 0.99,
+   "item": "Kürbis",
+   "kw": [
+    "kürbis"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Halloween-Kürbis, Stück",
+   "price": 3.99,
+   "item": "Kürbis",
+   "kw": [
+    "kürbis"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Mini-Romatomaten, 500 g",
+   "price": 1.99,
+   "item": "Tomaten",
+   "kw": [
+    "tomate",
+    "romatomate"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kräuter XXL, 75–200 g",
+   "price": 1.49,
+   "item": "Kräuter",
+   "kw": [
+    "kräuter"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Süßkartoffeln, je kg",
+   "price": 1.49,
+   "item": "Süßkartoffeln",
+   "kw": [
+    "süßkartoffel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Multicolor-Salat, Stück",
+   "price": 0.99,
+   "item": "Salat",
+   "kw": [
+    "salat"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kopfsalat, Stück",
+   "price": 0.99,
+   "item": "Salat",
+   "kw": [
+    "salat",
+    "kopfsalat"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Mini-Romanasalat, 2er-Pack",
+   "price": 0.69,
+   "item": "Salat",
+   "kw": [
+    "salat",
+    "romanasalat"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bio-Zucchini, 500 g",
+   "price": 1.79,
+   "item": "Zucchini",
+   "kw": [
+    "zucchini",
+    "bio"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Porree, je kg",
+   "price": 1.49,
+   "item": "Porree",
+   "kw": [
+    "porree",
+    "lauch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Broccoli, 500 g",
+   "price": 0.88,
+   "item": "Brokkoli",
+   "kw": [
+    "brokkoli",
+    "broccoli"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Champignons weiß, 250 g",
+   "price": 0.99,
+   "item": "Champignons",
+   "kw": [
+    "champignon",
+    "pilz"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Rosenkohl, 750 g",
+   "price": 1.49,
+   "item": "Rosenkohl",
+   "kw": [
+    "rosenkohl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Tafeltrauben XXL, 800 g",
+   "price": 2.99,
+   "item": "Trauben",
+   "kw": [
+    "traube"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Orangen, 2-kg-Netz",
+   "price": 2.22,
+   "item": "Orangen",
+   "kw": [
+    "orange"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Demeter Pastinaken oder Petersilienwurzeln, 300 g",
+   "price": 1.99,
+   "item": "Pastinaken",
+   "kw": [
+    "pastinake",
+    "petersilienwurzel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Purland Schweinebauch XXL, je kg",
+   "price": 4.99,
+   "item": "Schweinebauch",
+   "kw": [
+    "schweinebauch",
+    "schwein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Purland Schinkengulasch, 500 g",
+   "price": 2.99,
+   "item": "Gulasch",
+   "kw": [
+    "gulasch",
+    "schwein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Schweinenacken/-kamm ohne Knochen, je kg",
+   "price": 5.49,
+   "item": "Schweinenacken",
+   "kw": [
+    "schweinenacken",
+    "nacken"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Purland Schweinekotelett, 4 St. = 700 g",
+   "price": 3.49,
+   "item": "Kotelett",
+   "kw": [
+    "kotelett",
+    "schwein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Schweine-Nuggets XXL, 1 kg",
+   "price": 6.99,
+   "item": "Nuggets",
+   "kw": [
+    "nugget"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Schweinenackensteak Mexico Style, 750 g",
+   "price": 4.49,
+   "item": "Nackensteak",
+   "kw": [
+    "steak",
+    "nackensteak"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kasseler Schmorrippchen, je kg",
+   "price": 6.49,
+   "item": "Kasseler",
+   "kw": [
+    "kasseler",
+    "rippchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Schlemmerbraten (Schweinenacken), je kg",
+   "price": 6.99,
+   "item": "Braten",
+   "kw": [
+    "braten",
+    "schlemmerbraten"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Schweinenacken XXL gepökelt, je kg",
+   "price": 5.99,
+   "item": "Schweinenacken",
+   "kw": [
+    "schweinenacken",
+    "kasseler"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Schweineschnitzel, 300 g",
+   "price": 2.29,
+   "item": "Schnitzel",
+   "kw": [
+    "schnitzel",
+    "schwein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Schäufele, je kg",
+   "price": 7.49,
+   "item": "Schäufele",
+   "kw": [
+    "schäufele",
+    "schwein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Geschnetzeltes Gyros Style, 500 g",
+   "price": 2.99,
+   "item": "Gyros",
+   "kw": [
+    "gyro",
+    "geschnetzelte"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pfeffer-Hüftsteak Jungbulle, je kg",
+   "price": 18.95,
+   "item": "Rindersteak",
+   "kw": [
+    "steak",
+    "rind",
+    "hüftsteak"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kalbs-Rollbraten, je kg",
+   "price": 11.9,
+   "item": "Kalbsbraten",
+   "kw": [
+    "kalb",
+    "braten"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Hähnchen-Minis Cornflakes XXL, 900 g",
+   "price": 7.99,
+   "item": "Hähnchen",
+   "kw": [
+    "hähnchen",
+    "nugget"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Hähnchen-Minutenschnitzel, 400 g",
+   "price": 3.79,
+   "item": "Hähnchenschnitzel",
+   "kw": [
+    "hähnchen",
+    "schnitzel",
+    "hähnchenbrust"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Frische halbe Pute, je kg",
+   "price": 6.99,
+   "item": "Pute",
+   "kw": [
+    "pute"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Turkey-BBQ-Wings XXL, 1,1 kg",
+   "price": 4.99,
+   "item": "Putenflügel",
+   "kw": [
+    "pute",
+    "wing",
+    "flügel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Barbarie-Ente, je kg",
+   "price": 5.99,
+   "item": "Ente",
+   "kw": [
+    "ente"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Perlhuhn, 1,2 kg",
+   "price": 7.99,
+   "item": "Perlhuhn",
+   "kw": [
+    "perlhuhn",
+    "geflügel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Amie Entenbrustfilet, 300 g (TK)",
+   "price": 3.33,
+   "item": "Entenbrust",
+   "kw": [
+    "ente",
+    "entenbrust"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Weida Lammkeule, je kg",
+   "price": 12.99,
+   "item": "Lamm",
+   "kw": [
+    "lamm",
+    "lammkeule"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Der Gusto Hirschgulasch, 500 g",
+   "price": 9.99,
+   "item": "Wild",
+   "kw": [
+    "hirsch",
+    "gulasch",
+    "wild"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Der Gusto Wildschweinmedaillons, 300 g",
+   "price": 7.99,
+   "item": "Wild",
+   "kw": [
+    "wildschwein",
+    "wild"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Brefood ganzes Kaninchen, je kg",
+   "price": 8.99,
+   "item": "Kaninchen",
+   "kw": [
+    "kaninchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Mühlen-Schinken, 100 g",
+   "price": 1.89,
+   "item": "Schinken",
+   "kw": [
+    "schinken"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Prosciutto Cotto, 120 g",
+   "price": 2.99,
+   "item": "Kochschinken",
+   "kw": [
+    "schinken",
+    "kochschinken"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Serrano-Schinken, 80 g",
+   "price": 1.79,
+   "item": "Schinken",
+   "kw": [
+    "schinken",
+    "serrano"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Wiltmann Leber-Pastete, 100 g",
+   "price": 1.11,
+   "item": "Leberpastete",
+   "kw": [
+    "leberpastete",
+    "pastete"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Berschneider Entenbrust (Aufschnitt), 80 g",
+   "price": 1.99,
+   "item": "Aufschnitt",
+   "kw": [
+    "aufschnitt",
+    "ente"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Italienische Salami, 100 g",
+   "price": 2.49,
+   "item": "Salami",
+   "kw": [
+    "salami"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Gold Edition Aufschnittplatte, 100–120 g",
+   "price": 2.39,
+   "item": "Aufschnitt",
+   "kw": [
+    "aufschnitt"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,99"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kabanos, 150 g",
+   "price": 5.0,
+   "item": "Kabanos",
+   "kw": [
+    "kabanos",
+    "wurst"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Preis laut Seite; Aktionsbedingung unklar"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Wiltmann Salami, 250 g",
+   "price": 4.99,
+   "item": "Salami",
+   "kw": [
+    "salami"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Ungarische Salami, 375 g",
+   "price": 3.79,
+   "item": "Salami",
+   "kw": [
+    "salami"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Meica Deutschländer Würstchen, 660-g-Glas",
+   "price": 3.49,
+   "item": "Würstchen",
+   "kw": [
+    "würstchen",
+    "wiener"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Schweinebauch ohne Knochen, 100 g (Theke)",
+   "price": 0.59,
+   "item": "Schweinebauch",
+   "kw": [
+    "schweinebauch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Rinderbraten Hals/Hohe Rippe, 100 g (Theke)",
+   "price": 1.39,
+   "item": "Rinderbraten",
+   "kw": [
+    "rind",
+    "braten"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Rinder-Roastbeef, 100 g (Theke)",
+   "price": 2.49,
+   "item": "Roastbeef",
+   "kw": [
+    "roastbeef",
+    "rind"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Fleischwurst eigene Herstellung, 100 g (Theke)",
+   "price": 0.88,
+   "item": "Fleischwurst",
+   "kw": [
+    "fleischwurst",
+    "wurst"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Delikatess-Fleischkäse, 100 g (Theke)",
+   "price": 0.69,
+   "item": "Fleischkäse",
+   "kw": [
+    "fleischkäse",
+    "leberkäse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Putenbrust Aufschnitt, 100 g (Theke)",
+   "price": 1.79,
+   "item": "Putenbrust",
+   "kw": [
+    "putenbrust",
+    "aufschnitt"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Gin-Schinken, 100 g (Theke)",
+   "price": 1.79,
+   "item": "Schinken",
+   "kw": [
+    "schinken"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Nussschinken, 100 g (Theke)",
+   "price": 1.79,
+   "item": "Schinken",
+   "kw": [
+    "schinken",
+    "nussschinken"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Würzica, 100 g (Theke)",
+   "price": 1.99,
+   "item": "Aufschnitt",
+   "kw": [
+    "aufschnitt",
+    "wurst"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Gutsmeister Salami, 100 g (Theke)",
+   "price": 1.49,
+   "item": "Salami",
+   "kw": [
+    "salami"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Hähnchen-Schnitzel, 100 g (Theke)",
+   "price": 1.49,
+   "item": "Hähnchenschnitzel",
+   "kw": [
+    "hähnchen",
+    "schnitzel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kalbsschnitzel, 100 g (Theke)",
+   "price": 1.99,
+   "item": "Kalbsschnitzel",
+   "kw": [
+    "kalb",
+    "schnitzel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Blue Bay Alaska-Seelachs-Loins, 2 St. = 220 g",
+   "price": 3.49,
+   "item": "Seelachs",
+   "kw": [
+    "seelachs",
+    "fisch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Blue Bay Lachsforellenfilet, je kg",
+   "price": 13.99,
+   "item": "Lachsforelle",
+   "kw": [
+    "lachsforelle",
+    "fisch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kabeljaufilet, 100 g (Theke)",
+   "price": 2.99,
+   "item": "Kabeljau",
+   "kw": [
+    "kabeljau",
+    "fisch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Thunfischfilet, 100 g (Theke)",
+   "price": 3.99,
+   "item": "Thunfisch",
+   "kw": [
+    "thunfisch",
+    "fisch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Räuchergarnelen, 100 g (Theke)",
+   "price": 3.59,
+   "item": "Garnelen",
+   "kw": [
+    "garnele"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Matjeshappen, 100 g (Theke)",
+   "price": 1.59,
+   "item": "Matjes",
+   "kw": [
+    "matjes",
+    "hering",
+    "fisch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Norweg. Räucherlachs, 200 g",
+   "price": 3.49,
+   "item": "Lachs",
+   "kw": [
+    "lachs",
+    "räucherlachs"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Medusa Meeresspezialitäten, 120 g",
+   "price": 2.99,
+   "item": "Meeresfrüchte",
+   "kw": [
+    "meeresfrucht"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Escal King Prawns, 225–250 g (TK)",
+   "price": 2.99,
+   "item": "Garnelen",
+   "kw": [
+    "garnele",
+    "prawn"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Icewind Pangasiusfilets, 1 kg (TK)",
+   "price": 4.99,
+   "item": "Pangasius",
+   "kw": [
+    "pangasius",
+    "fisch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Nestlé Mix-in Smarties Joghurt, 120 g",
+   "price": 0.69,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Mövenpick Fruchtjoghurt, 150 g",
+   "price": 0.69,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "fruchtjoghurt"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 0,59"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Landliebe Pudding, 150–225 g",
+   "price": 0.44,
+   "item": "Pudding",
+   "kw": [
+    "pudding"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Zott Monte Snack, 232 g",
+   "price": 1.99,
+   "item": "Monte Snack",
+   "kw": [
+    "monte",
+    "dessert"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Müllermilch Xtreme Protein / High Protein / Matcha, 250 g / 400 ml",
+   "price": 0.99,
+   "item": "Müllermilch",
+   "kw": [
+    "müllermilch",
+    "milchdrink",
+    "protein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Saure Sahne, 200 g",
+   "price": 0.49,
+   "item": "Saure Sahne",
+   "kw": [
+    "sahne",
+    "saure sahne"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Président Crème fraîche, 200 g",
+   "price": 1.49,
+   "item": "Crème fraîche",
+   "kw": [
+    "creme fraiche",
+    "sahne"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Rama Cremefine oder vegane Creme, 200–250 ml",
+   "price": 0.99,
+   "item": "Kochsahne",
+   "kw": [
+    "sahne",
+    "kochsahne",
+    "cremefine"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 0,79"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Rama Culinesse, 450 ml",
+   "price": 1.49,
+   "item": "Bratfett",
+   "kw": [
+    "culinesse",
+    "bratfett"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,29"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Butaris Butterschmalz, 250 g",
+   "price": 2.99,
+   "item": "Butterschmalz",
+   "kw": [
+    "butterschmalz"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Deli Reform Das Original, 450 g",
+   "price": 1.29,
+   "item": "Margarine",
+   "kw": [
+    "margarine"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Oatly Haferdrink / Barista, 1 l",
+   "price": 1.79,
+   "item": "Haferdrink",
+   "kw": [
+    "haferdrink",
+    "hafermilch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,66"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Dessert-Soße, 500 ml",
+   "price": 0.99,
+   "item": "Dessertsoße",
+   "kw": [
+    "dessertsoße",
+    "vanillesoße"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Le Rustique Camembert, 250 g",
+   "price": 2.49,
+   "item": "Camembert",
+   "kw": [
+    "camembert",
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Galbani Mozzarella Classic, 225 g",
+   "price": 1.19,
+   "item": "Mozzarella",
+   "kw": [
+    "mozzarella",
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Rougette Ofenkäse, 320 g",
+   "price": 3.49,
+   "item": "Ofenkäse",
+   "kw": [
+    "käse",
+    "ofenkäse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Adler Edelcreme, 100 g",
+   "price": 1.39,
+   "item": "Käse",
+   "kw": [
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Cheestrings, 80 g",
+   "price": 1.79,
+   "item": "Käsesnack",
+   "kw": [
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Der Grüne Altenburger Ziegencreme, 150 g",
+   "price": 2.29,
+   "item": "Ziegenkäse",
+   "kw": [
+    "käse",
+    "ziegenkäse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Appenzeller extra würzig, 100 g (Theke)",
+   "price": 1.79,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "appenzeller"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Don Bernardo Manchego, 100 g (Theke)",
+   "price": 2.49,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "manchego"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bonbel Butterkäse, 100 g (Theke)",
+   "price": 1.79,
+   "item": "Butterkäse",
+   "kw": [
+    "käse",
+    "butterkäse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Grünländer Schnittkäse, 100 g (Theke)",
+   "price": 1.19,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "schnittkäse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Emmi Kaltbach Le Gruyère AOP, 100 g (Theke)",
+   "price": 2.49,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "gruyère"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bioland Hubertus, 100 g (Theke)",
+   "price": 1.79,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "bio"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kerrygold irischer Cheddar, 100 g (Theke)",
+   "price": 0.99,
+   "item": "Cheddar",
+   "kw": [
+    "käse",
+    "cheddar"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Maasdamer, 100 g (Theke)",
+   "price": 0.79,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "maasdamer"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Spanischer Schnittkäse, 100 g (Theke)",
+   "price": 1.99,
+   "item": "Käse",
+   "kw": [
+    "käse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Premium Heujuwel, 100 g (Theke)",
+   "price": 1.49,
+   "item": "Käse",
+   "kw": [
+    "käse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Le Petit Basque Schafskäse, 100 g (Theke)",
+   "price": 2.99,
+   "item": "Schafskäse",
+   "kw": [
+    "käse",
+    "schafskäse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Sennenkäse, 100 g (Theke)",
+   "price": 1.19,
+   "item": "Käse",
+   "kw": [
+    "käse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Frischetheke"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Tête de Moine AOP, 420 g",
+   "price": 11.99,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "tête de moine"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pizza Salami (Backshop), Stück",
+   "price": 0.79,
+   "item": "Pizzaecke",
+   "kw": [
+    "pizzaecke",
+    "pizzastück"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Apfeltasche, Stück",
+   "price": 0.55,
+   "item": "Apfeltasche",
+   "kw": [
+    "apfeltasche",
+    "gebäck"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Quarkbällchen, Stück",
+   "price": 0.22,
+   "item": "Quarkbällchen",
+   "kw": [
+    "quarkbällchen",
+    "gebäck"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Halloween-Muffin, Stück",
+   "price": 1.29,
+   "item": "Muffin",
+   "kw": [
+    "muffin"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Halloween-Donut, Stück",
+   "price": 0.59,
+   "item": "Donut",
+   "kw": [
+    "donut"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Baguette Parisienne, 420 g",
+   "price": 0.99,
+   "item": "Baguette",
+   "kw": [
+    "baguette",
+    "brot"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 0,79"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Ciabatta natur, 300 g",
+   "price": 0.69,
+   "item": "Ciabatta",
+   "kw": [
+    "ciabatta",
+    "brot"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Rustikales Wurzelbrot, 420 g",
+   "price": 1.49,
+   "item": "Brot",
+   "kw": [
+    "brot",
+    "wurzelbrot"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Weißbrot mit Glanz, 500 g",
+   "price": 1.59,
+   "item": "Weißbrot",
+   "kw": [
+    "brot",
+    "weißbrot"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Sauerteigbrötchen, Stück",
+   "price": 0.39,
+   "item": "Brötchen",
+   "kw": [
+    "brötchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Dinkelvollkornbrötchen, Stück",
+   "price": 0.39,
+   "item": "Brötchen",
+   "kw": [
+    "brötchen",
+    "dinkel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Feine Weizenbrötchen, 6 St. = 360 g",
+   "price": 0.79,
+   "item": "Aufbackbrötchen",
+   "kw": [
+    "brötchen",
+    "aufbackbrötchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Demeter Steinofen-Baguette, 270 g",
+   "price": 1.39,
+   "item": "Baguette",
+   "kw": [
+    "baguette",
+    "bio"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Harry 1688 Unser Mildes, 500 g",
+   "price": 1.29,
+   "item": "Brot",
+   "kw": [
+    "brot",
+    "mischbrot"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Wasa Knäckebrot, 200–275 g",
+   "price": 1.79,
+   "item": "Knäckebrot",
+   "kw": [
+    "knäckebrot"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,59"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Meggle Baguette, 160 g",
+   "price": 1.11,
+   "item": "Kräuterbaguette",
+   "kw": [
+    "baguette",
+    "kräuterbaguette"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Mr. Brownie Galactic Brownies, 200 g",
+   "price": 2.22,
+   "item": "Brownies",
+   "kw": [
+    "brownie",
+    "kuchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Iglo Gemüse, 400–540 g (TK)",
+   "price": 2.22,
+   "item": "TK-Gemüse",
+   "kw": [
+    "tk-gemüse",
+    "gemüse",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Gustavo Gusto Pizza, 410–475 g (TK)",
+   "price": 3.49,
+   "item": "Pizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Milka oder Oreo Stieleis/Sandwicheis, 270–440 ml",
+   "price": 2.22,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "stieleis"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,99"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Mars oder Snickers Ice Cream, 5 St.",
+   "price": 2.79,
+   "item": "Eis",
+   "kw": [
+    "eis"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 2,49"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Oswald Früchte, 350–400 g (TK)",
+   "price": 2.49,
+   "item": "TK-Obst",
+   "kw": [
+    "tk-obst",
+    "beere",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Frosta Kräuter, 75–120 g (TK)",
+   "price": 2.67,
+   "item": "TK-Kräuter",
+   "kw": [
+    "kräuter",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10.",
+   "note": "3 + 1 gratis, Preis je 3 Packungen laut Seite; umgerechnet ca. 0,67 je Packung"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Reisgericht, 750 g (TK)",
+   "price": 2.67,
+   "item": "Fertiggericht",
+   "kw": [
+    "reisgericht",
+    "fertiggericht",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Mehrkauf (3 Stück), 2,67 je Packung"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Coppenrath & Wiese Unsere Goldstücke, 6 St. (TK)",
+   "price": 1.99,
+   "item": "Aufbackbrötchen",
+   "kw": [
+    "brötchen",
+    "goldstück",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,79"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Gold Herzogin-Kartoffeln, 600 g (TK)",
+   "price": 1.29,
+   "item": "Kartoffelprodukt",
+   "kw": [
+    "herzoginkartoffel",
+    "kartoffel",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Steinhaus Tortelloni, 500 g",
+   "price": 2.99,
+   "item": "Tortelloni",
+   "kw": [
+    "tortelloni",
+    "nudel",
+    "pasta"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bürger Gnocchi, 500 g",
+   "price": 1.79,
+   "item": "Gnocchi",
+   "kw": [
+    "gnocchi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Like Meat vegane Fleischalternative, 180 g",
+   "price": 2.49,
+   "item": "Fleischersatz",
+   "kw": [
+    "vegan",
+    "fleischersatz"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 2,29"
+  },
+  {
+   "store": "Kaufland",
+   "product": "YouCook Fertiggericht, 350–420 g",
+   "price": 3.49,
+   "item": "Fertiggericht",
+   "kw": [
+    "fertiggericht"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Kartoffelsalat, 400 g",
+   "price": 1.19,
+   "item": "Kartoffelsalat",
+   "kw": [
+    "kartoffelsalat",
+    "salat"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bonduelle Gemüse oder Hülsenfrüchte, 300–400-g-Dose",
+   "price": 1.11,
+   "item": "Dosengemüse",
+   "kw": [
+    "konserve",
+    "gemüse",
+    "mais",
+    "bohne"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 0,99"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kühne 2-Minuten-Rotkohl, 700 g",
+   "price": 1.79,
+   "item": "Rotkohl",
+   "kw": [
+    "rotkohl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kühne Schlemmertöpfchen, 530 g",
+   "price": 2.49,
+   "item": "Gurken",
+   "kw": [
+    "gurke",
+    "essiggurke"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Ananas-Stücke, 560-g-Dose",
+   "price": 1.29,
+   "item": "Ananas",
+   "kw": [
+    "ananas",
+    "konserve"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Odenwald Wild-Preiselbeeren, 390 g",
+   "price": 2.69,
+   "item": "Preiselbeeren",
+   "kw": [
+    "preiselbeere"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Fuchs Fond, 400 ml",
+   "price": 1.99,
+   "item": "Fond",
+   "kw": [
+    "fond",
+    "brühe"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,79"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Homann Würzsauce, 430 ml",
+   "price": 1.99,
+   "item": "Grillsoße",
+   "kw": [
+    "soße",
+    "sauce"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Maille Dijon-Senf, 200 ml",
+   "price": 1.99,
+   "item": "Senf",
+   "kw": [
+    "senf"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bull's-Eye BBQ-Sauce, 300 ml",
+   "price": 5.0,
+   "item": "BBQ-Soße",
+   "kw": [
+    "bbq",
+    "soße"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Preis für 3 Flaschen (je 1,67)"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kühne Condimento/Balsamico, 500 ml",
+   "price": 2.79,
+   "item": "Balsamico",
+   "kw": [
+    "balsamico",
+    "essig"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Sonnenblumenöl, 1 l",
+   "price": 1.39,
+   "item": "Sonnenblumenöl",
+   "kw": [
+    "öl",
+    "sonnenblumenöl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Knorr Soße, Dose",
+   "price": 1.5,
+   "item": "Bratensoße",
+   "kw": [
+    "soße",
+    "bratensoße"
+   ],
+   "valid": "19.–24.10.",
+   "note": "3 + 1 gratis, umgerechnet je Dose"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Maggi Würzmischung, 60–78 g",
+   "price": 1.29,
+   "item": "Fix",
+   "kw": [
+    "fix",
+    "würzmischung"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Ben's Original Fix Sauce, 400 g",
+   "price": 1.79,
+   "item": "Soße",
+   "kw": [
+    "soße",
+    "sauce"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Wagner Kräuter/Gewürze, 15–25 g",
+   "price": 1.39,
+   "item": "Gewürze",
+   "kw": [
+    "gewürz",
+    "kräuter"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Dorfmühle Oberschwäbische Land-Nudeln, 550 g",
+   "price": 1.99,
+   "item": "Nudeln",
+   "kw": [
+    "nudel",
+    "pasta"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pfanni Kartoffelpüree, 240–283 g",
+   "price": 1.49,
+   "item": "Kartoffelpüree",
+   "kw": [
+    "kartoffelpüree",
+    "püree"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,29"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pfanni Knödel oder Klöße, 6 St.",
+   "price": 1.49,
+   "item": "Knödel",
+   "kw": [
+    "knödel",
+    "kloß"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,29"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pfanni Kartoffelgericht, 400 g",
+   "price": 1.49,
+   "item": "Kartoffelgericht",
+   "kw": [
+    "kartoffel",
+    "rösti",
+    "reibekuchen"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,29"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Friessinger Mühle Haushaltsmehl, 1 kg",
+   "price": 0.79,
+   "item": "Mehl",
+   "kw": [
+    "mehl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Mondamin Soßenbinder/Mehlschwitze, 250 g",
+   "price": 1.29,
+   "item": "Soßenbinder",
+   "kw": [
+    "soßenbinder",
+    "mehlschwitze"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Dr. Oetker Backmischung, 280–462 g",
+   "price": 2.49,
+   "item": "Backmischung",
+   "kw": [
+    "backmischung"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Seeberger Aprikosen, 125 g",
+   "price": 2.99,
+   "item": "Trockenobst",
+   "kw": [
+    "aprikose",
+    "trockenobst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Seeberger Walnusskerne, 150 g",
+   "price": 2.99,
+   "item": "Walnüsse",
+   "kw": [
+    "walnuss",
+    "nuss"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Kürbiskerne, 200 g",
+   "price": 1.39,
+   "item": "Kürbiskerne",
+   "kw": [
+    "kürbiskern"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Nuss-Frucht-Mix / Cashew-Cranberry, 200 g",
+   "price": 1.39,
+   "item": "Studentenfutter",
+   "kw": [
+    "nuss",
+    "studentenfutter"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kellogg's Cerealien, 375–500 g",
+   "price": 2.39,
+   "item": "Cornflakes",
+   "kw": [
+    "cerealie",
+    "cornflake",
+    "müsli"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Zetti Knusperflocken, 270 g",
+   "price": 2.99,
+   "item": "Knusperflocken",
+   "kw": [
+    "schokolade",
+    "knusperflocke"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Milka Haselnusscreme, 350 g",
+   "price": 2.49,
+   "item": "Nusscreme",
+   "kw": [
+    "nusscreme",
+    "aufstrich"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Mövenpick Gourmet-Frühstück, 250 g",
+   "price": 2.22,
+   "item": "Marmelade",
+   "kw": [
+    "marmelade",
+    "konfitüre",
+    "aufstrich"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Corny Riegel, 4–6 St.",
+   "price": 1.79,
+   "item": "Müsliriegel",
+   "kw": [
+    "müsliriegel",
+    "riegel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,59"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Melitta Barista Crema, 1 kg",
+   "price": 12.99,
+   "item": "Kaffeebohnen",
+   "kw": [
+    "kaffee",
+    "kaffeebohne"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 11,99"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Tchibo Herzhaft Mild, 2 x 250 g",
+   "price": 6.49,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Eduscho Kaffee, 1 kg",
+   "price": 12.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Eduscho Kaffeepads, 208 g",
+   "price": 3.99,
+   "item": "Kaffeepads",
+   "kw": [
+    "kaffee",
+    "kaffeepad"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Jacobs Krönung Instantkaffee, 36 g",
+   "price": 1.99,
+   "item": "Instantkaffee",
+   "kw": [
+    "kaffee",
+    "instantkaffee"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kaba Getränkepulver, 400 g",
+   "price": 1.99,
+   "item": "Kakao",
+   "kw": [
+    "kakao",
+    "kakaopulver"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pringles, 200-g-Dose",
+   "price": 1.49,
+   "item": "Chips",
+   "kw": [
+    "chip",
+    "pringles"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,39"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pringles, 160–185 g",
+   "price": 1.39,
+   "item": "Chips",
+   "kw": [
+    "chip",
+    "pringles"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur mit Kaufland Card (-50 %, sonst 2,79)"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Chips, 200 g",
+   "price": 0.89,
+   "item": "Chips",
+   "kw": [
+    "chip"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Doritos Tortilla-Chips, 110 g",
+   "price": 1.11,
+   "item": "Tortilla-Chips",
+   "kw": [
+    "chip",
+    "tortilla"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 0,99"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Lorenz Pommels Original, 75 g",
+   "price": 1.19,
+   "item": "Knabberzeug",
+   "kw": [
+    "chip",
+    "knabber"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Funny-Frisch Intense Kruspers, 120 g",
+   "price": 1.19,
+   "item": "Knabberzeug",
+   "kw": [
+    "chip",
+    "knabber"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Wurzener Knuspersnack, 90 g",
+   "price": 1.29,
+   "item": "Knabberzeug",
+   "kw": [
+    "knabber",
+    "flips"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "OK Snacks Spooky!, 75 g",
+   "price": 0.99,
+   "item": "Knabberzeug",
+   "kw": [
+    "knabber",
+    "chip"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "OK Snacks Schweinekrusten, 100 g",
+   "price": 1.49,
+   "item": "Knabberzeug",
+   "kw": [
+    "knabber"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Mitsuba knusprige Snacks, 85–100 g",
+   "price": 1.99,
+   "item": "Knabberzeug",
+   "kw": [
+    "knabber",
+    "cracker"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Ritz Crackers, 200 g",
+   "price": 1.49,
+   "item": "Cracker",
+   "kw": [
+    "cracker",
+    "knabber"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Valledoro Grissini, 100 g",
+   "price": 1.29,
+   "item": "Grissini",
+   "kw": [
+    "grissini",
+    "knabber"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Ültje Studentenfutter, 150 g",
+   "price": 1.99,
+   "item": "Studentenfutter",
+   "kw": [
+    "nuss",
+    "studentenfutter"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Ültje Swavy Salted Caramel, 140 g",
+   "price": 1.99,
+   "item": "Erdnüsse",
+   "kw": [
+    "erdnuss",
+    "nuss"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Popcorn süß, 250 g",
+   "price": 2.22,
+   "item": "Popcorn",
+   "kw": [
+    "popcorn"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Werther's Caramel-Popcorn, 140 g",
+   "price": 1.79,
+   "item": "Popcorn",
+   "kw": [
+    "popcorn"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Felix Knabber-Mix",
+   "price": 0.88,
+   "item": "Knabberzeug",
+   "kw": [
+    "knabber"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 0,79"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Milka Schokolade, 85–100 g",
+   "price": 0.88,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "milka"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Ritter Sport Bunte Vielfalt, 100 g",
+   "price": 1.11,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "ritter sport"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 0,99"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Lindt Lindor, 99–100 g",
+   "price": 2.79,
+   "item": "Pralinen",
+   "kw": [
+    "praline",
+    "schokolade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Lindt Pralinés Hochfein, 200 g",
+   "price": 9.99,
+   "item": "Pralinen",
+   "kw": [
+    "praline"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Halloren O's, 125 g",
+   "price": 0.99,
+   "item": "Süßigkeiten",
+   "kw": [
+    "schokolade",
+    "praline"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Knoppers Minis, 200 g",
+   "price": 1.79,
+   "item": "Knoppers",
+   "kw": [
+    "knoppers",
+    "waffel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Manner Waffel-Schnitten, 300–400 g",
+   "price": 2.49,
+   "item": "Waffeln",
+   "kw": [
+    "waffel",
+    "keks"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 2,22"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pick Up! Keksriegel, 5 x 28 g",
+   "price": 1.99,
+   "item": "Kekse",
+   "kw": [
+    "keks",
+    "riegel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 1,79"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Glico Mikado, 75 g",
+   "price": 1.29,
+   "item": "Mikado",
+   "kw": [
+    "keks",
+    "mikado"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Borggreve Kaffeegebäck, 200 g",
+   "price": 3.0,
+   "item": "Kekse",
+   "kw": [
+    "keks",
+    "gebäck"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Preis laut Seite, Mehrkauf möglich"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bahlsen ABC Russisch Brot, 100 g",
+   "price": 0.99,
+   "item": "Kekse",
+   "kw": [
+    "keks"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Haribo Fruchtgummi-Minis, 220–250 g",
+   "price": 1.79,
+   "item": "Gummibärchen",
+   "kw": [
+    "gummibärchen",
+    "fruchtgummi",
+    "haribo"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Haribo Fruchtgummi-Dose, 1,2–1,35 kg",
+   "price": 5.99,
+   "item": "Gummibärchen",
+   "kw": [
+    "gummibärchen",
+    "fruchtgummi",
+    "haribo"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Trolli Glotzer, 75 g",
+   "price": 0.99,
+   "item": "Fruchtgummi",
+   "kw": [
+    "fruchtgummi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Emoji Halloween-Gummy-Mix, 240 g",
+   "price": 1.99,
+   "item": "Fruchtgummi",
+   "kw": [
+    "fruchtgummi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Storck Nimm2 Lachgummi, 200–325 g",
+   "price": 0.99,
+   "item": "Fruchtgummi",
+   "kw": [
+    "fruchtgummi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Storck Werther's Original, 180–245 g",
+   "price": 1.39,
+   "item": "Bonbons",
+   "kw": [
+    "bonbon"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Hitschies Brizzl-Bälle, 100 g",
+   "price": 1.29,
+   "item": "Süßigkeiten",
+   "kw": [
+    "süßigkeit",
+    "kaubonbon"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Fritt Kaubonbon-Streifen, 70 g",
+   "price": 0.69,
+   "item": "Kaubonbons",
+   "kw": [
+    "kaubonbon"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kaufland Card: 0,49"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Marshmallows / BBQ-Marshmallows, 300 g",
+   "price": 1.29,
+   "item": "Marshmallows",
+   "kw": [
+    "marshmallow"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Rudolf Hoinkis Halloween-Figuren, 110 g",
+   "price": 2.22,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Eickmeyer & Gehring Halloween-Schokolollies, 150 g",
+   "price": 1.29,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "lolli"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Heyyy Kaugummi, 62–68 g",
+   "price": 2.29,
+   "item": "Kaugummi",
+   "kw": [
+    "kaugummi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Almdudler Kräuterlimonade, 1 l",
+   "price": 1.29,
+   "item": "Limo",
+   "kw": [
+    "limonade",
+    "limo"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Molkos Erfrischungsgetränk, 0,25 l",
+   "price": 0.99,
+   "item": "Limo",
+   "kw": [
+    "limonade",
+    "molke"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Pro Aqua, 1,5 l PET",
+   "price": 0.44,
+   "item": "Wasser",
+   "kw": [
+    "wasser",
+    "mineralwasser"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Volvic Bio-Essence, 0,75 l PET",
+   "price": 1.19,
+   "item": "Wasser",
+   "kw": [
+    "wasser"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Capri-Sun, 0,33 l",
+   "price": 0.99,
+   "item": "Saft",
+   "kw": [
+    "capri-sun",
+    "saft"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Valensina Spor+ Muskel Exotik, 0,5 l",
+   "price": 0.99,
+   "item": "Saft",
+   "kw": [
+    "saft"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Elotrans Hydrate, 0,5 l",
+   "price": 1.99,
+   "item": "Elektrolytgetränk",
+   "kw": [
+    "elektrolyt",
+    "isotonisch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Beck's Pils oder Gold, 20 x 0,5 l",
+   "price": 10.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Beck's Pils oder Gold, 24 x 0,33 l",
+   "price": 10.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Radeberger Pilsner oder Alkoholfrei, 20 x 0,5 l",
+   "price": 9.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils",
+    "alkoholfrei"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Franziskaner Premium Weißbier, 20 x 0,5 l",
+   "price": 13.99,
+   "item": "Weizenbier",
+   "kw": [
+    "bier",
+    "weizen"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Spaten Münchner Hell, 20 x 0,5 l",
+   "price": 13.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "hell"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Chiemseer Hell, 20 x 0,5 l",
+   "price": 14.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "hell"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pilsner Urquell, 20 x 0,5 l",
+   "price": 15.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Corona Extra, 12 x 0,355 l",
+   "price": 9.99,
+   "item": "Bier",
+   "kw": [
+    "bier"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Desperados Original, 4 x 0,33 l",
+   "price": 4.0,
+   "item": "Bier",
+   "kw": [
+    "bier"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Duckstein Rotblond, 8 x 0,5 l",
+   "price": 12.99,
+   "item": "Bier",
+   "kw": [
+    "bier"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Bud Lagerbier, 6 x 0,3 l",
+   "price": 4.99,
+   "item": "Bier",
+   "kw": [
+    "bier"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Grevensteiner Original, 6 x 0,33 l",
+   "price": 4.29,
+   "item": "Bier",
+   "kw": [
+    "bier"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Faxe Premium, 1-l-Dose",
+   "price": 1.79,
+   "item": "Bier",
+   "kw": [
+    "bier"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Persil Waschmittel",
+   "price": 15.99,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "persil"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde nicht angegeben"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Lenor Voll- oder Colorwaschmittel",
+   "price": 4.49,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde nicht angegeben"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Lenor Weichspüler, 798 ml",
+   "price": 1.99,
+   "item": "Weichspüler",
+   "kw": [
+    "weichspüler"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Vanish Oxi Action",
+   "price": 7.99,
+   "item": "Fleckentferner",
+   "kw": [
+    "fleckentferner",
+    "vanish"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic All-in-1 Caps (Spülmaschine), 40 St.",
+   "price": 4.0,
+   "item": "Spülmaschinentabs",
+   "kw": [
+    "spülmaschinentab",
+    "geschirrspül",
+    "tab"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Preis für 2 Packungen"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Domestos WC-Stein Power 5, 3 St.",
+   "price": 3.33,
+   "item": "WC-Stein",
+   "kw": [
+    "wc-stein",
+    "wc"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Rorax Rohrfrei, 1 l",
+   "price": 2.99,
+   "item": "Rohrreiniger",
+   "kw": [
+    "rohrreiniger"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Hakle feuchtes Toilettenpapier, 42 St.",
+   "price": 1.0,
+   "item": "Feuchtes Toilettenpapier",
+   "kw": [
+    "toilettenpapier",
+    "feucht"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur beim Kauf von 4 Packungen (4,00)"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Kunibo Baby-Feuchttücher, 2 x 80 St.",
+   "price": 1.49,
+   "item": "Feuchttücher",
+   "kw": [
+    "feuchttuch",
+    "baby"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Head & Shoulders Shampoo, 500 ml",
+   "price": 4.99,
+   "item": "Shampoo",
+   "kw": [
+    "shampoo"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Dove Shampoo oder Spülung, 200–250 ml",
+   "price": 2.22,
+   "item": "Shampoo",
+   "kw": [
+    "shampoo",
+    "spülung"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Playboy Deospray oder Duschgel, 150–250 ml",
+   "price": 1.99,
+   "item": "Duschgel",
+   "kw": [
+    "duschgel",
+    "deo"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Neutrogena Deep Moisture Bodylotion, 400 ml",
+   "price": 3.99,
+   "item": "Bodylotion",
+   "kw": [
+    "bodylotion"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "L'Oréal Elnett Haarspray, 300 ml",
+   "price": 3.49,
+   "item": "Haarspray",
+   "kw": [
+    "haarspray"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Kaufland",
+   "product": "Hidrofugal Deo-Roll-on, 50 ml",
+   "price": 3.49,
+   "item": "Deo",
+   "kw": [
+    "deo"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Helle, kernlose Tafeltrauben",
+   "price": 1.59,
+   "item": "Trauben",
+   "kw": [
+    "traube"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Grüne Äpfel",
+   "price": 2.49,
+   "item": "Äpfel",
+   "kw": [
+    "apfel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Grüne Birne (Novembra)",
+   "price": 2.99,
+   "item": "Birnen",
+   "kw": [
+    "birne"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Naturgut Bio-Zitronen",
+   "price": 1.29,
+   "item": "Zitronen",
+   "kw": [
+    "zitrone",
+    "bio"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Rispentomaten",
+   "price": 1.89,
+   "item": "Tomaten",
+   "kw": [
+    "tomate"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Deutscher Porree",
+   "price": 0.49,
+   "item": "Porree",
+   "kw": [
+    "porree",
+    "lauch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Deutscher Halloweenkürbis",
+   "price": 3.99,
+   "item": "Kürbis",
+   "kw": [
+    "kürbis"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Penny App: 3,59"
+  },
+  {
+   "store": "Penny",
+   "product": "Deutscher mediterraner Pflücksalat",
+   "price": 0.99,
+   "item": "Salat",
+   "kw": [
+    "salat"
+   ],
+   "valid": "22.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Pizza Salami Ecke",
+   "price": 0.79,
+   "item": "Pizzaecke",
+   "kw": [
+    "pizzaecke",
+    "pizzastück"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Kartoffel-Zwiebel-Brot",
+   "price": 1.59,
+   "item": "Brot",
+   "kw": [
+    "brot"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Das Pure",
+   "price": 1.75,
+   "item": "Brot",
+   "kw": [
+    "brot"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Doppelbrötchen",
+   "price": 0.29,
+   "item": "Brötchen",
+   "kw": [
+    "brötchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Kaiserbrötchen, 220 g",
+   "price": 0.59,
+   "item": "Brötchen",
+   "kw": [
+    "brötchen",
+    "kaiserbrötchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Käse-Mozzarella-Fächer",
+   "price": 0.69,
+   "item": "Backware",
+   "kw": [
+    "backware",
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Mini Chinois",
+   "price": 1.49,
+   "item": "Gebäck",
+   "kw": [
+    "gebäck",
+    "chinois"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Vollkorn-Sonnenbatzen",
+   "price": 1.69,
+   "item": "Brötchen",
+   "kw": [
+    "brötchen",
+    "vollkorn"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Frischei-Waffeln",
+   "price": 1.89,
+   "item": "Waffeln",
+   "kw": [
+    "waffel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Reiswaffeln",
+   "price": 1.69,
+   "item": "Reiswaffeln",
+   "kw": [
+    "reiswaffel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung Schokotörtchen",
+   "price": 0.99,
+   "item": "Kuchen",
+   "kw": [
+    "kuchen",
+    "törtchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bäckerkrönung High Protein Wraps",
+   "price": 1.49,
+   "item": "Wraps",
+   "kw": [
+    "wrap",
+    "tortilla"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Brandt Der Markenzwieback, 225 g",
+   "price": 1.15,
+   "item": "Zwieback",
+   "kw": [
+    "zwieback"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Kerrygold Original Irische Butter, 250 g",
+   "price": 1.69,
+   "item": "Butter",
+   "kw": [
+    "butter"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Kerrygold extra, 250 g",
+   "price": 1.69,
+   "item": "Butter",
+   "kw": [
+    "butter",
+    "streichfett"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Lätta, 450 g",
+   "price": 1.29,
+   "item": "Margarine",
+   "kw": [
+    "margarine",
+    "lätta"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Penny App: 0,99"
+  },
+  {
+   "store": "Penny",
+   "product": "Sachsenmilch haltbare Vollmilch",
+   "price": 0.99,
+   "item": "Milch",
+   "kw": [
+    "milch",
+    "h-milch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Weihenstephan H-Milch, 1 l",
+   "price": 0.99,
+   "item": "Milch",
+   "kw": [
+    "milch",
+    "h-milch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Alpro Mandeldrink, 1 l",
+   "price": 1.99,
+   "item": "Mandeldrink",
+   "kw": [
+    "mandeldrink",
+    "pflanzendrink"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Rama Cremefine, 250 ml",
+   "price": 0.99,
+   "item": "Kochsahne",
+   "kw": [
+    "sahne",
+    "kochsahne",
+    "cremefine"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Bauer Fruchtjoghurt / Der große Bauer, 250 g",
+   "price": 0.49,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "fruchtjoghurt"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Penny App: 0,39"
+  },
+  {
+   "store": "Penny",
+   "product": "Müller Milchreis, 180–200 g",
+   "price": 0.39,
+   "item": "Milchreis",
+   "kw": [
+    "milchreis",
+    "dessert"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Ehrmann Grieß-/Früchte-/Vanilletraum, 115 g",
+   "price": 0.49,
+   "item": "Pudding",
+   "kw": [
+    "pudding",
+    "grieß",
+    "dessert"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Nestlé Mix-in, 120 g",
+   "price": 0.67,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Nestlé Smarties oder KitKat Joghurt",
+   "price": 3.99,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde nicht angegeben, vermutlich Mehrfachpack"
+  },
+  {
+   "store": "Penny",
+   "product": "Bärenmarke Traum, 170 g",
+   "price": 1.39,
+   "item": "Dessert",
+   "kw": [
+    "dessert",
+    "pudding"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Danone Actimel Megapack, 14 x 100 g",
+   "price": 3.49,
+   "item": "Actimel",
+   "kw": [
+    "actimel",
+    "joghurtdrink"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Starbucks Kaffeedrink, 220 ml",
+   "price": 1.99,
+   "item": "Eiskaffee",
+   "kw": [
+    "eiskaffee",
+    "kaffeedrink"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Buko Frischkäse, 200 g",
+   "price": 0.99,
+   "item": "Frischkäse",
+   "kw": [
+    "frischkäse",
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Grünländer Käsescheiben, 120–140 g",
+   "price": 1.79,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "käsescheibe"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Hochland Sandwich-Scheiben, 150 g",
+   "price": 1.79,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "schmelzkäse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Arla Finello Reibekäse",
+   "price": 1.59,
+   "item": "Reibekäse",
+   "kw": [
+    "käse",
+    "reibekäse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Best Moments Gouda Käsestück",
+   "price": 3.49,
+   "item": "Gouda",
+   "kw": [
+    "käse",
+    "gouda"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mühlenhof frisches Hackfleisch",
+   "price": 4.99,
+   "item": "Hackfleisch",
+   "kw": [
+    "hackfleisch",
+    "hack"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde nicht angegeben"
+  },
+  {
+   "store": "Penny",
+   "product": "Mühlenhof frische dicke Rippe",
+   "price": 3.99,
+   "item": "Rippchen",
+   "kw": [
+    "rippe",
+    "schwein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Frischer Hähnchenrollbraten",
+   "price": 4.99,
+   "item": "Hähnchen",
+   "kw": [
+    "hähnchen",
+    "braten"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Tillman's Mini-Schnitzel",
+   "price": 5.99,
+   "item": "Schnitzel",
+   "kw": [
+    "schnitzel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mühlenhof Delikatess Hähnchen-Käse-Wiener",
+   "price": 3.99,
+   "item": "Würstchen",
+   "kw": [
+    "würstchen",
+    "wiener"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mühlenhof frische Rinderleber",
+   "price": 1.99,
+   "item": "Leber",
+   "kw": [
+    "leber",
+    "rind"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mühlenhof frischer Putenschenkel",
+   "price": 4.44,
+   "item": "Pute",
+   "kw": [
+    "pute",
+    "putenschenkel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mühlenhof frische Schweinerouladen",
+   "price": 3.49,
+   "item": "Rouladen",
+   "kw": [
+    "roulade",
+    "schwein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mühlenhof frische Hähnchen-Minutenschnitzel",
+   "price": 6.99,
+   "item": "Hähnchenschnitzel",
+   "kw": [
+    "hähnchen",
+    "schnitzel",
+    "hähnchenbrust"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mühlenhof frischer Kasseler-Lachsbraten",
+   "price": 5.99,
+   "item": "Kasseler",
+   "kw": [
+    "kasseler"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mühlenhof frische Puten-Medaillons",
+   "price": 3.99,
+   "item": "Pute",
+   "kw": [
+    "pute",
+    "putenbrust"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Penny App: 3,49"
+  },
+  {
+   "store": "Penny",
+   "product": "Eberswalder Bockwurst",
+   "price": 4.99,
+   "item": "Würstchen",
+   "kw": [
+    "würstchen",
+    "bockwurst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Stockmeyer Ferdi Fuchs Mini-Würstchen, 250 g",
+   "price": 1.99,
+   "item": "Würstchen",
+   "kw": [
+    "würstchen"
+   ],
+   "valid": "19.–24.10.",
+   "note": "ab-Preis, 2 Preisvarianten (evtl. App)"
+  },
+  {
+   "store": "Penny",
+   "product": "Mike Mitchell's frische Chicken Wings, 1 kg",
+   "price": 3.99,
+   "item": "Chicken Wings",
+   "kw": [
+    "hähnchen",
+    "wing",
+    "flügel"
+   ],
+   "valid": "ab Do 22.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mike Mitchell's Bacon",
+   "price": 2.49,
+   "item": "Bacon",
+   "kw": [
+    "bacon",
+    "speck"
+   ],
+   "valid": "ab Do 22.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mike Mitchell's Chicken Balls",
+   "price": 2.79,
+   "item": "Hähnchen",
+   "kw": [
+    "hähnchen",
+    "nugget"
+   ],
+   "valid": "ab Do 22.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mike Mitchell's Pizza Pockets",
+   "price": 2.99,
+   "item": "Snack",
+   "kw": [
+    "pizza",
+    "snack"
+   ],
+   "valid": "ab Do 22.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mike Mitchell's XXL Tortilla Wraps",
+   "price": 1.99,
+   "item": "Wraps",
+   "kw": [
+    "wrap",
+    "tortilla"
+   ],
+   "valid": "ab Do 22.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mike Mitchell's Pommes Snack Ketchup Style",
+   "price": 1.29,
+   "item": "Chips",
+   "kw": [
+    "chip",
+    "knabber"
+   ],
+   "valid": "ab Do 22.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Big Pizza / Wagner Big City, 400–445 g (TK)",
+   "price": 1.79,
+   "item": "Pizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Gustavo Gusto Pizza, 410–510 g (TK)",
+   "price": 3.33,
+   "item": "Pizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Frosta (High Protein), 450–500 g (TK)",
+   "price": 4.49,
+   "item": "Fertiggericht",
+   "kw": [
+    "fertiggericht",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Iglo Spinat, 700–800 g (TK)",
+   "price": 1.99,
+   "item": "Spinat",
+   "kw": [
+    "spinat",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Iglo Rahm-Spinat, 500 g (TK)",
+   "price": 1.99,
+   "item": "Spinat",
+   "kw": [
+    "spinat",
+    "rahmspinat",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "McCain Golden Longs, 1 kg (TK)",
+   "price": 2.99,
+   "item": "Pommes",
+   "kw": [
+    "pommes",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Gustoria Pommes frites Wellenschnitt (TK)",
+   "price": 1.19,
+   "item": "Pommes",
+   "kw": [
+    "pommes",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Coppenrath & Wiese Unsere Goldstücke, 6–9 St. (TK)",
+   "price": 1.29,
+   "item": "Aufbackbrötchen",
+   "kw": [
+    "brötchen",
+    "goldstück",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10.",
+   "note": "ab-Preis, 2 Preisvarianten (evtl. App)"
+  },
+  {
+   "store": "Penny",
+   "product": "Gustoria Bechergericht",
+   "price": 0.99,
+   "item": "Fertiggericht",
+   "kw": [
+    "fertiggericht",
+    "nudel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Gustoria Hühner-, Linseneintopf oder Gulaschsuppe",
+   "price": 1.49,
+   "item": "Eintopf",
+   "kw": [
+    "eintopf",
+    "suppe",
+    "konserve"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Gustoria Ravioli",
+   "price": 1.79,
+   "item": "Ravioli",
+   "kw": [
+    "ravioli",
+    "konserve"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Gustoria Königsberger Klopse oder Kohlrouladen",
+   "price": 2.99,
+   "item": "Fertiggericht",
+   "kw": [
+    "fertiggericht",
+    "konserve"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Penny App: 2,49"
+  },
+  {
+   "store": "Penny",
+   "product": "Omas Kartoffelsuppe oder Soljanka",
+   "price": 2.99,
+   "item": "Suppe",
+   "kw": [
+    "suppe",
+    "eintopf"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Maggi Guten Appetit Suppe",
+   "price": 0.59,
+   "item": "Tütensuppe",
+   "kw": [
+    "suppe"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Maggi cremige Pasta-Sauce / Maggi Sauce, 2 x 0,25 l",
+   "price": 0.89,
+   "item": "Soße",
+   "kw": [
+    "soße",
+    "sauce"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Maggi Korean Style Noodles",
+   "price": 1.29,
+   "item": "Instantnudeln",
+   "kw": [
+    "nudel",
+    "instantnudel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Thomy Les Sauces / Hollandaise, 250 ml",
+   "price": 0.99,
+   "item": "Hollandaise",
+   "kw": [
+    "hollandaise",
+    "soße"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Thomy Würzsauce",
+   "price": 1.79,
+   "item": "Soße",
+   "kw": [
+    "soße",
+    "sauce"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Heinz Ketchup, 1,17 l",
+   "price": 2.79,
+   "item": "Ketchup",
+   "kw": [
+    "ketchup"
+   ],
+   "valid": "19.–24.10.",
+   "note": "ab-Preis, 2 Preisvarianten (evtl. App)"
+  },
+  {
+   "store": "Penny",
+   "product": "Saupiquet Thunfisch-Salat, 160 g",
+   "price": 1.99,
+   "item": "Thunfisch",
+   "kw": [
+    "thunfisch",
+    "konserve"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Uncle Ben's Express Reis, 220–250 g",
+   "price": 1.29,
+   "item": "Reis",
+   "kw": [
+    "reis"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Nestlé Cornflakes, 330–400 g",
+   "price": 2.49,
+   "item": "Cornflakes",
+   "kw": [
+    "cornflake",
+    "cerealie",
+    "müsli"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Kölln Müsli Vorratspack, 1,05–1,25 kg",
+   "price": 5.55,
+   "item": "Müsli",
+   "kw": [
+    "müsli",
+    "haferflocke"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Schwartau Samt Fruchtaufstrich, 270 g",
+   "price": 2.29,
+   "item": "Marmelade",
+   "kw": [
+    "marmelade",
+    "konfitüre",
+    "aufstrich"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Langnese Flotte Biene Honig, 250 g",
+   "price": 2.99,
+   "item": "Honig",
+   "kw": [
+    "honig"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Nescafé Gold, 200 g",
+   "price": 6.99,
+   "item": "Instantkaffee",
+   "kw": [
+    "kaffee",
+    "instantkaffee"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Senseo Kaffeepads, 8–16 St.",
+   "price": 2.22,
+   "item": "Kaffeepads",
+   "kw": [
+    "kaffee",
+    "kaffeepad"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Dallmayr Home Barista, 1 kg",
+   "price": 12.99,
+   "item": "Kaffeebohnen",
+   "kw": [
+    "kaffee",
+    "kaffeebohne"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Nestlé Caro Original, 200 g",
+   "price": 2.99,
+   "item": "Caro Kaffee",
+   "kw": [
+    "kaffee",
+    "caro"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Milka Tafelschokolade, 85–100 g",
+   "price": 1.11,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "milka"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Penny App: 0,95"
+  },
+  {
+   "store": "Penny",
+   "product": "Milka Kekse, 150–260 g",
+   "price": 1.99,
+   "item": "Kekse",
+   "kw": [
+    "keks"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Milka MMMAX, 250–300 g",
+   "price": 2.77,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "milka"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Ferrero Duplo, 10 x 18,2 g",
+   "price": 2.49,
+   "item": "Duplo",
+   "kw": [
+    "schokolade",
+    "riegel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Penny App: 1,99"
+  },
+  {
+   "store": "Penny",
+   "product": "Ferrero Hanuta, 220 g",
+   "price": 2.49,
+   "item": "Hanuta",
+   "kw": [
+    "hanuta",
+    "waffel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Penny App: 1,99 (aus ab-Preis abgeleitet)"
+  },
+  {
+   "store": "Penny",
+   "product": "Storck Knoppers, 8 x 25 g",
+   "price": 1.69,
+   "item": "Knoppers",
+   "kw": [
+    "knoppers",
+    "waffel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Penny App: 1,49 (aus ab-Preis abgeleitet)"
+  },
+  {
+   "store": "Penny",
+   "product": "Ferrero Kinder Paradiso, 4 St.",
+   "price": 1.77,
+   "item": "Kinder Paradiso",
+   "kw": [
+    "kinder",
+    "dessert"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Ferrero Kinder Bueno Big Pack, 10 St.",
+   "price": 2.99,
+   "item": "Kinder Bueno",
+   "kw": [
+    "kinder bueno",
+    "schokolade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Raffaello, 150 g",
+   "price": 3.29,
+   "item": "Pralinen",
+   "kw": [
+    "praline",
+    "raffaello"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mars Balisto, 8 St.",
+   "price": 1.79,
+   "item": "Riegel",
+   "kw": [
+    "riegel",
+    "schokolade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Mars Riegel, 5 St.",
+   "price": 1.79,
+   "item": "Riegel",
+   "kw": [
+    "riegel",
+    "schokolade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Tony's Chocolonely, 180 g",
+   "price": 2.99,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Haribo Minis, 200–250 g",
+   "price": 1.79,
+   "item": "Gummibärchen",
+   "kw": [
+    "gummibärchen",
+    "fruchtgummi",
+    "haribo"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Katjes, 160–210 g",
+   "price": 0.66,
+   "item": "Fruchtgummi",
+   "kw": [
+    "fruchtgummi",
+    "katjes"
+   ],
+   "valid": "19.–24.10.",
+   "note": "ab-Preis, 2 Preisvarianten (evtl. App)"
+  },
+  {
+   "store": "Penny",
+   "product": "7up, 1,25 l",
+   "price": 0.88,
+   "item": "Limo",
+   "kw": [
+    "limonade",
+    "limo",
+    "7up"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Penny",
+   "product": "Coca-Cola Dose versch. Sorten, 0,33 l",
+   "price": 0.75,
+   "item": "Cola",
+   "kw": [
+    "cola",
+    "cola zero",
+    "coca-cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand; nur bei aktionspreis.de gefunden"
+  },
+  {
+   "store": "Penny",
+   "product": "Orangina Limonade",
+   "price": 0.99,
+   "item": "Limo",
+   "kw": [
+    "limonade",
+    "limo"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Penny",
+   "product": "Capri-Sun, 0,33 l",
+   "price": 0.99,
+   "item": "Saft",
+   "kw": [
+    "capri-sun",
+    "saft"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Beck's Pils",
+   "price": 9.66,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde unklar, vermutlich Kasten; zzgl. Pfand"
+  },
+  {
+   "store": "Penny",
+   "product": "Milprima Kakao Drink",
+   "price": 1.69,
+   "item": "Kakao",
+   "kw": [
+    "kakao",
+    "milchdrink"
+   ],
+   "valid": "22.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Fa Deospray, 150 ml",
+   "price": 1.29,
+   "item": "Deo",
+   "kw": [
+    "deo"
+   ],
+   "valid": "22.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "WC Frisch Kraft-Aktiv, 50 g",
+   "price": 1.49,
+   "item": "WC-Stein",
+   "kw": [
+    "wc-stein",
+    "wc"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Ariel Flüssig 1,1 l (20 WL) / Pulver 1,35 kg (18 WL) / All-in-1 Pods 15 WL",
+   "price": 3.74,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "ariel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Softlan Weichspüler, 1 l",
+   "price": 1.29,
+   "item": "Weichspüler",
+   "kw": [
+    "weichspüler"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Broccoli",
+   "price": 1.29,
+   "item": "Brokkoli",
+   "kw": [
+    "brokkoli",
+    "broccoli"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Heimat Eisbergsalat",
+   "price": 0.64,
+   "item": "Salat",
+   "kw": [
+    "salat",
+    "eisbergsalat"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Pfanni Speisekartoffeln, 2,5 kg",
+   "price": 2.49,
+   "item": "Kartoffeln",
+   "kw": [
+    "kartoffel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Bugbraten vom Jungbullen",
+   "price": 1.19,
+   "item": "Rinderbraten",
+   "kw": [
+    "rind",
+    "braten"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Einheit nicht angegeben, vermutlich je 100 g"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Kasseler Nacken, 1 kg",
+   "price": 5.99,
+   "item": "Kasseler",
+   "kw": [
+    "kasseler",
+    "nacken"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Schweinebauch, je kg",
+   "price": 3.99,
+   "item": "Schweinebauch",
+   "kw": [
+    "schweinebauch",
+    "schwein"
+   ],
+   "valid": "19.–24.10.",
+   "note": "aus der kaufDA-Auswahl; Prospekt 19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Bratwürste",
+   "price": 1.99,
+   "item": "Bratwurst",
+   "kw": [
+    "bratwurst",
+    "wurst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Aubret französische Jagdwurst, ca. 350 g",
+   "price": 2.49,
+   "item": "Aufschnitt",
+   "kw": [
+    "jagdwurst",
+    "wurst",
+    "aufschnitt"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Sea Gold Pazifisches Wildlachsfilet, ca. 250 g",
+   "price": 2.99,
+   "item": "Lachs",
+   "kw": [
+    "lachs",
+    "fisch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "aus der kaufDA-Auswahl; Gebinde aus dem Grundpreis errechnet"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Gutes Land Camembert leicht",
+   "price": 0.99,
+   "item": "Camembert",
+   "kw": [
+    "camembert",
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Halloween Käse-Stücke",
+   "price": 2.99,
+   "item": "Käse",
+   "kw": [
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Lätta, 450 g",
+   "price": 0.99,
+   "item": "Margarine",
+   "kw": [
+    "margarine",
+    "lätta"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Meggle Kräuterbutter, ca. 100 g",
+   "price": 1.69,
+   "item": "Kräuterbutter",
+   "kw": [
+    "kräuterbutter",
+    "butter"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Danone Actimel",
+   "price": 3.33,
+   "item": "Actimel",
+   "kw": [
+    "actimel",
+    "joghurtdrink"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde nicht angegeben"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Danone Activia (Mehrfachpack, ca. 920 g)",
+   "price": 2.99,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "activia"
+   ],
+   "valid": "19.–24.10.",
+   "note": "aus der kaufDA-Auswahl; Gebinde aus dem Grundpreis errechnet"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Milram Buttermilch Drink",
+   "price": 1.29,
+   "item": "Buttermilch",
+   "kw": [
+    "buttermilch",
+    "milchdrink"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Mövenpick Iced Coffee",
+   "price": 0.89,
+   "item": "Eiskaffee",
+   "kw": [
+    "eiskaffee",
+    "kaffeedrink"
+   ],
+   "valid": "19.–24.10.",
+   "note": "aus der kaufDA-Auswahl"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Dr. Oetker Wölkchen oder Mousse",
+   "price": 0.69,
+   "item": "Dessert",
+   "kw": [
+    "dessert",
+    "mousse",
+    "pudding"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Giovanni Rana frische gefüllte Pasta, ca. 250 g",
+   "price": 2.99,
+   "item": "Tortelloni",
+   "kw": [
+    "tortelloni",
+    "pasta",
+    "nudel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Frischer Pizzateig, ca. 350 g",
+   "price": 1.99,
+   "item": "Pizzateig",
+   "kw": [
+    "pizzateig",
+    "teig"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Backstube Weizenmischbrot",
+   "price": 0.89,
+   "item": "Brot",
+   "kw": [
+    "brot",
+    "mischbrot"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Kaiser-, Mohn- oder Sesambrötchen",
+   "price": 1.0,
+   "item": "Brötchen",
+   "kw": [
+    "brötchen"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Stückzahl nicht angegeben"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Backstube Pizza Margherita",
+   "price": 0.79,
+   "item": "Pizzaecke",
+   "kw": [
+    "pizzaecke",
+    "pizzastück"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Kräuter- oder Knoblauchbaguette",
+   "price": 0.99,
+   "item": "Kräuterbaguette",
+   "kw": [
+    "baguette",
+    "kräuterbaguette"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Halloween-Donuts",
+   "price": 0.55,
+   "item": "Donut",
+   "kw": [
+    "donut"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Dunkin' Halloween-Donuts, 4er-Pack",
+   "price": 3.99,
+   "item": "Donut",
+   "kw": [
+    "donut"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Santa Claus Town Stollen",
+   "price": 1.79,
+   "item": "Stollen",
+   "kw": [
+    "stollen",
+    "kuchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Wagner Steinofen-Pizza oder Flammkuchen, 300–360 g (TK)",
+   "price": 1.79,
+   "item": "Pizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza",
+    "flammkuchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Freda Steinofenpizza (TK)",
+   "price": 4.99,
+   "item": "Pizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Genuss Welt Pfannengemüse Italienische Art, ca. 750 g (TK)",
+   "price": 1.99,
+   "item": "TK-Gemüse",
+   "kw": [
+    "tk-gemüse",
+    "gemüse",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Genuss Welt Lasagne",
+   "price": 2.49,
+   "item": "Lasagne",
+   "kw": [
+    "lasagne",
+    "fertiggericht"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Genuss Welt Pfannengerichte",
+   "price": 3.59,
+   "item": "Fertiggericht",
+   "kw": [
+    "fertiggericht",
+    "pfannengericht"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Genuss Welt Schnelle Küche Fertiggerichte",
+   "price": 2.99,
+   "item": "Fertiggericht",
+   "kw": [
+    "fertiggericht"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Genuss Welt High Protein Fertiggerichte",
+   "price": 3.49,
+   "item": "Fertiggericht",
+   "kw": [
+    "fertiggericht",
+    "protein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Genuss Welt Tiramisu",
+   "price": 2.99,
+   "item": "Tiramisu",
+   "kw": [
+    "tiramisu",
+    "dessert"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Condeli Asia Style Fertiggerichte",
+   "price": 2.69,
+   "item": "Fertiggericht",
+   "kw": [
+    "fertiggericht",
+    "asia"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "8Panda Frühlingsrollen",
+   "price": 2.69,
+   "item": "Frühlingsrollen",
+   "kw": [
+    "frühlingsrolle",
+    "asia"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Züger Paneer",
+   "price": 2.49,
+   "item": "Paneer",
+   "kw": [
+    "paneer",
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Sushi Satoru",
+   "price": 4.49,
+   "item": "Sushi",
+   "kw": [
+    "sushi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Namdong K-Noodles",
+   "price": 0.99,
+   "item": "Instantnudeln",
+   "kw": [
+    "nudel",
+    "instantnudel",
+    "asia"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur mit Netto-Plus-App"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Maggi Guten Appetit Suppen",
+   "price": 0.69,
+   "item": "Tütensuppe",
+   "kw": [
+    "suppe"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Knorr Salatkrönung Garten-Kräuter",
+   "price": 0.88,
+   "item": "Salatdressing",
+   "kw": [
+    "dressing",
+    "salatkrönung"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Segafredo Intermezzo ganze Bohnen",
+   "price": 12.88,
+   "item": "Kaffeebohnen",
+   "kw": [
+    "kaffee",
+    "kaffeebohne"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde nicht angegeben, vermutlich 1 kg"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Mövenpick Kaffee",
+   "price": 12.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde nicht angegeben"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Corny Müsliriegel",
+   "price": 1.69,
+   "item": "Müsliriegel",
+   "kw": [
+    "müsliriegel",
+    "riegel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Funny-Frisch Chips oder Flippies",
+   "price": 1.11,
+   "item": "Chips",
+   "kw": [
+    "chip",
+    "flips"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Clarkys Tortilla Chips, ca. 300 g",
+   "price": 1.19,
+   "item": "Tortilla-Chips",
+   "kw": [
+    "chip",
+    "tortilla"
+   ],
+   "valid": "19.–24.10.",
+   "note": "aus der kaufDA-Auswahl"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Clarkys Erdnüsse im Teigmantel",
+   "price": 0.99,
+   "item": "Erdnüsse",
+   "kw": [
+    "erdnuss",
+    "nuss"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Clarkys Mandeln",
+   "price": 2.89,
+   "item": "Mandeln",
+   "kw": [
+    "mandel",
+    "nuss"
+   ],
+   "valid": "19.–24.10.",
+   "note": "ab-Preis"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Clarkys Cashewkerne",
+   "price": 2.19,
+   "item": "Cashews",
+   "kw": [
+    "cashew",
+    "nuss"
+   ],
+   "valid": "19.–24.10.",
+   "note": "ab-Preis, laut kaufDA App-Preis"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Clarkys Walnusskerne XXL",
+   "price": 3.99,
+   "item": "Walnüsse",
+   "kw": [
+    "walnuss",
+    "nuss"
+   ],
+   "valid": "19.–24.10.",
+   "note": "ab-Preis"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Waffelnüsse",
+   "price": 1.99,
+   "item": "Süßigkeiten",
+   "kw": [
+    "waffel",
+    "süßigkeit"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Haribo Minis",
+   "price": 1.79,
+   "item": "Gummibärchen",
+   "kw": [
+    "gummibärchen",
+    "fruchtgummi",
+    "haribo"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Toffifee",
+   "price": 1.19,
+   "item": "Toffifee",
+   "kw": [
+    "toffifee",
+    "praline"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Mon Chéri",
+   "price": 5.55,
+   "item": "Pralinen",
+   "kw": [
+    "praline",
+    "mon chéri"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Hanuta Minis Family Pack",
+   "price": 3.99,
+   "item": "Hanuta",
+   "kw": [
+    "hanuta",
+    "waffel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "aus der kaufDA-Auswahl"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Gefüllte Lebkuchenherzen",
+   "price": 2.79,
+   "item": "Lebkuchen",
+   "kw": [
+    "lebkuchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Ahoj-Brause Finger",
+   "price": 0.79,
+   "item": "Süßigkeiten",
+   "kw": [
+    "brause",
+    "süßigkeit"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Bubble Pop Tea",
+   "price": 3.33,
+   "item": "Bubble Tea",
+   "kw": [
+    "bubble tea",
+    "tee"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Lichtenauer Mineralwasser",
+   "price": 4.49,
+   "item": "Wasser",
+   "kw": [
+    "wasser",
+    "mineralwasser"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Getränkemarkt-Prospekt; Gebinde nicht angegeben, vermutlich Kasten; zzgl. Pfand"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Bitburger Premium Pils, 10 l",
+   "price": 10.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Budweiser Budvar Original Lager oder Alkoholfrei, ca. 10 l",
+   "price": 12.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "alkoholfrei"
+   ],
+   "valid": "19.–24.10.",
+   "note": "aus der kaufDA-Auswahl; zzgl. Pfand"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Heineken Premium Beer, ca. 8 l",
+   "price": 14.99,
+   "item": "Bier",
+   "kw": [
+    "bier"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde aus dem Grundpreis errechnet; zzgl. Pfand"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Favora Küchen- und Toilettenpapier (Kombikauf)",
+   "price": 8.99,
+   "item": "Toilettenpapier",
+   "kw": [
+    "toilettenpapier",
+    "küchenrolle",
+    "küchentuch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Kombikauf, Mengen nicht angegeben"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Persil Waschmittel",
+   "price": 5.55,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "persil"
+   ],
+   "valid": "bis 31.10.",
+   "note": "aus dem Drogerie-Prospekt (gültig bis 31.10.), nicht aus dem Wochenprospekt"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Nivea Shampoo",
+   "price": 2.49,
+   "item": "Shampoo",
+   "kw": [
+    "shampoo"
+   ],
+   "valid": "bis 31.10.",
+   "note": "aus dem Drogerie-Prospekt (gültig bis 31.10.)"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Meister Proper Reiniger",
+   "price": 2.29,
+   "item": "Allzweckreiniger",
+   "kw": [
+    "reiniger",
+    "allzweckreiniger"
+   ],
+   "valid": "bis 31.10.",
+   "note": "aus dem Drogerie-Prospekt (gültig bis 31.10.)"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Elmex Zahnpasta",
+   "price": 7.99,
+   "item": "Zahnpasta",
+   "kw": [
+    "zahnpasta",
+    "zahncreme"
+   ],
+   "valid": "bis 31.10.",
+   "note": "aus dem Drogerie-Prospekt (gültig bis 31.10.); Gebinde unklar, vermutlich Mehrfachpack"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Zespri Kiwi grün",
+   "price": 0.44,
+   "item": "Kiwi",
+   "kw": [
+    "kiwi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Avocados, 500-g-Netz",
+   "price": 1.79,
+   "item": "Avocado",
+   "kw": [
+    "avocado"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Mandarinen",
+   "price": 1.79,
+   "item": "Mandarinen",
+   "kw": [
+    "mandarine"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Chicorée",
+   "price": 1.39,
+   "item": "Chicorée",
+   "kw": [
+    "chicoree",
+    "chicorée"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Frische Orangen, je kg",
+   "price": 1.99,
+   "item": "Orangen",
+   "kw": [
+    "orange"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur bei rabatprospekt.de gefunden"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Tafelbirnen",
+   "price": 1.49,
+   "item": "Birnen",
+   "kw": [
+    "birne",
+    "tafelbirne"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur bei rabatprospekt.de gefunden"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Dunkle Tafeltrauben, 650 g",
+   "price": 2.79,
+   "item": "Trauben",
+   "kw": [
+    "traube",
+    "tafeltraube",
+    "weintraube"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur bei rabatprospekt.de gefunden"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Spinat",
+   "price": 1.49,
+   "item": "Spinat",
+   "kw": [
+    "spinat"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 30, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Zwiebeln rot",
+   "price": 0.89,
+   "item": "Zwiebeln",
+   "kw": [
+    "zwiebel",
+    "rote zwiebel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 30, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Golden Seafood Lachsfiletportionen",
+   "price": 7.99,
+   "item": "Lachs",
+   "kw": [
+    "lachs",
+    "lachsfilet"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Almare Matjesfilets XXL, 268 g",
+   "price": 2.69,
+   "item": "Matjes",
+   "kw": [
+    "matjes",
+    "hering"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Almare Rotbarsch geräuchert, 330 g",
+   "price": 3.96,
+   "item": "Räucherfisch",
+   "kw": [
+    "rotbarsch",
+    "räucherfisch",
+    "fisch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Golden Seafood Garnelen",
+   "price": 8.99,
+   "item": "Garnelen",
+   "kw": [
+    "garnele",
+    "shrimp"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 33, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Iglo Fischstäbchen, Backfisch oder Knusperfisch",
+   "price": 2.49,
+   "item": "Fischstäbchen",
+   "kw": [
+    "fischstäbchen",
+    "backfisch",
+    "iglo"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Iglo Rahm-Spinat, 750 g",
+   "price": 1.79,
+   "item": "Rahmspinat",
+   "kw": [
+    "rahmspinat",
+    "spinat",
+    "iglo"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Quelle mydealz, Start dort mit 18.10. angegeben"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Schinkengulasch",
+   "price": 2.59,
+   "item": "Gulasch",
+   "kw": [
+    "gulasch",
+    "schinkengulasch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Minischnitzel XXL, 800 g",
+   "price": 5.49,
+   "item": "Schnitzel",
+   "kw": [
+    "schnitzel",
+    "minischnitzel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Cevapcici XXL, 800 g",
+   "price": 5.99,
+   "item": "Cevapcici",
+   "kw": [
+    "cevapcici"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Nackenbraten XXL",
+   "price": 4.99,
+   "item": "Nackenbraten",
+   "kw": [
+    "nackenbraten",
+    "schweinenacken"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde unklar (2 x 200 g oder verschiedene Gewichte)"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Hähnchenschnitzel",
+   "price": 4.99,
+   "item": "Hähnchenschnitzel",
+   "kw": [
+    "hähnchenschnitzel",
+    "hähnchen"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur bei rabatprospekt.de gefunden"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Rügenwalder Original Staßfurter Hähnchenkeulen, 700 g",
+   "price": 5.38,
+   "item": "Hähnchenkeulen",
+   "kw": [
+    "hähnchenkeule",
+    "hähnchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Trader Joe's Pulled Chicken",
+   "price": 4.49,
+   "item": "Pulled Chicken",
+   "kw": [
+    "pulled chicken",
+    "hähnchen"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 31, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Rinder-Beinscheiben XXL",
+   "price": 8.99,
+   "item": "Beinscheiben",
+   "kw": [
+    "beinscheibe",
+    "rind"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 31, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Herta Fleischwurst",
+   "price": 2.69,
+   "item": "Fleischwurst",
+   "kw": [
+    "fleischwurst",
+    "wurst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Weihenstephan Joghurt",
+   "price": 0.79,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Zott Sahne-Joghurt",
+   "price": 0.39,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "sahnejoghurt"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 32, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Milsani Creme Noblesse",
+   "price": 2.49,
+   "item": "Pudding",
+   "kw": [
+    "creme",
+    "dessert",
+    "pudding"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Milsani Sahnepudding Vanille",
+   "price": 1.39,
+   "item": "Pudding",
+   "kw": [
+    "pudding",
+    "sahnepudding"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 37, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Milram Käsescheiben XXL",
+   "price": 2.89,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "käsescheibe"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 32, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Landliebe Käsescheiben",
+   "price": 1.99,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "käsescheibe"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur bei rabatprospekt.de gefunden"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Arla Buko Frischkäse, versch. Sorten",
+   "price": 0.77,
+   "item": "Frischkäse",
+   "kw": [
+    "frischkäse",
+    "buko"
+   ],
+   "valid": "22.–24.10.",
+   "note": "mydealz nennt Start 21.10., die Seite liegt dort einen Tag früher, also ab Donnerstag"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Bärenmarke Haltbare Milch",
+   "price": 0.88,
+   "item": "Milch",
+   "kw": [
+    "milch",
+    "h-milch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 36, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Tillman's Toasty, 280 g",
+   "price": 2.79,
+   "item": "Toasty",
+   "kw": [
+    "toasty",
+    "snack"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "McCain Pickers",
+   "price": 2.22,
+   "item": "Pommes Snack",
+   "kw": [
+    "pickers",
+    "mccain",
+    "tiefkühl"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 33, Aktion beginnt vielleicht erst Do 22.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "All Seasons Buttergemüse",
+   "price": 0.99,
+   "item": "TK-Gemüse",
+   "kw": [
+    "gemüse",
+    "tiefkühlgemüse",
+    "buttergemüse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Name in der Quelle abgeschnitten; Prospektseite 37"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Knorr Basissoße",
+   "price": 0.99,
+   "item": "Fix",
+   "kw": [
+    "knorr",
+    "fix",
+    "basis"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Knorr Snack-Pot",
+   "price": 0.99,
+   "item": "Snack-Pot",
+   "kw": [
+    "snack pot",
+    "knorr",
+    "fertiggericht"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 34"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Speisezeit Bester Eintopf",
+   "price": 1.99,
+   "item": "Eintopf",
+   "kw": [
+    "eintopf",
+    "dose"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Grandessa Gelee",
+   "price": 1.59,
+   "item": "Gelee",
+   "kw": [
+    "gelee",
+    "marmelade",
+    "konfitüre"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 34"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Ferrero Nutella",
+   "price": 3.99,
+   "item": "Nutella",
+   "kw": [
+    "nutella",
+    "nussnougatcreme",
+    "aufstrich"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Lavazza Kaffee",
+   "price": 13.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "lavazza",
+    "bohne"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Trader Joe's Cashewkerne",
+   "price": 2.49,
+   "item": "Cashews",
+   "kw": [
+    "cashew",
+    "nuss"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Trader Joe's Premium-Nuss-Mix",
+   "price": 2.99,
+   "item": "Nüsse",
+   "kw": [
+    "nuss",
+    "nussmix"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Trader Joe's Trockenpflaumen",
+   "price": 3.99,
+   "item": "Trockenpflaumen",
+   "kw": [
+    "trockenpflaume",
+    "pflaume"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Sultaninen",
+   "price": 0.99,
+   "item": "Rosinen",
+   "kw": [
+    "sultanine",
+    "rosine"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Back Family Mandeln",
+   "price": 1.89,
+   "item": "Mandeln",
+   "kw": [
+    "mandel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Diadem Puderzucker",
+   "price": 0.99,
+   "item": "Puderzucker",
+   "kw": [
+    "puderzucker",
+    "zucker"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Orangen- oder Zitronenschale (Backzutat)",
+   "price": 0.79,
+   "item": "Backzutat",
+   "kw": [
+    "orangeat",
+    "zitronat",
+    "backen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Back Family Kuchenglasur",
+   "price": 0.99,
+   "item": "Kuvertüre",
+   "kw": [
+    "kuchenglasur",
+    "kuvertüre"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Back Family Backfüllung",
+   "price": 1.49,
+   "item": "Backfüllung",
+   "kw": [
+    "backfüllung",
+    "backen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Back Family Streudekor",
+   "price": 0.75,
+   "item": "Streusel",
+   "kw": [
+    "streudekor",
+    "streusel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Back Family Mini-Dekor Winter",
+   "price": 1.59,
+   "item": "Streusel",
+   "kw": [
+    "dekor",
+    "streusel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Back Family Backstreichfett",
+   "price": 0.99,
+   "item": "Backfett",
+   "kw": [
+    "backfett",
+    "margarine"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur bei rabatprospekt.de gefunden"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Ritter Sport Mini-Mix",
+   "price": 1.99,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "ritter sport"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Milka Mini-Mix Box",
+   "price": 1.99,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "milka"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur bei rabatprospekt.de gefunden"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Choceur Selection Minis XXL",
+   "price": 3.99,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "praline"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospektseite 35"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Wagner Piccolinis, 270 g",
+   "price": 1.66,
+   "item": "Piccolinis",
+   "kw": [
+    "piccolini",
+    "pizza",
+    "tiefkühlpizza"
+   ],
+   "valid": "19.–24.10.",
+   "note": "bestätigt"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Coca-Cola",
+   "price": 7.99,
+   "item": "Cola",
+   "kw": [
+    "cola",
+    "coca-cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Gebinde nicht angegeben; passt zu bekannt 'Coca-Cola Zero Sugar oder Fanta Exotic 7,99'"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Pepsi oder Schwip Schwap, versch. Sorten, 1,25 l",
+   "price": 0.59,
+   "item": "Pepsi Zero",
+   "kw": [
+    "pepsi",
+    "pepsi zero",
+    "pepsi max",
+    "schwip schwap",
+    "cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. Pfand; auch Schwip Schwap im Angebot"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Krombacher, versch. Sorten, 0,5 l",
+   "price": 0.79,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "krombacher",
+    "pils"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Pfand nicht angegeben"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Wonnemeyer Hummus",
+   "price": 0.79,
+   "item": "Hummus",
+   "kw": [
+    "hummus"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum (Prospekt 18.–24.10.); vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Wonnemeyer Brotaufstrich",
+   "price": 1.19,
+   "item": "Aufstrich",
+   "kw": [
+    "aufstrich",
+    "brotaufstrich"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Wonnemeyer Fleischsalat",
+   "price": 1.49,
+   "item": "Fleischsalat",
+   "kw": [
+    "fleischsalat",
+    "salat"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Wonnemeyer Mediterrane Käsecreme",
+   "price": 1.79,
+   "item": "Käsecreme",
+   "kw": [
+    "käsecreme",
+    "aufstrich"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Wonnemeyer Salatdressing",
+   "price": 0.79,
+   "item": "Dressing",
+   "kw": [
+    "dressing",
+    "salatdressing"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Daylicious Frische Sandwiches",
+   "price": 1.79,
+   "item": "Sandwich",
+   "kw": [
+    "sandwich"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Daylicious Wraps",
+   "price": 1.79,
+   "item": "Wraps",
+   "kw": [
+    "wrap"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Daylicious Salatcup",
+   "price": 2.29,
+   "item": "Salat",
+   "kw": [
+    "salat",
+    "salatcup"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Snack Time Salat-Menü Vielfalt",
+   "price": 2.79,
+   "item": "Salat",
+   "kw": [
+    "salat"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Cucina Gefüllte Premium Pasta",
+   "price": 2.49,
+   "item": "Tortellini",
+   "kw": [
+    "pasta",
+    "tortellini",
+    "nudel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Cucina Gnocchi oder Tagliatelle",
+   "price": 1.49,
+   "item": "Gnocchi",
+   "kw": [
+    "gnocchi",
+    "tagliatelle",
+    "nudel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Landfreude Eierspätzle",
+   "price": 1.69,
+   "item": "Spätzle",
+   "kw": [
+    "spätzle",
+    "nudel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "meinprospekt Bochum; vielleicht dauerhafte Preissenkung"
+  },
+  {
+   "store": "Lidl",
+   "product": "Lavazza Caffè Ganze Bohnen, versch. Sorten, 1 kg",
+   "price": 12.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "lavazza",
+    "bohne"
+   ],
+   "valid": "19.–24.10.",
+   "note": "mit Lidl Plus 12,88"
+  },
+  {
+   "store": "Lidl",
+   "product": "Jacobs Kaffeekapseln XXL, 208 g",
+   "price": 7.49,
+   "item": "Kaffeekapseln",
+   "kw": [
+    "kaffeekapsel",
+    "kapsel",
+    "jacobs"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Jacobs Kaffee-Sticks 2in1/3in1",
+   "price": 1.99,
+   "item": "Kaffee-Sticks",
+   "kw": [
+    "kaffee",
+    "instantkaffee",
+    "jacobs"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Senseo Coffee Pads XXL, 333 g",
+   "price": 5.88,
+   "item": "Kaffeepads",
+   "kw": [
+    "kaffeepad",
+    "pad",
+    "senseo"
+   ],
+   "valid": "23.–24.10.",
+   "note": "marktguru 22.10., also wahrscheinlich ab Freitag"
+  },
+  {
+   "store": "Lidl",
+   "product": "Paprika Mix, 500 g",
+   "price": 1.49,
+   "item": "Paprika",
+   "kw": [
+    "paprika"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis, sonst 1,79"
+  },
+  {
+   "store": "Lidl",
+   "product": "Mandarinen/Satsumas, 1,5-kg-Netz",
+   "price": 3.49,
+   "item": "Mandarinen",
+   "kw": [
+    "mandarine",
+    "satsuma"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur bei rabatprospekt.de gefunden"
+  },
+  {
+   "store": "Lidl",
+   "product": "Birnen, 1 kg",
+   "price": 1.79,
+   "item": "Birnen",
+   "kw": [
+    "birne"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur bei rabatprospekt.de gefunden"
+  },
+  {
+   "store": "Lidl",
+   "product": "Bärenmarke Haltbare Milch, 1 l",
+   "price": 1.11,
+   "item": "Milch",
+   "kw": [
+    "milch",
+    "h-milch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Milbona Butterkäse in Scheiben, 400 g",
+   "price": 1.99,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "butterkäse",
+    "käsescheibe"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Milbona Schmelzkäsezubereitung, 250 g",
+   "price": 1.69,
+   "item": "Schmelzkäse",
+   "kw": [
+    "schmelzkäse",
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Milbona Gorgonzola DOP, 200 g",
+   "price": 2.49,
+   "item": "Gorgonzola",
+   "kw": [
+    "gorgonzola",
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Milbona Mascarpone, 250 g",
+   "price": 1.49,
+   "item": "Mascarpone",
+   "kw": [
+    "mascarpone"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Milbona Gouda gerieben, 250 g",
+   "price": 1.49,
+   "item": "Reibekäse",
+   "kw": [
+    "reibekäse",
+    "gouda",
+    "käse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Milbona Bioland Bio Käse am Stück, 200 g",
+   "price": 1.89,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "biokäse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis, sonst 2,29"
+  },
+  {
+   "store": "Lidl",
+   "product": "Milbona Bioland Bio-Käsescheiben, 200 g",
+   "price": 1.79,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "käsescheibe",
+    "biokäse"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis, sonst 1,99"
+  },
+  {
+   "store": "Lidl",
+   "product": "Milbona Frischkäse, 175 g",
+   "price": 0.85,
+   "item": "Frischkäse",
+   "kw": [
+    "frischkäse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Kerrygold Original Irische Butter oder Extra, 200/250 g",
+   "price": 1.69,
+   "item": "Butter",
+   "kw": [
+    "butter",
+    "kerrygold"
+   ],
+   "valid": "22.–24.10.",
+   "note": "discounto: 19.–24.10. (Prospektzeitraum); marktguru: 21.10., also wahrscheinlich ab Donnerstag"
+  },
+  {
+   "store": "Lidl",
+   "product": "Bauer Der Große Bauer, 225/250 g",
+   "price": 0.49,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "fruchtjoghurt"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Milbona Joghurt Mild XXL 3,5 %, 1 kg",
+   "price": 1.49,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "naturjoghurt"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Danone Frucht Zwerge, 6 x 100 g",
+   "price": 2.99,
+   "item": "Frucht Zwerge",
+   "kw": [
+    "frucht zwerge",
+    "quark",
+    "kinderjoghurt"
+   ],
+   "valid": "22.–24.10.",
+   "note": "mit Lidl Plus 2,88; marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Danone Activia XXL, 920 g",
+   "price": 2.88,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "activia"
+   ],
+   "valid": "23.–24.10.",
+   "note": "marktguru 22.10., also wahrscheinlich ab Freitag"
+  },
+  {
+   "store": "Lidl",
+   "product": "Ehrmann High Protein Triple Dessert, 200 g",
+   "price": 1.29,
+   "item": "Proteinpudding",
+   "kw": [
+    "pudding",
+    "protein",
+    "dessert"
+   ],
+   "valid": "19.–24.10.",
+   "note": "mit Lidl Plus 1,19"
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Milchshake, 230 ml",
+   "price": 0.65,
+   "item": "Milchshake",
+   "kw": [
+    "milchshake"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Sandwich Scheiben American Style, 200 g",
+   "price": 2.49,
+   "item": "Käse",
+   "kw": [
+    "käse",
+    "käsescheibe",
+    "cheddar"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch Hähnchen-Knusperchen XXL, 540 g",
+   "price": 3.99,
+   "item": "Hähnchen",
+   "kw": [
+    "hähnchen",
+    "chicken nugget"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis, sonst 4,99"
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch Hähnchenbrustfilets, 1,5 kg",
+   "price": 11.88,
+   "item": "Hähnchenbrust",
+   "kw": [
+    "hähnchenbrust",
+    "hähnchen",
+    "geflügel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis"
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch Puten-Ministeaks XXL",
+   "price": 7.99,
+   "item": "Pute",
+   "kw": [
+    "pute",
+    "putensteak",
+    "geflügel"
+   ],
+   "valid": "22.–24.10.",
+   "note": "Gebinde in der Quelle unklar (800 g/400 g); marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch Puten Schenkel, je kg",
+   "price": 4.99,
+   "item": "Pute",
+   "kw": [
+    "pute",
+    "putenschenkel",
+    "geflügel"
+   ],
+   "valid": "22.–24.10.",
+   "note": "ca. 2,5 kg Packung, Preis je kg; marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Deluxe Maishähnchenschenkel, 2,5 kg",
+   "price": 8.99,
+   "item": "Hähnchenschenkel",
+   "kw": [
+    "hähnchen",
+    "hähnchenschenkel",
+    "geflügel"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Chef Select Hähnchen Kebab XXL, 1 kg",
+   "price": 7.49,
+   "item": "Kebab",
+   "kw": [
+    "kebab",
+    "döner",
+    "hähnchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Hähnchenbrustfiletstücke, 150 g",
+   "price": 1.99,
+   "item": "Hähnchen",
+   "kw": [
+    "hähnchen",
+    "hähnchenbrust"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Fried Chicken Bucket, 750 g",
+   "price": 7.99,
+   "item": "Fried Chicken",
+   "kw": [
+    "hähnchen",
+    "chicken"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch Schweine Gulasch XXL, 1,6 kg",
+   "price": 8.99,
+   "item": "Gulasch",
+   "kw": [
+    "gulasch",
+    "schwein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch XXL Schweinebauchscheiben, 1,2 kg",
+   "price": 6.99,
+   "item": "Schweinebauch",
+   "kw": [
+    "schweinebauch",
+    "bauchscheibe"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch Schweine Koteletts XXL, 1 kg",
+   "price": 5.99,
+   "item": "Kotelett",
+   "kw": [
+    "kotelett",
+    "schwein"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch Schweine-Nackensteaks mariniert, 750 g",
+   "price": 4.44,
+   "item": "Nackensteak",
+   "kw": [
+    "nackensteak",
+    "schwein",
+    "steak"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis"
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch Schweine Spare Ribs XXL, ca. 1,5 kg",
+   "price": 5.99,
+   "item": "Spare Ribs",
+   "kw": [
+    "spare rib",
+    "rippchen"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Metzgerfrisch Rinder-Minutensteaks, 320 g",
+   "price": 4.99,
+   "item": "Rindersteak",
+   "kw": [
+    "minutensteak",
+    "rind",
+    "steak"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis"
+  },
+  {
+   "store": "Lidl",
+   "product": "Deluxe Roastbeef am Stück, ca. 0,8–1,2 kg",
+   "price": 19.97,
+   "item": "Roastbeef",
+   "kw": [
+    "roastbeef",
+    "rind"
+   ],
+   "valid": "22.–24.10.",
+   "note": "24,99 €/kg, Gewicht schwankt; marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Delikatess Bacon XXL, 200 g",
+   "price": 2.29,
+   "item": "Bacon",
+   "kw": [
+    "bacon",
+    "speck"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Pastrami, 100 g",
+   "price": 2.29,
+   "item": "Aufschnitt",
+   "kw": [
+    "pastrami",
+    "aufschnitt"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Deluxe Jamón Serrano Reserva, 950 g",
+   "price": 19.99,
+   "item": "Schinken",
+   "kw": [
+    "schinken",
+    "serrano"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Bifi Original, versch. Sorten",
+   "price": 1.99,
+   "item": "Bifi",
+   "kw": [
+    "bifi",
+    "salami",
+    "snack"
+   ],
+   "valid": "19.–24.10.",
+   "note": "mit Lidl Plus 1,79"
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy BBQ Salat, 300/350 g",
+   "price": 1.69,
+   "item": "Salat",
+   "kw": [
+    "salat",
+    "krautsalat"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Fischerstolz Lachsforellenfilet, ca. 789 g",
+   "price": 10.49,
+   "item": "Lachsforelle",
+   "kw": [
+    "lachsforelle",
+    "fisch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "13,30 €/kg, Gewicht schwankt"
+  },
+  {
+   "store": "Lidl",
+   "product": "Fischerstolz Wolfsbarsch, ca. 546–650 g",
+   "price": 8.19,
+   "item": "Fisch",
+   "kw": [
+    "wolfsbarsch",
+    "fisch"
+   ],
+   "valid": "22.–24.10.",
+   "note": "15,00 €/kg; marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Fischerstolz Miesmuscheln, 1 kg",
+   "price": 2.39,
+   "item": "Muscheln",
+   "kw": [
+    "miesmuschel",
+    "muschel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis"
+  },
+  {
+   "store": "Lidl",
+   "product": "Iglo Fischstäbchen, Knusper-Fisch oder Backfisch-Stäbchen, 352–450 g",
+   "price": 2.99,
+   "item": "Fischstäbchen",
+   "kw": [
+    "fischstäbchen",
+    "iglo",
+    "backfisch"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Original Wagner Steinofen-Pizza, 600–700 g",
+   "price": 3.59,
+   "item": "Pizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza",
+    "wagner"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Fryzza Pizza, 260–340 g",
+   "price": 2.99,
+   "item": "Pizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Stuffed Crust Pizza, 450/500 g",
+   "price": 2.99,
+   "item": "Pizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Deli Pocket, 360 g, TK",
+   "price": 2.99,
+   "item": "Snack TK",
+   "kw": [
+    "tiefkühl",
+    "snack"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Gelatelli Dessertgenuss Eis, 3 x 170 ml",
+   "price": 1.39,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "eiscreme"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Bon Gelati Eiscreme, 1 l",
+   "price": 1.59,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "eiscreme"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Bon Gelati Stieleis, 6 x 100 ml",
+   "price": 2.29,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "stieleis"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Gelatelli Premium-Eisbecher, 500 ml",
+   "price": 1.99,
+   "item": "Eis",
+   "kw": [
+    "eis"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Bon Gelati Eisschale Bourbon Vanille, 2,5 l",
+   "price": 2.79,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "vanilleeis"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Bon Gelati Premium Stieleis Mini Mix, 12 x 50 ml",
+   "price": 2.59,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "stieleis"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis"
+  },
+  {
+   "store": "Lidl",
+   "product": "Bon Gelati Hörnchen, 6 x 120 ml",
+   "price": 1.59,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "hörnchen"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis"
+  },
+  {
+   "store": "Lidl",
+   "product": "Bon Gelati Waffel Sandwich-Eis, 8 x 90 ml",
+   "price": 1.59,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "sandwicheis"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis"
+  },
+  {
+   "store": "Lidl",
+   "product": "Ferrero Nutella, 450 g",
+   "price": 3.99,
+   "item": "Nutella",
+   "kw": [
+    "nutella",
+    "nussnougatcreme",
+    "aufstrich"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Bagels, 300 g",
+   "price": 1.49,
+   "item": "Bagels",
+   "kw": [
+    "bagel",
+    "brot"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Sauce 2in1, 190 g",
+   "price": 1.29,
+   "item": "Soße",
+   "kw": [
+    "sauce",
+    "soße"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Favorina Mandeln, 150/200 g",
+   "price": 2.79,
+   "item": "Mandeln",
+   "kw": [
+    "mandel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Favorina Zimtsterne, 175 g",
+   "price": 2.99,
+   "item": "Zimtsterne",
+   "kw": [
+    "zimtstern",
+    "gebäck"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Favorina Weihnachtsgebäck, 600 g",
+   "price": 3.99,
+   "item": "Weihnachtsgebäck",
+   "kw": [
+    "gebäck",
+    "lebkuchen",
+    "spekulatius"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Halloween-Snacks, 100 g",
+   "price": 0.89,
+   "item": "Süßigkeiten",
+   "kw": [
+    "süßigkeit",
+    "halloween"
+   ],
+   "valid": "19.–24.10.",
+   "note": "ab 0,89"
+  },
+  {
+   "store": "Lidl",
+   "product": "m&m's Peanut u. a., 128/150 g",
+   "price": 1.69,
+   "item": "M&Ms",
+   "kw": [
+    "m&m",
+    "schokolade"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis, sonst 2,99"
+  },
+  {
+   "store": "Lidl",
+   "product": "Halloween Lollipops Mix, 209 g",
+   "price": 1.29,
+   "item": "Lollis",
+   "kw": [
+    "lolli",
+    "süßigkeit"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Haribo Halloween Party Fruchtgummi, 500 g",
+   "price": 3.59,
+   "item": "Gummibärchen",
+   "kw": [
+    "fruchtgummi",
+    "haribo",
+    "gummibär"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Minions Minifruchtgummi Halloween, 240 g",
+   "price": 1.99,
+   "item": "Fruchtgummi",
+   "kw": [
+    "fruchtgummi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Trolli Glotzer, 75 g",
+   "price": 1.29,
+   "item": "Fruchtgummi",
+   "kw": [
+    "fruchtgummi",
+    "trolli"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Funny-frisch Kessel Chips, 120 g",
+   "price": 1.49,
+   "item": "Chips",
+   "kw": [
+    "chips",
+    "kesselchips"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Pommes-Snack, 175 g",
+   "price": 1.29,
+   "item": "Knabberzeug",
+   "kw": [
+    "chips",
+    "snack"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Mikrowellen Popcorn, 300 g",
+   "price": 1.29,
+   "item": "Popcorn",
+   "kw": [
+    "popcorn"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Popcorn süß, 250 g",
+   "price": 2.49,
+   "item": "Popcorn",
+   "kw": [
+    "popcorn"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Beef Jerky, 45 g",
+   "price": 2.49,
+   "item": "Beef Jerky",
+   "kw": [
+    "beef jerky",
+    "snack"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Gerolsteiner Medium, 1,5 l",
+   "price": 0.89,
+   "item": "Wasser",
+   "kw": [
+    "wasser",
+    "mineralwasser",
+    "gerolsteiner"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Lidl-Plus-Preis, sonst 1,09; Pfand nicht angegeben"
+  },
+  {
+   "store": "Lidl",
+   "product": "Granini Die Limo, versch. Sorten, 1 l",
+   "price": 1.29,
+   "item": "Limo",
+   "kw": [
+    "limonade",
+    "limo"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,25 Pfand; Flaschengröße aus dem Grundpreis abgeleitet"
+  },
+  {
+   "store": "Lidl",
+   "product": "Rauch Happy Day Säfte, versch. Sorten, 1 l",
+   "price": 1.99,
+   "item": "Saft",
+   "kw": [
+    "saft",
+    "orangensaft"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Literangabe aus dem Grundpreis abgeleitet"
+  },
+  {
+   "store": "Lidl",
+   "product": "McEnnedy Orangensaft XXL, 2 l",
+   "price": 4.49,
+   "item": "Saft",
+   "kw": [
+    "saft",
+    "orangensaft"
+   ],
+   "valid": "22.–24.10.",
+   "note": "zzgl. 0,25 Pfand; marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Arizona Iced Tea XXL, 1,75 l",
+   "price": 1.39,
+   "item": "Eistee",
+   "kw": [
+    "eistee",
+    "ice tea"
+   ],
+   "valid": "22.–24.10.",
+   "note": "zzgl. 0,25 Pfand; marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Calypso Ocean Blue Lemonade, 473 ml",
+   "price": 2.29,
+   "item": "Limo",
+   "kw": [
+    "limonade",
+    "limo"
+   ],
+   "valid": "22.–24.10.",
+   "note": "zzgl. 0,25 Pfand; marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Finish Ultimate Plus Spülmaschinentabs, 74–120 Stück",
+   "price": 9.99,
+   "item": "Spülmaschinentabs",
+   "kw": [
+    "spülmaschinentab",
+    "spülmittel",
+    "finish"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Lenor Waschmittel Gel, Pulver oder Pods, 76–100 WL",
+   "price": 17.99,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "lenor"
+   ],
+   "valid": "22.–24.10.",
+   "note": "marktguru 21.10."
+  },
+  {
+   "store": "Norma",
+   "product": "Daunasoft Toilettenpapier, 10 x 220 Blatt",
+   "price": 3.75,
+   "item": "Toilettenpapier",
+   "kw": [
+    "toilettenpapier",
+    "klopapier"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Quelle nennt bis 25.10.; bestätigt, jetzt mit Gebinde"
+  },
+  {
+   "store": "Norma",
+   "product": "Glücksblatt Küchentücher XXL",
+   "price": 7.77,
+   "item": "Küchenrolle",
+   "kw": [
+    "küchenrolle",
+    "küchentuch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43 (19.–25.10.)"
+  },
+  {
+   "store": "Norma",
+   "product": "Daunasoft Taschentücher",
+   "price": 2.75,
+   "item": "Taschentücher",
+   "kw": [
+    "taschentuch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "MultiTEC Aluminium-Folie",
+   "price": 2.89,
+   "item": "Alufolie",
+   "kw": [
+    "alufolie",
+    "folie"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "MultiTEC Müllbeutel",
+   "price": 1.15,
+   "item": "Müllbeutel",
+   "kw": [
+    "müllbeutel",
+    "müllsack"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Coca-Cola Original Taste, 2 l",
+   "price": 1.39,
+   "item": "Cola",
+   "kw": [
+    "cola",
+    "coca-cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Pfand nicht angegeben; Quelle nennt bis 25.10."
+  },
+  {
+   "store": "Norma",
+   "product": "Coca-Cola, 12er-Pack",
+   "price": 9.99,
+   "item": "Cola",
+   "kw": [
+    "cola",
+    "coca-cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Flaschengröße und Sorte nicht angegeben; Pfand nicht angegeben"
+  },
+  {
+   "store": "Norma",
+   "product": "Lätta Margarine, 450 g",
+   "price": 1.29,
+   "item": "Margarine",
+   "kw": [
+    "margarine",
+    "lätta"
+   ],
+   "valid": "19.–24.10.",
+   "note": "mit NORMA Plus App 0,99 (discounto); prospektangebote nennt 0,99 ohne App-Hinweis"
+  },
+  {
+   "store": "Norma",
+   "product": "Almette Frischkäse",
+   "price": 1.11,
+   "item": "Frischkäse",
+   "kw": [
+    "frischkäse",
+    "almette"
+   ],
+   "valid": "19.–24.10.",
+   "note": "mit NORMA Plus App 0,95"
+  },
+  {
+   "store": "Norma",
+   "product": "Rama mit Butter",
+   "price": 1.99,
+   "item": "Margarine",
+   "kw": [
+    "margarine",
+    "rama"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Dr. Oetker Ristorante Pizza",
+   "price": 3.99,
+   "item": "Pizza",
+   "kw": [
+    "pizza",
+    "tiefkühlpizza",
+    "ristorante"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43; vermutlich Mehrfachpack, Gebinde nicht angegeben"
+  },
+  {
+   "store": "Norma",
+   "product": "Werder Schlemmer-Sauce",
+   "price": 1.29,
+   "item": "Soße",
+   "kw": [
+    "sauce",
+    "soße",
+    "ketchup"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Zauberhaft Backen Mandeln",
+   "price": 1.25,
+   "item": "Mandeln",
+   "kw": [
+    "mandel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Zauberhaft Backen Mandeln gemahlen, unblanchiert",
+   "price": 2.49,
+   "item": "Mandeln gemahlen",
+   "kw": [
+    "mandel",
+    "gemahlene mandel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Ardilla Walnusskerne naturbelassen",
+   "price": 2.49,
+   "item": "Walnüsse",
+   "kw": [
+    "walnuss",
+    "nuss"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Pfiff Erdnüsse",
+   "price": 1.79,
+   "item": "Erdnüsse",
+   "kw": [
+    "erdnuss",
+    "nuss"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Tuc Bake Rolls",
+   "price": 1.49,
+   "item": "Knabberzeug",
+   "kw": [
+    "bake rolls",
+    "cracker",
+    "snack"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Vita Bärentatzen oder Wikinger Waffeln",
+   "price": 1.39,
+   "item": "Gebäck",
+   "kw": [
+    "waffel",
+    "gebäck",
+    "keks"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Nimm 2 Lachgummi",
+   "price": 0.99,
+   "item": "Fruchtgummi",
+   "kw": [
+    "fruchtgummi",
+    "lachgummi"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Lolly Mix",
+   "price": 2.99,
+   "item": "Lollis",
+   "kw": [
+    "lolli",
+    "süßigkeit"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Giotto Minis",
+   "price": 2.39,
+   "item": "Süßigkeiten",
+   "kw": [
+    "giotto",
+    "praline"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Halloren O's Kugeln",
+   "price": 1.11,
+   "item": "Pralinen",
+   "kw": [
+    "praline",
+    "kugel",
+    "schokolade"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Excelsior Magie du Chocolat Gefüllte Tafel",
+   "price": 1.99,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Excelsior Edel-Sahne-Schokolade",
+   "price": 1.99,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Norma",
+   "product": "Edler Tee-Adventskalender",
+   "price": 3.99,
+   "item": "Tee",
+   "kw": [
+    "tee",
+    "adventskalender"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt KW 43"
+  },
+  {
+   "store": "Rewe",
+   "product": "Bitburger Pils oder alkoholfrei, 20 x 0,5 l Kasten",
+   "price": 10.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils",
+    "bitburger"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 3,10 € Pfand"
+  },
+  {
+   "store": "Rewe",
+   "product": "Beck's Pils versch. Sorten, 20 x 0,5 l Kasten",
+   "price": 10.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils",
+    "beck"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 3,10 € Pfand"
+  },
+  {
+   "store": "Rewe",
+   "product": "Melitta Auslese Kaffee gemahlen, 500 g",
+   "price": 5.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "melitta"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Lavazza Caffè Crema ganze Bohnen, 1 kg",
+   "price": 13.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "kaffeebohne",
+    "lavazza"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Jacobs Lungo Kaffeekapseln Intenso, 104 g",
+   "price": 4.44,
+   "item": "Kaffeekapseln",
+   "kw": [
+    "kaffee",
+    "kapsel",
+    "jacobs"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Jacobs 2in1 Classic",
+   "price": 1.99,
+   "item": "Instantkaffee",
+   "kw": [
+    "kaffee",
+    "instantkaffee",
+    "jacobs"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 16,05 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Senseo Kaffeepads Classic",
+   "price": 2.22,
+   "item": "Kaffeepads",
+   "kw": [
+    "kaffee",
+    "pad",
+    "senseo"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 20,00 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Mövenpick Cappuccino",
+   "price": 1.11,
+   "item": "Kaffeegetränk",
+   "kw": [
+    "kaffee",
+    "cappuccino",
+    "moevenpick"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 5,05 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Mövenpick Eis, 850 ml",
+   "price": 1.99,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "speiseeis",
+    "moevenpick"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Ben & Jerry's Ice Cream",
+   "price": 3.99,
+   "item": "Eis",
+   "kw": [
+    "eis",
+    "speiseeis"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 8,58 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Red Bull Energy Drink, 0,25 l Dose",
+   "price": 0.99,
+   "item": "Energy",
+   "kw": [
+    "energy",
+    "energydrink",
+    "red bull"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,25 € Pfand"
+  },
+  {
+   "store": "Rewe",
+   "product": "Rügenwalder Veganer Schinken Spicker Salat, 150 g",
+   "price": 1.79,
+   "item": "Aufschnitt vegan",
+   "kw": [
+    "aufschnitt",
+    "vegan",
+    "ruegenwalder"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Rügenwalder Vegane Pommersche",
+   "price": 1.79,
+   "item": "Aufstrich vegan",
+   "kw": [
+    "aufstrich",
+    "vegan",
+    "ruegenwalder"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 14,32 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Milka Alpenmilch, 250 g",
+   "price": 2.79,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "milka"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Milka Choco Wafer",
+   "price": 1.99,
+   "item": "Kekse",
+   "kw": [
+    "keks",
+    "waffel",
+    "milka"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 13,27 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Marabou Milchschokolade",
+   "price": 2.99,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "marabou"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 17,59 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Snickers oder Twix",
+   "price": 1.99,
+   "item": "Schokoriegel",
+   "kw": [
+    "schokoriegel",
+    "snickers",
+    "twix"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 7,96 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Corny Müsliriegel Protein oder Schoko",
+   "price": 1.79,
+   "item": "Müsliriegel",
+   "kw": [
+    "muesliriegel",
+    "riegel",
+    "corny"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "REWE Bio Dattel-Erdnuss-Riegel",
+   "price": 1.49,
+   "item": "Riegel",
+   "kw": [
+    "riegel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 16,56 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Storck Toffifee White Chocolate",
+   "price": 1.11,
+   "item": "Süßigkeiten",
+   "kw": [
+    "toffifee",
+    "suessigkeit",
+    "schokolade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Youcook Internationales Fertiggericht, 420 g",
+   "price": 3.79,
+   "item": "Fertiggericht",
+   "kw": [
+    "fertiggericht",
+    "youcook"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Maggi Ravioli in Tomatensauce, 800 g Dose",
+   "price": 1.99,
+   "item": "Ravioli",
+   "kw": [
+    "ravioli",
+    "konserve",
+    "maggi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Knorr Fix Bolognese Unsere Beste!",
+   "price": 0.49,
+   "item": "Fix",
+   "kw": [
+    "fix",
+    "knorr",
+    "bolognese"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Burgis Sonntagsknödel",
+   "price": 1.79,
+   "item": "Knödel",
+   "kw": [
+    "knoedel",
+    "burgis"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 3,58 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Mondamin Pfannkuchenteig",
+   "price": 1.99,
+   "item": "Pfannkuchenteig",
+   "kw": [
+    "pfannkuchen",
+    "backmischung",
+    "mondamin"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Jürgen Langbein Fond",
+   "price": 1.99,
+   "item": "Fond",
+   "kw": [
+    "fond"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 3,98 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Nestlé Nesquik",
+   "price": 2.49,
+   "item": "Kakao",
+   "kw": [
+    "kakao",
+    "nesquik"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 7,55 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Mestemacher Unser Pures Bio Toastbrötchen",
+   "price": 2.49,
+   "item": "Toastbrötchen",
+   "kw": [
+    "toast",
+    "broetchen",
+    "brot"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 7,11 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Leerdammer Käsescheiben",
+   "price": 1.69,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "leerdammer",
+    "scheibenkaese"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 12,07 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Almette Frischkäse",
+   "price": 1.11,
+   "item": "Frischkäse",
+   "kw": [
+    "frischkaese",
+    "almette"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 7,40 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Arla Skyr Bourbon Vanille",
+   "price": 0.99,
+   "item": "Skyr",
+   "kw": [
+    "skyr",
+    "joghurt"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 3,96 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Ehrmann Almighurt versch. Sorten",
+   "price": 0.39,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "almighurt"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 2,60 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Zott Sahne Joghurt",
+   "price": 0.49,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "sahnejoghurt",
+    "zott"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 3,50 €; bekannte Liste hat Netto 0,44 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "REWE Bio laktosefreier Joghurt mild",
+   "price": 0.55,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "laktosefrei"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Landliebe Landmilch",
+   "price": 1.11,
+   "item": "Milch",
+   "kw": [
+    "milch",
+    "landmilch",
+    "landliebe"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Müllermilch Erdbeer-Geschmack",
+   "price": 0.79,
+   "item": "Milchdrink",
+   "kw": [
+    "muellermilch",
+    "milchdrink"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 1,98 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Hipp Erdbeere Himbeere in Apfel",
+   "price": 1.11,
+   "item": "Quetschie",
+   "kw": [
+    "quetschie",
+    "babynahrung",
+    "hipp"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Die Qualitätsmetzgerei Rinder-Hackfleisch",
+   "price": 3.49,
+   "item": "Hackfleisch",
+   "kw": [
+    "hackfleisch",
+    "rinderhack",
+    "hack"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 13,96 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Wilhelm Brandenburg Rinder-Hackfleisch",
+   "price": 3.79,
+   "item": "Hackfleisch",
+   "kw": [
+    "hackfleisch",
+    "rinderhack",
+    "hack"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 15,16 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Beckers Frikadellen",
+   "price": 6.99,
+   "item": "Frikadellen",
+   "kw": [
+    "frikadelle"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 4,99 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Tannenhof Gekochtes Mett in Gelee",
+   "price": 1.29,
+   "item": "Wurst",
+   "kw": [
+    "wurst",
+    "mett",
+    "sülze"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Gutfried Hähnchen-Fleischwurst",
+   "price": 2.79,
+   "item": "Fleischwurst",
+   "kw": [
+    "fleischwurst",
+    "wurst",
+    "gefluegelwurst"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 7,97 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Herta Grillhähnchen Aufschnitt",
+   "price": 1.69,
+   "item": "Aufschnitt",
+   "kw": [
+    "aufschnitt",
+    "haehnchen",
+    "herta"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 16,90 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Aoste Longhetti",
+   "price": 1.79,
+   "item": "Salami",
+   "kw": [
+    "salami",
+    "wurst",
+    "snack"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 27,54 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Strohwohl Gewürfelter Speck",
+   "price": 2.49,
+   "item": "Speck",
+   "kw": [
+    "speck",
+    "schinkenwuerfel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 24,90 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Meisterklasse Pfefferbeißer",
+   "price": 9.99,
+   "item": "Wurst",
+   "kw": [
+    "wurst",
+    "pfefferbeisser",
+    "snack"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 12,49 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "W. Brandenburg Kasseler-Lachsscheiben",
+   "price": 2.79,
+   "item": "Kasseler",
+   "kw": [
+    "kasseler",
+    "fleisch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 11,16 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "REWE Bio Räucherlachs",
+   "price": 3.99,
+   "item": "Lachs",
+   "kw": [
+    "lachs",
+    "raeucherlachs",
+    "fisch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 39,90 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Krone Räucher-Lachs",
+   "price": 4.19,
+   "item": "Lachs",
+   "kw": [
+    "lachs",
+    "raeucherlachs",
+    "fisch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 27,93 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Frosta à la Carte Hähnchen alla Caprese",
+   "price": 4.49,
+   "item": "TK-Gericht",
+   "kw": [
+    "tiefkuehl",
+    "fertiggericht",
+    "frosta"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 9,98 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Bonduelle Wildkräutersalat",
+   "price": 1.79,
+   "item": "Salat",
+   "kw": [
+    "salat",
+    "bonduelle"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Simply V Hirtengenuss",
+   "price": 1.99,
+   "item": "Käse vegan",
+   "kw": [
+    "kaese",
+    "vegan",
+    "simply v"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Taifun Bratfilet",
+   "price": 2.49,
+   "item": "Tofu",
+   "kw": [
+    "tofu",
+    "vegan"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "The Vegetarian Butcher Crispy Chickimicki Burger",
+   "price": 2.49,
+   "item": "Burger vegan",
+   "kw": [
+    "burger",
+    "vegan",
+    "tiefkuehl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Zewa Ultra Soft Toilettenpapier",
+   "price": 3.99,
+   "item": "Toilettenpapier",
+   "kw": [
+    "toilettenpapier",
+    "klopapier",
+    "zewa"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Frosch Sensitiv-Waschmittel",
+   "price": 4.99,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "frosch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 WL = 0,20 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Persil Universal 4in1 Discs",
+   "price": 16.99,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "persil"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 WL = 0,22 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Paulaner Spezi",
+   "price": 0.69,
+   "item": "Spezi",
+   "kw": [
+    "spezi",
+    "cola",
+    "limonade"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 2,09 € (also ca. 0,33 l), Pfand nicht angegeben"
+  },
+  {
+   "store": "Rewe",
+   "product": "Afri Cola",
+   "price": 0.69,
+   "item": "Cola",
+   "kw": [
+    "cola",
+    "afri"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 2,09 €, Pfand nicht angegeben"
+  },
+  {
+   "store": "Rewe",
+   "product": "Gerri Orangenlimonade",
+   "price": 0.79,
+   "item": "Limonade",
+   "kw": [
+    "limonade",
+    "orangenlimonade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Sinalco",
+   "price": 7.99,
+   "item": "Limonade",
+   "kw": [
+    "limonade",
+    "sinalco"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 0,67 €, vermutlich Kasten; Pfand nicht angegeben"
+  },
+  {
+   "store": "Rewe",
+   "product": "Römerwall limo",
+   "price": 6.49,
+   "item": "Limonade",
+   "kw": [
+    "limonade"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 0,72 €, Pfand nicht angegeben"
+  },
+  {
+   "store": "Rewe",
+   "product": "Gerolsteiner Mineralwasser",
+   "price": 4.99,
+   "item": "Wasser",
+   "kw": [
+    "wasser",
+    "mineralwasser",
+    "gerolsteiner"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 0,55 €, Pfand nicht angegeben"
+  },
+  {
+   "store": "Rewe",
+   "product": "REWE to go Protein Wasser",
+   "price": 2.19,
+   "item": "Proteinwasser",
+   "kw": [
+    "wasser",
+    "protein"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Bundaberg Brew",
+   "price": 0.99,
+   "item": "Limonade",
+   "kw": [
+    "limonade",
+    "ginger"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Dryll Elektrolyte-Getränk",
+   "price": 1.49,
+   "item": "Elektrolytgetränk",
+   "kw": [
+    "elektrolyt",
+    "getraenk"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Gösser Natur Radler",
+   "price": 0.89,
+   "item": "Radler",
+   "kw": [
+    "radler",
+    "bier"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 1,78 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Schöfferhofer Weizen",
+   "price": 3.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "weizen"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 2,02 €"
+  },
+  {
+   "store": "Rewe",
+   "product": "Bud",
+   "price": 5.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "bud"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 3,33 €"
+  },
+  {
+   "store": "Edeka",
+   "product": "Arla Buko versch. Sorten, 200 g",
+   "price": 0.99,
+   "item": "Frischkäse",
+   "kw": [
+    "frischkaese",
+    "buko"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Haribo Fruchtgummi oder Lakritz, 150–175 g",
+   "price": 0.66,
+   "item": "Gummibärchen",
+   "kw": [
+    "fruchtgummi",
+    "gummibaer",
+    "haribo",
+    "lakritz"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Barilla Pasta, 500 g",
+   "price": 0.69,
+   "item": "Nudeln",
+   "kw": [
+    "nudel",
+    "pasta",
+    "barilla"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Kulturheidelbeeren, 300 g",
+   "price": 3.99,
+   "item": "Heidelbeeren",
+   "kw": [
+    "heidelbeere",
+    "beere",
+    "obst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "GUT&GÜNSTIG Mini-Pflaumentomaten, 500 g",
+   "price": 1.77,
+   "item": "Tomaten",
+   "kw": [
+    "tomate",
+    "cocktailtomate"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Speisekartoffeln fest-/mehligkochend, 2 kg",
+   "price": 1.99,
+   "item": "Kartoffeln",
+   "kw": [
+    "kartoffel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "EDEKA Regional Kopfsalat, Stück",
+   "price": 1.0,
+   "item": "Salat",
+   "kw": [
+    "salat",
+    "kopfsalat"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Bio-Zucchini, 500 g",
+   "price": 1.49,
+   "item": "Zucchini",
+   "kw": [
+    "zucchini",
+    "gemuese"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Outspan Mandarinen, 750 g",
+   "price": 1.99,
+   "item": "Mandarinen",
+   "kw": [
+    "mandarine",
+    "obst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "GUT&GÜNSTIG Tafeltrauben hell, 500 g",
+   "price": 1.49,
+   "item": "Trauben",
+   "kw": [
+    "traube",
+    "weintraube",
+    "obst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Granatapfel, Stück",
+   "price": 1.29,
+   "item": "Granatapfel",
+   "kw": [
+    "granatapfel",
+    "obst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Bio-Salatgurke, Stück",
+   "price": 0.99,
+   "item": "Gurke",
+   "kw": [
+    "gurke",
+    "salatgurke"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Walnüsse in der Schale, 500 g",
+   "price": 2.49,
+   "item": "Walnüsse",
+   "kw": [
+    "walnuss",
+    "nuss"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Bio Süßkartoffeln, 1 kg",
+   "price": 2.99,
+   "item": "Süßkartoffeln",
+   "kw": [
+    "suesskartoffel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Kohlrabi, Stück",
+   "price": 0.55,
+   "item": "Kohlrabi",
+   "kw": [
+    "kohlrabi",
+    "gemuese"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Radieschen, Bund",
+   "price": 0.44,
+   "item": "Radieschen",
+   "kw": [
+    "radieschen"
+   ],
+   "valid": "ab Do 22.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Lauchzwiebeln, Bund",
+   "price": 0.44,
+   "item": "Frühlingszwiebeln",
+   "kw": [
+    "lauchzwiebel",
+    "fruehlingszwiebel"
+   ],
+   "valid": "ab Do 22.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "EDEKA Bio Feldsalat oder Rucola, 100 g",
+   "price": 1.49,
+   "item": "Feldsalat",
+   "kw": [
+    "feldsalat",
+    "rucola",
+    "salat"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Bananen, 1 kg",
+   "price": 1.99,
+   "item": "Bananen",
+   "kw": [
+    "banane"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Tafeläpfel Elstar/Gala/Braeburn/Boskoop, 2 kg",
+   "price": 2.99,
+   "item": "Äpfel",
+   "kw": [
+    "apfel",
+    "aepfel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Himbeeren, 200 g",
+   "price": 2.99,
+   "item": "Himbeeren",
+   "kw": [
+    "himbeere",
+    "beere"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Speisekürbis Halloween, Stück",
+   "price": 3.99,
+   "item": "Kürbis",
+   "kw": [
+    "kuerbis"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Driscoll's Brombeeren, 125 g",
+   "price": 1.99,
+   "item": "Brombeeren",
+   "kw": [
+    "brombeere",
+    "beere"
+   ],
+   "valid": "ab Do 22.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Frau Antje Beste Butter, 250 g",
+   "price": 1.19,
+   "item": "Butter",
+   "kw": [
+    "butter"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "GUT&GÜNSTIG Schlagsahne 30 %, 200 g",
+   "price": 0.69,
+   "item": "Sahne",
+   "kw": [
+    "sahne",
+    "schlagsahne"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Sanella, 400 g",
+   "price": 1.39,
+   "item": "Margarine",
+   "kw": [
+    "margarine",
+    "sanella"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Rama Original oder Balance, 400/450 g",
+   "price": 1.29,
+   "item": "Margarine",
+   "kw": [
+    "margarine",
+    "rama"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Arla Kærgården gesalzen/ungesalzen, 200 g",
+   "price": 1.39,
+   "item": "Butter",
+   "kw": [
+    "butter",
+    "kaergarden"
+   ],
+   "valid": "19.–24.10.",
+   "note": "EDEKA App-Preis 0,99 €"
+  },
+  {
+   "store": "Edeka",
+   "product": "Weihenstephan Haltbare Milch 3,5 %/1,5 %, 1 l",
+   "price": 0.99,
+   "item": "Milch",
+   "kw": [
+    "milch",
+    "h-milch"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Bärenmarke Milch versch. Sorten, 1 l",
+   "price": 0.99,
+   "item": "Milch",
+   "kw": [
+    "milch",
+    "baerenmarke"
+   ],
+   "valid": "19.–24.10.",
+   "note": "EDEKA App-Preis 0,88 €"
+  },
+  {
+   "store": "Edeka",
+   "product": "müller Reine Buttermilch, 500 g",
+   "price": 0.59,
+   "item": "Buttermilch",
+   "kw": [
+    "buttermilch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,25 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "Landliebe Joghurt, 500 g Glas",
+   "price": 1.11,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "landliebe"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,15 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "Joghurt 3,5 %, 500 g",
+   "price": 0.89,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "naturjoghurt"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "müller Joghurt mit der Ecke, 113–150 g",
+   "price": 0.39,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "ecke",
+    "mueller"
+   ],
+   "valid": "19.–24.10.",
+   "note": "EDEKA App-Preis 0,33 €"
+  },
+  {
+   "store": "Edeka",
+   "product": "Ehrmann Grand Dessert, 190 g",
+   "price": 0.55,
+   "item": "Pudding",
+   "kw": [
+    "pudding",
+    "dessert"
+   ],
+   "valid": "19.–24.10.",
+   "note": "EDEKA App-Preis 0,45 €"
+  },
+  {
+   "store": "Edeka",
+   "product": "Oatly Haferdrink, 1 l",
+   "price": 1.99,
+   "item": "Haferdrink",
+   "kw": [
+    "haferdrink",
+    "hafermilch",
+    "oatly"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Frische Eier Bodenhaltung, 18 Stück",
+   "price": 4.19,
+   "item": "Eier",
+   "kw": [
+    "ei",
+    "eier"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Bergader Bavaria blu oder Bonifaz, je 100 g",
+   "price": 1.79,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "weichkaese"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Emmentaler (Schweiz), je 100 g",
+   "price": 1.99,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "emmentaler"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Beemster Beemsdammer Scheiben, 165 g",
+   "price": 1.83,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "scheibenkaese"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Beemster Beemsdammer, je 100 g (Theke)",
+   "price": 1.11,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "schnittkaese"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Gwitterchäs oder Potzblitz, je 100 g",
+   "price": 2.49,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "hartkaese"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Ruhrkäse Gold Bio-Hartkäse, je 100 g",
+   "price": 1.99,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "hartkaese"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Kerrygold Original irischer Käse, 130/150 g",
+   "price": 1.69,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "kerrygold"
+   ],
+   "valid": "19.–24.10.",
+   "note": "EDEKA App-Preis 1,29 €"
+  },
+  {
+   "store": "Edeka",
+   "product": "Adler Edelcreme, 100 g",
+   "price": 1.29,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "weichkaese"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Loose Quäse oder Harzbube Handkäse, 220/200 g",
+   "price": 2.49,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "handkaese",
+    "quaese"
+   ],
+   "valid": "19.–24.10.",
+   "note": "40 PAYBACK Extra-Punkte"
+  },
+  {
+   "store": "Edeka",
+   "product": "Lavazza Kaffeespezialitäten, 220 ml Becher",
+   "price": 1.79,
+   "item": "Kaffeegetränk",
+   "kw": [
+    "kaffee",
+    "eiskaffee"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Milch-Schnitte, kinder Choco fresh, Pingui oder Maxi King",
+   "price": 1.79,
+   "item": "Milchschnitte",
+   "kw": [
+    "milchschnitte",
+    "pingui",
+    "suessigkeit"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Popp Brotaufstrich, 150/120 g",
+   "price": 1.29,
+   "item": "Aufstrich",
+   "kw": [
+    "aufstrich",
+    "brotaufstrich"
+   ],
+   "valid": "19.–24.10.",
+   "note": "EDEKA App-Preis 1,11 €"
+  },
+  {
+   "store": "Edeka",
+   "product": "Mövenpick Konfitüre, Gourmet-Frühstück oder Crème, 250 g",
+   "price": 2.22,
+   "item": "Marmelade",
+   "kw": [
+    "marmelade",
+    "konfituere"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "d'arbo Naturrein Konfitüre Extra, 450 g",
+   "price": 2.99,
+   "item": "Marmelade",
+   "kw": [
+    "marmelade",
+    "konfituere"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Sommerblütenhonig oder Rapshonig cremig, 225 g",
+   "price": 3.49,
+   "item": "Honig",
+   "kw": [
+    "honig"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Rapso Rapsöl, 750 ml",
+   "price": 3.49,
+   "item": "Öl",
+   "kw": [
+    "oel",
+    "rapsoel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Heinz Ketchup, Mayonnaise oder Remoulade, 400–500 ml",
+   "price": 1.79,
+   "item": "Ketchup",
+   "kw": [
+    "ketchup",
+    "mayonnaise",
+    "remoulade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Knorr Feinschmecker Suppe oder Sauce, 32–70 g",
+   "price": 0.79,
+   "item": "Suppe",
+   "kw": [
+    "suppe",
+    "sauce",
+    "knorr"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Böklunder Land-Bockwurst oder Gutfried Geflügel-Bockwurst, 6 Stück Glas",
+   "price": 1.69,
+   "item": "Würstchen",
+   "kw": [
+    "wuerstchen",
+    "bockwurst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Senseo Coffee Pads, 84–125 g",
+   "price": 2.29,
+   "item": "Kaffeepads",
+   "kw": [
+    "kaffee",
+    "pad",
+    "senseo"
+   ],
+   "valid": "19.–24.10.",
+   "note": "EDEKA App-Preis 1,99 €"
+  },
+  {
+   "store": "Edeka",
+   "product": "illy Kaffeekapseln Classico, 10 Stück",
+   "price": 3.49,
+   "item": "Kaffeekapseln",
+   "kw": [
+    "kaffee",
+    "kapsel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Eduscho Caffè Crema/Espresso, 1 kg",
+   "price": 12.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "kaffeebohne",
+    "eduscho"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Eduscho Filterkaffee klassisch oder mild, 500 g",
+   "price": 5.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "filterkaffee",
+    "eduscho"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Eduscho Lieblingsbohnen, 750 g",
+   "price": 8.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "kaffeebohne",
+    "eduscho"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Eduscho Kaffee Pads, 32 Stück",
+   "price": 3.99,
+   "item": "Kaffeepads",
+   "kw": [
+    "kaffee",
+    "pad",
+    "eduscho"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Dallmayr Home Barista Caffè Crema, 1 kg",
+   "price": 12.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "kaffeebohne",
+    "dallmayr"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Jacobs Instantkaffee, 36–124 g",
+   "price": 1.99,
+   "item": "Instantkaffee",
+   "kw": [
+    "kaffee",
+    "instantkaffee",
+    "jacobs"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "Coca-Cola, Fanta, Sprite u. weitere Sorten, 0,33 l / 0,5 l Dose",
+   "price": 0.79,
+   "item": "Cola",
+   "kw": [
+    "cola",
+    "cola zero",
+    "fanta",
+    "sprite"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,25 € Pfand; ob Zero dabei ist, steht nicht ausdrücklich da (nur \"weitere Sorten\")"
+  },
+  {
+   "store": "Edeka",
+   "product": "Sinalco Limonade versch. Sorten, 1,25 l",
+   "price": 0.79,
+   "item": "Limonade",
+   "kw": [
+    "limonade",
+    "sinalco",
+    "cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,25 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "Spacy Cola-Orange Mix, 20 x 0,33 l Kasten",
+   "price": 10.99,
+   "item": "Cola-Mix",
+   "kw": [
+    "cola",
+    "spezi",
+    "colamix"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 4,50 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "Gönrgy Energy Drink Cola Cherry Zero, 0,5 l Dose",
+   "price": 1.19,
+   "item": "Energy",
+   "kw": [
+    "energy",
+    "energydrink"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,25 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "albi Fruchtsaft/-nektar, 0,75 l",
+   "price": 1.11,
+   "item": "Saft",
+   "kw": [
+    "saft",
+    "nektar",
+    "albi"
+   ],
+   "valid": "19.–24.10.",
+   "note": "EDEKA App-Preis 0,99 €; zzgl. 0,25 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "Rotbäckchen Mini-Säfte, 0,125 l",
+   "price": 0.99,
+   "item": "Saft",
+   "kw": [
+    "saft",
+    "rotbaeckchen"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Edeka",
+   "product": "van Nahmen Glühpunsch alkoholfrei, 0,7 l",
+   "price": 3.49,
+   "item": "Punsch",
+   "kw": [
+    "punsch",
+    "kinderpunsch"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,15 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "Radeberger Pilsner, 20 x 0,5 l / 24 x 0,33 l",
+   "price": 11.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils",
+    "radeberger"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 3,10 € / 3,42 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "König Pilsener, 20 x 0,5 l / 24 x 0,33 l",
+   "price": 11.49,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils",
+    "koenig"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 3,10 € / 3,42 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "Flensburger Pilsener, 6 x 0,33 l",
+   "price": 4.49,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils",
+    "flensburger"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,90 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "Maximilian Bayrisch Hell, 20 x 0,33 l",
+   "price": 11.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "helles"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 3,10 € Pfand"
+  },
+  {
+   "store": "Edeka",
+   "product": "Jever Pilsener oder Fun Alkoholfrei, 0,5 l Dose",
+   "price": 0.89,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils",
+    "jever",
+    "alkoholfrei"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,25 € Pfand"
+  },
+  {
+   "store": "Globus",
+   "product": "Alpro NotMilk, 1 l",
+   "price": 1.49,
+   "item": "Pflanzendrink",
+   "kw": [
+    "haferdrink",
+    "sojadrink",
+    "alpro"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Landliebe Joghurt, 500 g",
+   "price": 1.11,
+   "item": "Joghurt",
+   "kw": [
+    "joghurt",
+    "landliebe"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Bio Almkönig Bio Gouda, 100 g",
+   "price": 1.39,
+   "item": "Käse",
+   "kw": [
+    "kaese",
+    "gouda"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Milkana Frischeschale",
+   "price": 1.99,
+   "item": "Schmelzkäse",
+   "kw": [
+    "kaese",
+    "schmelzkaese",
+    "milkana"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "10 frische Eier",
+   "price": 2.89,
+   "item": "Eier",
+   "kw": [
+    "ei",
+    "eier"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Herta Finesse Hähnchenbrust, 100 g",
+   "price": 1.29,
+   "item": "Aufschnitt",
+   "kw": [
+    "aufschnitt",
+    "haehnchenbrust",
+    "herta"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Iglo Schlemmerfilet, 240–380 g",
+   "price": 2.49,
+   "item": "Fisch TK",
+   "kw": [
+    "fisch",
+    "schlemmerfilet",
+    "tiefkuehl"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Beyond Veganer Burger",
+   "price": 2.99,
+   "item": "Burger vegan",
+   "kw": [
+    "burger",
+    "vegan"
+   ],
+   "valid": "19.–24.10.",
+   "note": "auf der Seite steht auch 3,49 € ohne Beschriftung"
+  },
+  {
+   "store": "Globus",
+   "product": "Gurken groß, Stück",
+   "price": 0.99,
+   "item": "Gurke",
+   "kw": [
+    "gurke",
+    "salatgurke"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Rosenkohl",
+   "price": 1.59,
+   "item": "Rosenkohl",
+   "kw": [
+    "rosenkohl",
+    "gemuese"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 2,12 €"
+  },
+  {
+   "store": "Globus",
+   "product": "Bio-Tafeläpfel rot",
+   "price": 2.22,
+   "item": "Äpfel",
+   "kw": [
+    "apfel",
+    "aepfel"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 2,96 €"
+  },
+  {
+   "store": "Globus",
+   "product": "GLOBUS Gold Premium Mangos XXL",
+   "price": 4.99,
+   "item": "Mango",
+   "kw": [
+    "mango",
+    "obst"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Barilla Protein+ Pasta",
+   "price": 1.99,
+   "item": "Nudeln",
+   "kw": [
+    "nudel",
+    "pasta",
+    "barilla"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 4,98 €"
+  },
+  {
+   "store": "Globus",
+   "product": "Henglein Eierspätzle",
+   "price": 1.69,
+   "item": "Spätzle",
+   "kw": [
+    "spaetzle",
+    "nudel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Alnatura Bio Bauernhof-Nudeln",
+   "price": 0.99,
+   "item": "Nudeln",
+   "kw": [
+    "nudel",
+    "pasta"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 3,96 €"
+  },
+  {
+   "store": "Globus",
+   "product": "Alnatura Bio Rote Linsen-Spirelli",
+   "price": 1.99,
+   "item": "Nudeln",
+   "kw": [
+    "nudel",
+    "pasta",
+    "linse"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Bonasia Mie-Nudeln",
+   "price": 0.89,
+   "item": "Mie-Nudeln",
+   "kw": [
+    "nudel",
+    "mienudel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Exotic Food Reisnudeln",
+   "price": 1.99,
+   "item": "Reisnudeln",
+   "kw": [
+    "reisnudel",
+    "nudel"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Cannelloni",
+   "price": 1.49,
+   "item": "Nudeln",
+   "kw": [
+    "nudel",
+    "cannelloni"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 kg = 5,96 €"
+  },
+  {
+   "store": "Globus",
+   "product": "Mamma Lucia Spaghetti mit Tomatensauce",
+   "price": 1.49,
+   "item": "Fertiggericht",
+   "kw": [
+    "spaghetti",
+    "fertiggericht",
+    "konserve"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Mondamin Soßenbinder oder Mehlschwitze",
+   "price": 1.29,
+   "item": "Soßenbinder",
+   "kw": [
+    "sossenbinder",
+    "mondamin"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Maggi Guten Appetit! Suppe",
+   "price": 0.59,
+   "item": "Suppe",
+   "kw": [
+    "suppe",
+    "maggi"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Dr. Oetker Kuvertüre",
+   "price": 3.99,
+   "item": "Kuvertüre",
+   "kw": [
+    "kuvertuere",
+    "backen",
+    "schokolade"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Storck merci Together",
+   "price": 2.39,
+   "item": "Schokolade",
+   "kw": [
+    "schokolade",
+    "merci"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Dallmayr Kaffee ganze Bohnen, 1 kg",
+   "price": 12.99,
+   "item": "Kaffee",
+   "kw": [
+    "kaffee",
+    "kaffeebohne",
+    "dallmayr"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Prospekt Bochum; prospektguru (Region unklar) nennt 12,88 €"
+  },
+  {
+   "store": "Globus",
+   "product": "Veltins Pilsener, 20 x 0,5 l",
+   "price": 10.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils",
+    "veltins"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Mehrweg, Pfand nicht angegeben"
+  },
+  {
+   "store": "Globus",
+   "product": "Bitburger Pils, 20 x 0,5 l",
+   "price": 10.99,
+   "item": "Bier",
+   "kw": [
+    "bier",
+    "pils",
+    "bitburger"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Mehrweg, Pfand nicht angegeben"
+  },
+  {
+   "store": "Globus",
+   "product": "Persil Waschmittel versch. Sorten, 1,04 kg",
+   "price": 4.99,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "persil"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Weißer Riese Waschmittel Pulver",
+   "price": 11.99,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "weisser riese"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 WL = 0,12–0,15 €"
+  },
+  {
+   "store": "Globus",
+   "product": "Perwoll Feinwaschmittel",
+   "price": 9.99,
+   "item": "Waschmittel",
+   "kw": [
+    "waschmittel",
+    "feinwaschmittel",
+    "perwoll"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 WL = 0,19 €"
+  },
+  {
+   "store": "Globus",
+   "product": "Lenor Wäscheparfüm oder Unstoppables, 280 g",
+   "price": 5.99,
+   "item": "Wäscheparfüm",
+   "kw": [
+    "waescheparfuem",
+    "lenor"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Meister Proper",
+   "price": 3.19,
+   "item": "Reiniger",
+   "kw": [
+    "reiniger",
+    "allzweckreiniger"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 1,60 €"
+  },
+  {
+   "store": "Globus",
+   "product": "clino! WC-Schaum",
+   "price": 3.49,
+   "item": "WC-Reiniger",
+   "kw": [
+    "wc",
+    "wc-reiniger"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "WC Frisch Kraft Aktiv Duftspüler",
+   "price": 4.79,
+   "item": "WC-Steine",
+   "kw": [
+    "wc",
+    "duftspueler"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Globus",
+   "product": "Schauma Shampoo",
+   "price": 1.49,
+   "item": "Shampoo",
+   "kw": [
+    "shampoo",
+    "schauma"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Red Bull Energy Drink versch. Sorten, 0,25 l",
+   "price": 0.99,
+   "item": "Red Bull",
+   "kw": [
+    "red bull",
+    "energy",
+    "energydrink"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,25 € Pfand"
   }
  ]
 }
