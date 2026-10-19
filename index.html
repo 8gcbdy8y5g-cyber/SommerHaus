@@ -605,6 +605,7 @@ span.check{cursor:default}
 .finish .fq small{color:var(--fg2);font-size:13px}
 .spendhead{margin-top:12px}
 .finish .rcbtn{display:flex;align-items:center;justify-content:center;gap:8px}
+.finish .rcbtn+.rcbtn{margin-top:8px}
 .ocrmsg{margin:0;font-size:14px;color:var(--fg2)}
 .linkbtn{border:0;background:none;color:var(--accent);font:inherit;font-weight:600;padding:0;cursor:pointer}
 .ocrbox{background:var(--fill);border-radius:12px;padding:10px 12px}
@@ -702,6 +703,7 @@ span.check{cursor:default}
     <div id="shopRhy"></div>
     <div id="shopFinish"></div>
     <input type="file" id="rcFile" accept="image/*" capture="environment" hidden>
+    <input type="file" id="rcFile2" accept="image/*" hidden>
     <div id="shopDone"></div>
     <div id="shopListDel"></div>
   </section>
@@ -1279,7 +1281,7 @@ function rcEl(){
   return o;
 }
 function rcShow(on){var o=rcEl();o.hidden=!on;document.documentElement.style.overflow=on?'hidden':'';if(!on){RC.mode='';RC.view=null;RC.delAsk=false;$('rcvStage').innerHTML='';}}
-function rcPick(target){RC.target=target||null;var inp=$('rcFile');inp.value='';inp.click();}
+function rcPick(target,gal){RC.target=target||null;var inp=$(gal?'rcFile2':'rcFile');inp.value='';inp.click();}
 function rcLoadFile(f){
   return new Promise(function(res,rej){
     var url=URL.createObjectURL(f),im=new Image();
@@ -1799,7 +1801,7 @@ function renderTrips(){
     h+=im?'<img src="'+im+'" alt="Kassenzettel" data-act="tripzoom">':'<div class="rcload" id="tripRcLoad">Kassenzettel wird geladen …</div>';
   }else h+='<div class="rcload">Kein Kassenzettel gespeichert.</div>';
   h+='</div><div class="tact">';
-  if(S.canWrite&&!x.receipt)h+='<button type="button" data-act="rcadd" data-t="'+esc(x.id)+'">Kassenzettel fotografieren</button>';
+  if(S.canWrite&&!x.receipt)h+='<button type="button" data-act="rcadd" data-t="'+esc(x.id)+'">Kassenzettel fotografieren</button><button type="button" data-act="rcaddgal" data-t="'+esc(x.id)+'">Foto aus der Mediathek wählen</button>';
   if(x.receipt)h+='<button type="button" data-act="tripzoom">Kassenzettel groß ansehen</button>';
   if(S.canWrite)h+='<button type="button" class="del'+(TV.delAsk?' ask':'')+'" data-act="tripdel">'+(TV.delAsk?'Wirklich löschen? Nochmal tippen':'Einkauf löschen')+'</button>';
   h+='</div>';
@@ -2016,7 +2018,7 @@ function rcPendingHtml(){
   if(!S.canWrite)return '';
   if(RC.pending)return rcPendThumb()+rcOcrHtml();
   if(false)return '<div class="rcthumb"><img src="'+RC.pending.data+'" alt=""><span>Kassenzettel ist dabei</span><button type="button" data-act="rcpview">Ansehen</button><button type="button" data-act="rcpdrop">Entfernen</button></div>';
-  return '<button type="button" class="fbtn sec rcbtn" data-act="rcshoot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Kassenzettel fotografieren</button>';
+  return '<button type="button" class="fbtn sec rcbtn" data-act="rcshoot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Kassenzettel fotografieren</button><button type="button" class="fbtn sec rcbtn" data-act="rcgal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 16l-5-5-8.5 8.5"/></svg>Foto aus der Mediathek</button>';
 }
 var fmtEurN=new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'});
 function fmtEur(v){return fmtEurN.format(v||0);}
@@ -2965,6 +2967,7 @@ $('shop-in').addEventListener('input',function(){sugRender($('shopSugg'),this,'s
 $('shop-in').addEventListener('focus',function(){if(this.value)sugRender($('shopSugg'),this,'shop');});
 $('shopSugg').addEventListener('mousedown',function(ev){ev.preventDefault();});
 $('rcFile').addEventListener('change',function(ev){rcOnFile(ev.target.files&&ev.target.files[0]);});
+$('rcFile2').addEventListener('change',function(ev){rcOnFile(ev.target.files&&ev.target.files[0]);});
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&$('rcv')&&!$('rcv').hidden)rcShow(false);});
 $('shopFinish').addEventListener('input',function(ev){
   var id=ev.target.id;
@@ -3288,6 +3291,8 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'rcshoot':rcPick(null);break;
+    case 'rcgal':rcPick(null,true);break;
+    case 'rcaddgal':rcPick(el.dataset.t,true);break;
     case 'shopedit':{
       var sli=el.closest('[data-id]');if(!sli||!S.canWrite)break;
       if(S.shopEdit&&S.shopEdit!==sli.dataset.id)shopEditSave();
