@@ -1,0 +1,31 @@
+name: Favoriten
+on:
+  schedule:
+    - cron: '0 16,17 * * 0'   # sonntags vor der Angebotsrecherche (19:29 Uhr Berlin)
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  holen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Zugang entschlüsseln
+        env:
+          SH_KEY: ${{ secrets.SH_KEY }}
+        run: printf '%s' "$SH_KEY" > /tmp/k && openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -a -in scripts/geheim.enc -pass file:/tmp/k > /tmp/g.json && rm /tmp/k
+      - run: node scripts/favoriten.mjs
+        env:
+          SECRETS_FILE: /tmp/g.json
+          FIREBASE_API_KEY: AIzaSyD3VwPMgOV75f1NDhJYDTx-K4l3P0bbWbM
+          FIREBASE_PROJECT: sommerhaus-5bb17
+      - name: Speichern
+        run: |
+          if [ -n "$(git status --porcelain favoriten.json)" ]; then
+            git config user.name "SommerHaus" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add favoriten.json && git commit -m "Favoriten aktualisiert" && git push
+          fi
