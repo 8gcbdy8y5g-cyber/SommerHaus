@@ -1690,6 +1690,22 @@ function tripReparse(x){
     toast('Vom Kassenzettel übernommen'+(up.amount?': '+fmtEur(up.amount):'')+(up.store?' bei '+up.store:'')+'.');
   },function(){});
 }
+/* Einkäufe der letzten 14 Tage ohne Betrag, aber mit Bon: Text neu auswerten oder Bon im Hintergrund lesen. */
+var TAF={};
+function tripsAutoFix(){
+  if(!db||!S.canWrite)return;
+  var lim=addDays(todayIso(),-14);
+  S.trips.forEach(function(x){
+    if(!x.receipt||x.amount>0||!x.date||x.date<lim||TAF[x.id])return;
+    TAF[x.id]=1;
+    if(x.rtext){tripReparse(x);return;}
+    db.collection('receipts').doc(x.receipt).get().then(function(d){
+      var o=d&&d.exists?d.data():null;if(!o)return;
+      if(o.text)tripReparse(Object.assign({},x,{rtext:o.text}));
+      else if(o.img)rcBgOcr(x.id,x.receipt,o.img);
+    }).catch(function(){});
+  });
+}
 function tripLine(x){
   var p=[];
   if(!(x.items&&x.items.length)&&x.receipt)p.push('was es war, fehlt noch');
@@ -2250,7 +2266,7 @@ function rbA(B){
   var shop='<div class="rbA-shop">'+(tr.length?'<button type="button" class="rbA-shoph" data-act="rbshop" aria-expanded="'+so+'"><span><h4>Einkäufe</h4><span class="rbA-lede">'+esc(rbMoneyLine(B))+'</span></span><svg class="chev'+(so?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>':'<h4>Einkäufe</h4><p class="rbA-lede">'+esc(rbMoneyLine(B))+'</p>');
   if(so){
     shop+='<ul class="rbA-trips">'+tr.map(function(x){
-      return '<li><button type="button" data-act="tripsheet" data-t="'+esc(x.id)+'"><span class="rbA-td">'+esc(dShort(x.date||''))+'</span><span class="rbA-ts">'+esc(x.store||'ohne Laden')+'<i>'+esc(x.spont?'spontan':plural(x.n||0,'Artikel','Artikel'))+'</i></span>'+(x.receipt?'<span class="tl-rc">'+RC_ICON+'</span>':'')+'<span class="rbA-ta">'+(x.amount?esc(fmtEur(x.amount)):'–')+'</span></button></li>';
+      return '<li><button type="button" data-act="tripsheet" data-t="'+esc(x.id)+'"><span class="rbA-td">'+esc(dShort(x.date||''))+'</span><span class="rbA-ts">'+esc(x.store||'ohne Laden')+'<i>'+esc((tripSplit(x).other[0]?tripSplit(x).other[0].name+' · ':'')+(x.spont?'spontan':plural(x.n||0,'Artikel','Artikel')))+'</i></span>'+(x.receipt?'<span class="tl-rc">'+RC_ICON+'</span>':'')+'<span class="rbA-ta">'+(x.amount?esc(fmtEur(x.amount)):'–')+'</span></button></li>';
     }).join('')+'</ul>';
     if(sp.byStore.length>1&&sp.byStore.length<sp.n)shop+='<div class="rbA-sub"><h4>Nach Laden</h4>'+rbStores(B)+'</div>';
     if(sp.missing)shop+='<p class="rnote">Bei '+plural(sp.missing,'Einkauf','Einkäufen')+' fehlt der Betrag.</p>';
@@ -2356,7 +2372,8 @@ function renderMonths(){
   h+='<div class="mon-det"><div class="zline"><b>'+esc(fmtMonth.format(selM.d))+(selM.cur?' (läuft noch)':'')+'</b><b>'+esc(fmtEur(selM.sum))+'</b></div>'+
     budHtml(selM,B)+'<p class="rnote" style="margin:2px 0 8px">'+plural(selM.n,'Einkauf','Einkäufe')+' mit Betrag'+(avg&&!selM.cur?' · Schnitt der Vormonate '+esc(fmtEur(avg)):'')+(avg&&selM.cur?' · bisheriger Monatsschnitt '+esc(fmtEur(avg)):'')+'</p>';
   if(selM.stores.length){var smx=selM.stores[0].sum||1;h+='<div class="rb-stores">'+selM.stores.slice(0,6).map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/smx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
-  if(selM.other.length)h+='<p class="rnote" style="margin-top:8px">'+esc(otherLine(selM.other))+'</p>';
+  if(selM.other.length){var omx=selM.other[0].sum||1,osum=selM.other.reduce(function(a,e){return a+e.sum;},0);
+    h+='<div class="zline" style="margin-top:14px"><b>Außerdem ausgegeben</b><b>'+esc(fmtEur(osum))+'</b></div><p class="rnote" style="margin:2px 0 8px">zählt nicht zu den Lebensmitteln</p><div class="rb-stores">'+selM.other.map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/omx*100))+'%;background:var(--fg2)"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
   h+='<p class="rnote">Zählt nur Lebensmittel aus dem Wocheneinkauf mit eingetragenem Betrag. Supermarkt-Einkäufe zählen komplett. Essen gehen, Drogeriemärkte, Baumärkte und andere Listen laufen extra. Tipp auf einen Monat zeigt die Läden.</p></div></section>';
   return h;
 }
@@ -3490,7 +3507,7 @@ render();
     S.log=s.docs.map(toItem);render();renderTrips();
   },onErr);
   db.collection('shopTrips').onSnapshot(function(s){
-    S.trips=s.docs.map(toItem);render();renderTrips();
+    S.trips=s.docs.map(toItem);render();renderTrips();tripsAutoFix();
   },onErr);
   db.collection('events').onSnapshot(function(s){
     S.events=s.docs.map(toItem);render();
