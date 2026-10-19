@@ -1312,6 +1312,7 @@ function rcDetect(src,W,H){
   var s=Math.min(1,360/Math.max(W,H)),w=Math.max(8,Math.round(W*s)),h=Math.max(8,Math.round(H*s));
   var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');x.drawImage(src,0,0,w,h);
   var g=rcGray(x,w,h),t=rcOtsu(g),n=w*h,lab=new Int32Array(n),stack=new Int32Array(n),best=null,cur=0;
+  var gm=0;for(var gi=0;gi<n;gi++)gm+=g[gi];if(gm/n<110)return rcFull(W,H);
   for(var p=0;p<n;p++){
     if(lab[p]||g[p]<=t)continue;
     cur++;var sp=0,cnt=0,tl=[0,0],br=[0,0],tr=[0,0],bl=[0,0],a1=1e9,a2=-1e9,a3=-1e9,a4=1e9,edge=0;
@@ -1369,6 +1370,9 @@ function rcProcess(){
       out[y*ow+x]=(g[i0]*(1-fx)+g[i0+1]*fx)*(1-fy)+(g[i0+W]*(1-fx)+g[i0+W+1]*fx)*fy;
     }
   }
+  /* Dunkle Bilder (Screenshots im Dunkelmodus): hell auf dunkel umdrehen, damit die Schrift dunkel auf hell steht. */
+  var msum=0;for(var mi=0;mi<out.length;mi++)msum+=out[mi];
+  if(msum/out.length<110){for(mi=0;mi<out.length;mi++)out[mi]=255-out[mi];}
   /* Hintergrund ausgleichen: jeden Punkt durch den örtlichen Mittelwert teilen, dann Kontrast anheben. */
   var r=Math.max(8,Math.round(ow/28)),ii=new Float64Array((ow+1)*(oh+1));
   for(y=0;y<oh;y++){var rs=0;for(x=0;x<ow;x++){rs+=out[y*ow+x];ii[(y+1)*(ow+1)+x+1]=ii[y*(ow+1)+x+1]+rs;}}
@@ -1455,6 +1459,7 @@ function rcShare(){
 }
 /* Bon im Hintergrund lesen und den Einkauf ergänzen (Betrag, Laden, Artikel). */
 var RCBG={};
+function ocrClean(t){return String(t||'').replace(/\b[A-Z]{2}\s?\d{2}(\s?\d){12,30}\b/g,'[IBAN]').replace(/#{4,}\d{2,4}/g,'[Karte]');}
 function rcBgOcr(tid,rid,data){
   if(RCBG[rid])return Promise.resolve();RCBG[rid]=1;
   return ocrRun(data).then(function(text){
@@ -1462,6 +1467,7 @@ function rcBgOcr(tid,rid,data){
     db.collection('receipts').doc(rid).update({text:text}).catch(function(){});
     var up={rtext:String(text).slice(0,4000)},t2=S.trips.find(function(x){return x.id===tid;})||{},r=parseReceipt(text);
     if(!(t2.amount>0)&&r.total)up.amount=r.total;
+    if(r.date&&t2.spont&&r.date!==t2.date&&r.date<=todayIso())up.date=r.date;
     if(!t2.store&&(rcDetectStore(text)||r.merchant))up.store=rcDetectStore(text)||r.merchant;
     if(r.merchant&&!(t2.items&&t2.items.length)&&!r.items.length){up.items=[{t:up.store||t2.store||r.merchant,c:'Sonstiges',p:r.total||t2.amount||0,r:1,g:1}];up.n=1;}
     var lab2=rcSumLabel(t2.store);
@@ -1538,7 +1544,7 @@ function ocrRun(dataUrl,onStep){
       return w.setParameters({tessedit_pageseg_mode:'6',preserve_interword_spaces:'1'}).then(function(){return w;});
     },function(e){OCR.worker=null;throw e;});
     return OCR.worker;
-  }).then(function(w){onStep&&onStep('Kassenzettel wird gelesen …');return w.recognize(dataUrl);}).then(function(r){return (r&&r.data&&r.data.text)||'';});
+  }).then(function(w){onStep&&onStep('Kassenzettel wird gelesen …');return w.recognize(dataUrl);}).then(function(r){return ocrClean((r&&r.data&&r.data.text)||'');});
 }
 var RCP_STOP=/^(summe|zwischensumme|zu zahlen|zuzahlen|gesamt|total|bar|ruckgeld|gegeben|ec|ec-karte|karte|kartenzahlung|girocard|visa|mastercard|maestro|mwst|ust|netto|brutto|steuer|betrag|eur|euro|datum|uhrzeit|kasse|bon|beleg|filiale|markt|tel|telefon|www|ust-id|steuer-nr|st\.?nr|tse|trans|terminal|vielen|danke|ihr einkauf|kundenbeleg|payback|deutschlandcard|coupon|rabatt|pfand|leergut|posten|anzahl)\b/;
 function rcpName(s){
@@ -1547,6 +1553,29 @@ function rcpName(s){
     if(/\d/.test(w)||w.length<=1)return w.toLowerCase().replace(/(\d)l\b/,'$1L');
     return w===w.toUpperCase()?w.charAt(0)+w.slice(1).toLowerCase():w;
   }).join(' ').replace(/\s+/g,' ').trim();
+}
+/* Screenshot aus der Banking-App (Umsatzdetails): Händler, Betrag und Datum. */
+var BANK_RE=/kaufumsatz|umsatzdetails|umsatz|lastschrift|wertstellung|buchungstag|buchung|apple pay|google pay|visa card|debitkarte|kreditkarte|zahlungsempf|verwendungszweck|^von\b|^an\b/;
+function bankMerchant(l){
+  var c=l.replace(/^(an|empf(a|ä)nger)\s*:?\s*/i,'').replace(/^(ls|lsp|sumup|sq|pp|zettle|izettle|vr|cs)\s*[*]?\s+/i,'').replace(/[|]/g,'I').replace(/^1(?=\s?[A-Z])/,'I');
+  var parts=c.split(/\s{2,}/);c=parts[0];var city=parts[1]||'';
+  var w=c.split(' ');if(city&&w.length>1){var lw=w[w.length-1].toLowerCase();if(lw.length>=3&&city.toLowerCase().indexOf(lw)===0)w.pop();}
+  if(!city&&w.length>2){var l2=w[w.length-1],l1=w[w.length-2];if(l1.length>=3&&l2.toLowerCase().indexOf(l1.toLowerCase())===0){w.pop();w.pop();}}
+  return w.join(' ').replace(/\s+/g,' ').trim().slice(0,40);
+}
+function parseBank(lines){
+  var hits=0;lines.forEach(function(l){if(BANK_RE.test(nrm(l)))hits++;if(/^(ls|lsp|sumup|sq|pp|zettle)\s*[*|]?\s+\S/i.test(l.trim()))hits++;if(/datum\s*:?\s*\d{2}\.\d{2}\.\d{4}\s+zeit/i.test(l))hits++;});
+  if(hits<2)return null;
+  var total=null,pr=/(\d{1,4}[.,]\d{2})(?!\d)/,m,i;
+  for(i=0;i<lines.length&&total==null;i++){if(/^(eur|betrag)\b/i.test(lines[i].trim())&&(m=lines[i].match(pr)))total=parseFloat(m[1].replace(',','.'));}
+  for(i=0;i<lines.length&&total==null;i++){if((m=lines[i].trim().match(/^[-–−]\s?(\d{1,4}[.,]\d{2})\s*(€|eur)?$/i)))total=parseFloat(m[1].replace(',','.'));}
+  if(total==null){for(i=0;i<lines.length;i++){if(/€|eur/i.test(lines[i])&&(m=lines[i].match(pr))){total=parseFloat(m[1].replace(',','.'));break;}}}
+  var merchant='';
+  for(i=0;i<lines.length&&!merchant;i++){var n=nrm(lines[i]);if(/^an\b/.test(n)){var rest=lines[i].replace(/^\s*an\s*:?\s*/i,'');merchant=bankMerchant(rest||lines[i+1]||'');}}
+  if(!merchant){for(i=0;i<lines.length&&!merchant;i++){if(/^(ls|lsp|sumup|sq|pp|zettle)\s*[*|]?\s+\S/i.test(lines[i].trim()))merchant=bankMerchant(lines[i].trim());}}
+  var date='',dm=lines.join(' ').match(/datum\s*:?\s*(\d{2})\.(\d{2})\.(\d{4})/i);
+  if(dm)date=dm[3]+'-'+dm[2]+'-'+dm[1];
+  return {items:[],total:total,merchant:merchant,date:date,slip:true,bank:true};
 }
 /* Kartenbeleg (Händler-/Kundenbeleg vom Kartenterminal): keine Artikel, nur Händler und Betrag. */
 var SLIP_RE=/h(a|ä|ae)ndlerbeleg|kundenbeleg|kartenzahlung|contactless|kontaktlos|girocard|visa|mastercard|maestro|trace[- ]?nr|vu[- ]?nr|genehmigungs|terminal[- ]?id|ta[- ]?nr|emv/g;
@@ -1595,6 +1624,7 @@ function parseReceipt(text){
     if((name.match(/[a-zäöüß]/gi)||[]).length<3)continue;
     items.push({t:name,p:price});
   }
+  if(items.length<2){var bk=parseBank(lines);if(bk&&(bk.total!=null||bk.merchant)){if(bk.total==null)bk.total=total;return bk;}}
   if(items.length<2){var sl=parseSlip(lines);if(sl){if(sl.total==null)sl.total=total;return sl;}}
   if(total==null)total=rcpGuessTotal(lines);
   return {items:items,total:total};
@@ -1618,6 +1648,7 @@ function rcOcrStart(){
     var r=parseReceipt(text),open=S.shop.filter(function(x){return !x.done&&listOf(x)===curList().id;}),used={};
     r.items.forEach(function(it){var mt=rcpMatch(it.t,open.filter(function(x){return !used[x.id];}));it.on=true;if(mt){it.m=mt.id;it.mt=mt.title;used[mt.id]=1;}});
     p.text=text;p.ocr={state:'done',items:r.items,total:r.total,merchant:r.merchant||''};
+    if(r.date&&S.spontAsk&&!S.spontDate&&r.date<=todayIso())S.spontDate=r.date;
     if(!String(S.finishStore||'').trim()){var ds=rcDetectStore(text)||r.merchant;if(ds)S.finishStore=ds;}
     if(r.total&&!String(S.finishAmt||'').trim())S.finishAmt=String(r.total.toFixed(2)).replace('.',',');
     renderShop();
@@ -1630,7 +1661,7 @@ function rcOcrHtml(){
   if(o.state==='err')return '<p class="ocrmsg">Den Kassenzettel konnte ich nicht lesen. Prüfe die Internetverbindung oder trag die Artikel von Hand ein. <button type="button" class="linkbtn" data-act="rcocr">Nochmal versuchen</button></p>';
   var g=rcOcrSummary(p);
   if(g)return '<div class="ocrbox"><p class="ocrhead"><b>Ein Gesamtposten: '+esc(g.t)+'</b>'+(g.p?' · '+esc(fmtEur(g.p)):'')+'</p><p class="rnote" style="margin:0">Beim '+esc(g.t==='Bäcker'||g.t==='Metzger'?g.t:'Einkauf hier')+' liste ich nicht jedes Teil einzeln auf, der Bon zählt als ein Posten.</p></div>';
-  if(!o.items.length&&o.merchant)return '<div class="ocrbox"><p class="ocrhead"><b>Kartenbeleg: '+esc(o.merchant)+'</b>'+(o.total?' · '+esc(fmtEur(o.total)):'')+'</p><p class="rnote" style="margin:0">Auf dem Kartenbeleg stehen keine Artikel. Ich speichere den Einkauf als einen Posten.</p></div>';
+  if(!o.items.length&&o.merchant)return '<div class="ocrbox"><p class="ocrhead"><b>'+esc(o.merchant)+'</b>'+(o.total?' · '+esc(fmtEur(o.total)):'')+'</p><p class="rnote" style="margin:0">Kartenbeleg oder Kontoauszug: einzelne Artikel stehen nicht drauf, ich speichere den Einkauf als einen Posten.</p></div>';
   if(!o.items.length)return '<div class="ocrbox ask"><p class="ocrhead"><b>Was war das?</b>'+(o.total?' · '+esc(fmtEur(o.total)):'')+'</p><p class="rnote" style="margin:0 0 8px">Auf dem Bon steht nur der Betrag, ich kann nicht erkennen, was gekauft wurde. Trag es bitte kurz ein.</p>'+
     '<input id="rcWhat" maxlength="60" placeholder="z. B. Blumen, Geschenk, Apotheke" value="'+esc(S.finishWhat||'')+'" autocomplete="off" autocapitalize="sentences"></div>';
   var on=o.items.filter(function(x){return x.on;}).length,mt=o.items.filter(function(x){return x.on&&x.m;}).length;
@@ -1790,7 +1821,7 @@ function renderTrips(){
   h+='<div class="tdet">'+
     '<div class="frow"><span class="fl">Datum</span><span class="fv">'+esc(x.date?fmtLong.format(parse(x.date)):'')+'</span></div>'+
     '<div class="frow"><span class="fl">Supermarkt</span><span class="fv">'+esc(x.store||'ohne Angabe')+'</span></div>'+
-    '<div class="frow"><span class="fl">Betrag</span><span class="fv">'+(x.amount?esc(fmtEur(x.amount)):'nicht eingetragen')+'</span></div>'+
+    (x.amount||!S.canWrite?'<div class="frow"><span class="fl">Betrag</span><span class="fv">'+(x.amount?esc(fmtEur(x.amount)):'nicht eingetragen')+'</span></div>':'<div class="frow"><span class="fl">Betrag</span><span class="twhat" style="margin-left:auto"><input id="tripAmt" inputmode="decimal" placeholder="z. B. 4,80" style="width:110px;min-height:36px;border:0;border-radius:8px;background:var(--fill);color:var(--fg);font:inherit;padding:0 10px;text-align:right"><button type="button" data-act="tripamt" style="min-height:36px">Speichern</button></span></div>')+
     '<div class="frow"><span class="fl">Art</span><span class="fv">'+(x.spont?'Spontaner Einkauf':plural(x.n||0,'Artikel','Artikel')+' von der Liste'+(x.carriedN?', '+x.carriedN+' übernommen':''))+'</span></div>'+
     '</div>';
   if(names.length)h+='<div class="stack"><p class="fhead" style="margin:0 0 0 4px">Gekauft</p><div class="tdet"><p class="titems">'+esc(names.join(', '))+'</p></div></div>';
@@ -2210,7 +2241,7 @@ function pdot(name){return '<i class="pd '+pcls(name)+'" title="'+esc(name||'ohn
 function pbadge(name,sm){return name?'<span class="pb '+pcls(name)+(sm?' sm':'')+'" title="'+esc(name)+'">'+esc(name.trim().charAt(0).toUpperCase())+'</span>':'';}
 /* Ausgaben trennen: Supermarkt-Einkäufe vom Wocheneinkauf zählen komplett; andere Listen, Drogeriemärkte und Baumärkte laufen extra. */
 var BAU_STORES=/(^|\s)(bauhaus|hornbach|obi|toom|hagebau|hagebaumarkt|hellweg|globus baumarkt|bauking|raiffeisen|sonderpreis baumarkt|baustoffshop)(\s|$)/;
-var EAT_STORES=/d(o|ö|oe)ner|kebap|kebab|pizz|imbiss|imbiß|restaurant|ristorante|trattoria|osteria|bistro|burger|mc ?donald|kfc|subway|sushi|grill|gyros|falafel|pommes|currywurst|steakhouse|wok|ramen|lieferando|wolt|uber ?eats|domino|pizza hut|call a pizza|joey|smiley|burger king|five guys|l'osteria|losteria|vapiano|nordsee|schnellrestaurant|gasthaus|gaststätte|gaststaette|brauhaus|kantine|mensa|eiscafe|eiscaf|eisdiele|biergarten/;
+var EAT_STORES=/d(o|ö|oe)ner|kebap|kebab|pizz|imbiss|imbiß|restaurant|ristorante|trattoria|osteria|bistro|burger|mc ?donald|kfc|subway|sushi|grill|gyros|falafel|pommes|currywurst|steakhouse|wok|ramen|lieferando|wolt|uber ?eats|domino|pizza hut|call a pizza|joey|smiley|burger king|five guys|l'osteria|losteria|vapiano|nordsee|schnellrestaurant|gasthaus|gaststätte|gaststaette|brauhaus|kantine|mensa|eiscafe|eiscaf|eisdiele|biergarten|(^|\s)caf(e|é)(\s|$)|coffee|starbucks|kaffeehaus|bistro|bar(\s|$)|kneipe|cafe /;
 var EAT_LABEL='Essen gehen & bestellen';
 var EAT_ITEMS=/(^|\s)(pizza|pizzen|d(o|ö|oe)ner|kebab|kebap|d(u|ü)r(u|ü)m|burger|sushi|pommes|currywurst|gyros|falafel|lahmacun|pasta to go|nudelbox|bestellung|lieferung|essen bestellt|restaurant|imbiss)/;
 var GROC_STORES=/(^|\s)(aldi|lidl|rewe|edeka|netto|penny|kaufland|globus|norma|real|marktkauf|famila|combi|hit|tegut|denns|alnatura|basic|metro|selgros|nah gut|v markt|wasgau|cap|nahkauf|trinkgut|getr(a|ä)nke)/;
@@ -3328,6 +3359,14 @@ document.addEventListener('click',function(ev){
       tripDelete(tx);break;
     }
     case 'rcadd':rcPick(el.dataset.t);break;
+    case 'tripamt':{
+      var ta2=S.trips.find(function(t){return t.id===TV.id;}),av=parseAmt($('tripAmt')&&$('tripAmt').value);
+      if(!ta2||!db||!S.canWrite)break;
+      if(!(av>0)){toast('Bitte einen Betrag wie 4,80 eintragen.');break;}
+      var aup={amount:av};if(ta2.items&&ta2.items.length===1&&ta2.items[0].g&&!(ta2.items[0].p>0)){aup.items=[Object.assign({},ta2.items[0],{p:av})];}
+      db.collection('shopTrips').doc(ta2.id).update(aup).then(function(){toast('Betrag gespeichert: '+fmtEur(av));},fail);
+      break;
+    }
     case 'tripwhat':{
       var tw=S.trips.find(function(t){return t.id===TV.id;}),wv=($('tripWhat')&&$('tripWhat').value||'').trim();
       if(!tw||!db||!S.canWrite)break;
