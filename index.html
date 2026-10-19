@@ -1985,7 +1985,8 @@ function renderOffers(){
   // Alle Angebote nach Laden
   var by={};OFFERS.offers.forEach(function(o){(by[o.store]=by[o.store]||[]).push(o);});
   S.ofStore=S.ofStore||{};
-  var ab=Object.keys(by).sort(function(a,b){return by[b].length-by[a].length||a.localeCompare(b,'de');}).map(function(st){
+  var ST_ORDER=['Aldi Nord','Aldi Süd','Aldi','Lidl','Netto Marken-Discount','Netto','Rewe','Penny'],sto=function(x){var i=ST_ORDER.indexOf(x);return i<0?99:i;};
+  var ab=Object.keys(by).sort(function(a,b){return sto(a)-sto(b)||by[b].length-by[a].length||a.localeCompare(b,'de');}).map(function(st){
     var op=!!S.ofStore[st],fv=by[st].filter(function(o){return isFav(o.item)||(S.favs||[]).some(function(f){return ofMatch(f,o);});}).length;
     return '<div class="ofgrp ofstore'+(op?' open':'')+'"><button type="button" class="ofsth" data-act="ofstore" data-s="'+esc(st)+'" aria-expanded="'+op+'"><b>'+esc(st)+'</b><span>'+(fv?'★ '+fv+' · ':'')+plural(by[st].length,'Angebot','Angebote')+'</span><svg class="chev'+(op?' open':'')+'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'+
       (op?'<div class="ofstb">'+by[st].sort(function(a,b){return a.product.localeCompare(b.product,'de');}).map(function(o){return ofRow(o,true);}).join('')+'</div>':'')+'</div>';
