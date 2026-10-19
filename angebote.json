@@ -1,10 +1,10 @@
 {
  "week": "Mo., 19. Okt. bis Sa., 24. Okt. 2026",
- "updated": "18.10.2026",
+ "updated": "19.10.2026",
  "validFrom": "2026-10-19",
  "validTo": "2026-10-24",
- "source": "rabatt-kompass.de, kaufland.de, rewe.de, prospektderwoche.de, discounto.de",
- "note": "Preise laut Prospekt, ohne Gewähr. Nicht jedes Angebot gilt in jeder Filiale. Stand 18.10.2026. Edeka und Globus Bochum hatten keine Prospektpreise als Text, sie fehlen diese Woche.",
+ "source": "rabatt-kompass.de, kaufland.de, rewe.de, prospektderwoche.de, discounto.de, marktguru.de, kaufda.de, meinprospekt.de",
+ "note": "Preise laut Prospekt, ohne Gewähr. Nicht jedes Angebot gilt in jeder Filiale. Stand 19.10.2026, Getränke nachgetragen. Edeka und Globus Bochum hatten keine Prospektpreise als Text, sie fehlen diese Woche.",
  "offers": [
   {
    "store": "Lidl",
@@ -617,6 +617,247 @@
     "gouda"
    ],
    "valid": "ab 19.10."
+  },
+  {
+   "store": "Rewe",
+   "product": "Coca-Cola oder Coca-Cola Zero Friendspack, 10 x 0,33 l Dosen",
+   "price": 5.99,
+   "item": "Cola Zero",
+   "kw": [
+    "cola zero",
+    "coke zero",
+    "coca-cola zero",
+    "coca-cola",
+    "cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 1,82 €, zzgl. 2,50 € Pfand"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Coca-Cola Zero Sugar oder Fanta Exotic",
+   "price": 7.99,
+   "item": "Cola Zero",
+   "kw": [
+    "cola zero",
+    "coke zero",
+    "coca-cola zero",
+    "fanta",
+    "cola"
+   ],
+   "valid": "22.–24.10.",
+   "note": "ab Donnerstag; Gebinde nicht genannt, wohl 18 x 0,33 l Dosen"
+  },
+  {
+   "store": "Aldi Nord",
+   "product": "Pepsi oder Pepsi Zero Zucker, 1,25 l",
+   "price": 0.59,
+   "item": "Pepsi Zero",
+   "kw": [
+    "pepsi zero",
+    "pepsi max",
+    "pepsi",
+    "cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "Pepsi Zero, nicht Pepsi Max; zzgl. Pfand"
+  },
+  {
+   "store": "Rewe",
+   "product": "Coca-Cola versch. Sorten, 1,25 l",
+   "price": 1.11,
+   "item": "Cola",
+   "kw": [
+    "coca-cola",
+    "cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 0,25 € Pfand"
+  },
+  {
+   "store": "Rewe",
+   "product": "Coca-Cola versch. Sorten, Kasten 24 x 0,33 l Glas",
+   "price": 16.99,
+   "item": "Cola",
+   "kw": [
+    "coca-cola",
+    "cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 5,10 € Pfand"
+  },
+  {
+   "store": "Rewe",
+   "product": "Pepsi versch. Sorten, 6 x 0,5 l",
+   "price": 3.99,
+   "item": "Pepsi",
+   "kw": [
+    "pepsi",
+    "cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 1,50 € Pfand"
+  },
+  {
+   "store": "Rewe",
+   "product": "Pfanner IceTea",
+   "price": 1.19,
+   "item": "Eistee",
+   "kw": [
+    "eistee",
+    "ice tea",
+    "pfanner"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 0,60 €"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "Coca-Cola, Fanta, Sprite oder Mezzo Mix, 2 l",
+   "price": 1.49,
+   "item": "Cola",
+   "kw": [
+    "coca-cola",
+    "cola",
+    "fanta",
+    "sprite",
+    "mezzo mix"
+   ],
+   "valid": "19.–24.10.",
+   "note": "1 l = 0,75 €, zzgl. Pfand"
+  },
+  {
+   "store": "Netto Marken-Discount",
+   "product": "albi Saft oder Nektar",
+   "price": 0.77,
+   "item": "Saft",
+   "kw": [
+    "saft",
+    "albi",
+    "nektar"
+   ],
+   "valid": "19.–24.10.",
+   "note": "ab-Preis, 1 l = 1,03 €"
+  },
+  {
+   "store": "Penny",
+   "product": "Coca-Cola versch. Sorten, 6 x 0,33 l",
+   "price": 4.49,
+   "item": "Cola",
+   "kw": [
+    "coca-cola",
+    "cola"
+   ],
+   "valid": "21.–24.10.",
+   "note": "zzgl. 1,50 € Pfand"
+  },
+  {
+   "store": "Penny",
+   "product": "Pepsi, 1,25 l",
+   "price": 0.88,
+   "item": "Pepsi",
+   "kw": [
+    "pepsi",
+    "cola"
+   ],
+   "valid": "ab 22.10.",
+   "note": "zzgl. 0,25 € Pfand"
+  },
+  {
+   "store": "Penny",
+   "product": "Schwip Schwap",
+   "price": 0.88,
+   "item": "Schwip Schwap",
+   "kw": [
+    "schwip schwap",
+    "cola-mix"
+   ],
+   "valid": "19.–25.10.",
+   "note": "1 l = 0,70 €"
+  },
+  {
+   "store": "Penny",
+   "product": "Red Bull Energy Drink, 0,25 l",
+   "price": 0.88,
+   "item": "Red Bull",
+   "kw": [
+    "red bull",
+    "energy"
+   ],
+   "valid": "19.–24.10.",
+   "note": "nur mit Penny App"
+  },
+  {
+   "store": "Penny",
+   "product": "Monster Energy, 0,5 l",
+   "price": 0.99,
+   "item": "Monster",
+   "kw": [
+    "monster",
+    "energy"
+   ],
+   "valid": "19.–24.10."
+  },
+  {
+   "store": "Penny",
+   "product": "Dr. Pepper",
+   "price": 0.79,
+   "item": "Dr. Pepper",
+   "kw": [
+    "dr pepper"
+   ],
+   "valid": "22.–24.10."
+  },
+  {
+   "store": "Lidl",
+   "product": "Coca-Cola oder Fanta, 6 x 0,33 l",
+   "price": 3.99,
+   "item": "Cola",
+   "kw": [
+    "coca-cola",
+    "cola",
+    "fanta"
+   ],
+   "valid": "21.–24.10.",
+   "note": "zzgl. 1,50 € Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Pepsi Cola, 6 x 0,5 l",
+   "price": 3.96,
+   "item": "Pepsi",
+   "kw": [
+    "pepsi",
+    "cola"
+   ],
+   "valid": "19.–24.10.",
+   "note": "zzgl. 1,50 € Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "K-Classic Cola, Cola-Mix oder Limonade, 1,5 l",
+   "price": 0.29,
+   "item": "Cola",
+   "kw": [
+    "cola",
+    "cola-mix",
+    "limonade"
+   ],
+   "valid": "22.–24.10.",
+   "note": "zzgl. Pfand"
+  },
+  {
+   "store": "Kaufland",
+   "product": "Volvic Naturelle, 1,5 l",
+   "price": 0.59,
+   "item": "Mineralwasser",
+   "kw": [
+    "volvic",
+    "mineralwasser",
+    "wasser"
+   ],
+   "valid": "bis 24.10.",
+   "note": "nur mit Kaufland Card"
   }
  ]
 }
