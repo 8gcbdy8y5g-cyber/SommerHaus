@@ -288,6 +288,8 @@ span.check{cursor:default}
 .shop .lead{font-size:14px;color:var(--fg2);margin-top:2px}
 .shoplist{list-style:none;margin:8px 0 0;padding:0}
 .shopitem{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto auto;align-items:center}
+.shopitem:has(.slink){grid-template-columns:44px minmax(0,1fr) auto auto auto auto}
+.slink{width:30px;height:40px;display:inline-grid;place-items:center;color:var(--accent)}
 .favbtn{width:34px;height:40px;border:0;background:none;color:var(--fg2);display:inline-grid;place-items:center;cursor:pointer;padding:0;flex:none;opacity:.55}
 .favbtn.on{color:#E3A400;opacity:1;--sf:1}
 .favbtn:disabled{cursor:default}
@@ -1146,6 +1148,7 @@ function shopRow(x){
     (S.shopEdit===x.id?'<input class="stitle sedit" id="shopEditIn" value="'+esc(S.shopEditVal)+'" maxlength="80" enterkeyhint="done" aria-label="Neuer Name für '+esc(x.title)+'">':
       (S.canWrite&&!x.done?'<button type="button" class="stitle sbtn" data-act="shopedit" aria-label="'+esc(x.title)+' umbenennen">'+esc(x.title)+'</button>':'<span class="stitle">'+esc(x.title)+'</span>'))+
     (S.shopEdit===x.id?'<select class="rowcat ecat" id="shopEditCat" aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(S.shopEditCat||effCat(x))+'</select>':OFFERS?ofChip(x):'<select class="rowcat"'+dis+' aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(effCat(x))+'</select>')+
+    (x.url&&/^https:\/\//.test(x.url)?'<a class="slink" href="'+esc(x.url)+'" target="_blank" rel="noopener" aria-label="Produktseite öffnen: '+esc(x.title)+'"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>':'')+
     (x.done?'<span></span>':favBtn(x.title,'sm'))+
     '<button type="button" class="sdel" data-act="shopdel"'+dis+' aria-label="Löschen: '+esc(x.title)+'">&times;</button></li>';
 }
@@ -3479,7 +3482,7 @@ function runImports(){
       var todo=d.imports.filter(function(im){return im&&im.id&&!done[im.id]&&im.list&&im.list.id&&Array.isArray(im.items);});
       return todo.reduce(function(p,im){return p.then(function(){
         var t0=im.created||Date.now(),ps=[db.collection('shopLists').doc(im.list.id).set({name:im.list.name,created:t0})];
-        im.items.forEach(function(x,k){ps.push(db.collection('shopping').doc(im.list.id+'-'+(k<9?'0':'')+(k+1)).set({title:x.t,cat:CATS.indexOf(x.c)>=0?x.c:'Sonstiges',list:im.list.id,done:false,created:t0+k}));});
+        im.items.forEach(function(x,k){var it={title:x.t,cat:CATS.indexOf(x.c)>=0?x.c:'Sonstiges',list:im.list.id,done:false,created:t0+k};if(x.url&&/^https:\/\//.test(x.url))it.url=x.url;ps.push(db.collection('shopping').doc(im.list.id+'-'+(k<9?'0':'')+(k+1)).set(it));});
         return Promise.all(ps).then(function(){done[im.id]=todayIso();return db.doc('settings/imports').set({done:done});}).then(function(){toast('Liste „'+im.list.name+'“ mit '+im.items.length+' Artikeln angelegt.');});
       });},Promise.resolve());
     });
