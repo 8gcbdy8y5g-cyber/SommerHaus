@@ -58,6 +58,26 @@
   --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 36px rgba(0,0,0,.5);
   color-scheme:dark;
 }
+/* Akzentfarbe: wie Hell/Dunkel ein Merkmal am Dokument, nur Akzent und Akzent-Hintergrund ändern sich. */
+:root[data-palette="salbei"]{--accent:#4A8559;--accent-soft:rgba(74,133,89,.13)}
+:root[data-palette="fjord"]{--accent:#3F6F9E;--accent-soft:rgba(63,111,158,.13)}
+:root[data-palette="beere"]{--accent:#B23A6A;--accent-soft:rgba(178,58,106,.13)}
+:root[data-palette="senf"]{--accent:#9C7212;--accent-soft:rgba(156,114,18,.13)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"])[data-palette="salbei"]{--accent:#8CC79A;--accent-soft:rgba(140,199,154,.2)}
+  :root:not([data-theme="light"])[data-palette="fjord"]{--accent:#86B4E0;--accent-soft:rgba(134,180,224,.2)}
+  :root:not([data-theme="light"])[data-palette="beere"]{--accent:#E57AA3;--accent-soft:rgba(229,122,163,.2)}
+  :root:not([data-theme="light"])[data-palette="senf"]{--accent:#F0C14B;--accent-soft:rgba(240,193,75,.2)}
+}
+:root[data-theme="dark"][data-palette="salbei"]{--accent:#8CC79A;--accent-soft:rgba(140,199,154,.2)}
+:root[data-theme="dark"][data-palette="fjord"]{--accent:#86B4E0;--accent-soft:rgba(134,180,224,.2)}
+:root[data-theme="dark"][data-palette="beere"]{--accent:#E57AA3;--accent-soft:rgba(229,122,163,.2)}
+:root[data-theme="dark"][data-palette="senf"]{--accent:#F0C14B;--accent-soft:rgba(240,193,75,.2)}
+.palrow{display:flex;gap:12px;padding:10px 4px 2px;flex-wrap:wrap}
+.palrow button{width:40px;height:40px;border-radius:50%;border:0;padding:0;cursor:pointer;background:var(--pc);position:relative;box-shadow:0 1px 2px rgba(0,0,0,.18)}
+.palrow button[aria-pressed="true"]::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2.5px solid var(--fg)}
+.palrow button svg{display:none;width:18px;height:18px;color:#fff}
+.palrow button[aria-pressed="true"] svg{display:block;margin:auto}
 *,*::before,*::after{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font:400 16px/1.4 var(--font);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
 h1,h2,h3,p{margin:0}
@@ -856,6 +876,15 @@ span.check{cursor:default}
             <button type="button" data-act="theme" data-t="light" aria-pressed="false">Hell</button>
             <button type="button" data-act="theme" data-t="dark" aria-pressed="false">Dunkel</button>
           </div>
+          <p class="fhead" style="margin:10px 0 0 4px">Akzentfarbe</p>
+          <div class="palrow" role="group" aria-label="Akzentfarbe">
+            <button type="button" data-act="palette" data-p="terrakotta" style="--pc:#C4502A" aria-pressed="true" aria-label="Terrakotta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></button>
+            <button type="button" data-act="palette" data-p="salbei" style="--pc:#4A8559" aria-pressed="false" aria-label="Salbei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></button>
+            <button type="button" data-act="palette" data-p="fjord" style="--pc:#3F6F9E" aria-pressed="false" aria-label="Fjord"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></button>
+            <button type="button" data-act="palette" data-p="beere" style="--pc:#B23A6A" aria-pressed="false" aria-label="Beere"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></button>
+            <button type="button" data-act="palette" data-p="senf" style="--pc:#9C7212" aria-pressed="false" aria-label="Senf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></button>
+          </div>
+          <p class="fnote" style="margin-top:4px">Gilt nur auf diesem Gerät. Knöpfe, Reiter und Markierungen bekommen die Farbe, alles andere bleibt.</p>
         </div>
       </div>
     </div>
@@ -3485,6 +3514,7 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'theme':setTheme(el.dataset.t,true);break;
+    case 'palette':setPalette(el.dataset.p,true);break;
     case 'pushon':pushOn();break;
     case 'pushoff':pushOff();break;
     case 'close':closeSheet();break;
@@ -3544,6 +3574,14 @@ function setTheme(t,save){
   if(save){try{localStorage.setItem('sommerhaus-theme',t);}catch(e){}}
 }
 (function(){var t='auto';try{t=localStorage.getItem('sommerhaus-theme')||'auto';}catch(e){}setTheme(t,false);})();
+var PALETTES=['terrakotta','salbei','fjord','beere','senf'];
+function setPalette(p,save){
+  if(PALETTES.indexOf(p)<0)p='terrakotta';
+  if(p==='terrakotta')rootEl.removeAttribute('data-palette');else rootEl.setAttribute('data-palette',p);
+  document.querySelectorAll('.palrow button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.p===p));});
+  if(save){try{localStorage.setItem('sommerhaus-palette',p);}catch(e){}}
+}
+(function(){var p='terrakotta';try{p=localStorage.getItem('sommerhaus-palette')||'terrakotta';}catch(e){}setPalette(p,false);})();
 
 (function(){try{
   if(localStorage.getItem('sommerhaus-calmode')==='week')S.calMode='week';
