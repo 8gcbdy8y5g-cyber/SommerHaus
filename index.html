@@ -319,6 +319,8 @@ span.check{cursor:default}
 .ofchip{border:0;border-radius:999px;background:var(--accent-soft);color:var(--accent);font:inherit;font-size:12px;font-weight:700;padding:5px 10px;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
 .ofchip i{font-style:normal;font-weight:600;margin-left:5px;font-variant-numeric:tabular-nums}
 .ofchip:active{opacity:.6}
+.shopitem.long .ofchip{white-space:normal;max-width:92px;text-align:center;line-height:1.2;padding:4px 9px}
+.shopitem.long .ofchip i{display:block;margin:0}
 .ofbest{display:flex;align-items:center;gap:10px;width:100%;margin:2px 0 8px;border:0;border-radius:12px;background:var(--accent-soft);color:var(--fg);font:inherit;font-size:14px;line-height:1.35;text-align:left;padding:10px 12px;cursor:pointer}
 .ofbest .ofbi{flex:none;color:var(--accent);display:grid}
 .ofbest .ofbt{flex:1;min-width:0}
@@ -1145,7 +1147,7 @@ function catOptions(sel){return CATS.map(function(c){return '<option'+(c===sel?'
 var CHECK_SVG='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>';
 function shopRow(x){
   var dis=S.canWrite?'':' disabled';
-  return '<li class="shopitem'+(x.done?' done':'')+'" data-id="'+esc(x.id)+'">'+
+  return '<li class="shopitem'+(x.done?' done':'')+(x.title.length>11?' long':'')+'" data-id="'+esc(x.id)+'">'+
     '<button type="button" class="scheck'+(x.done?' done':'')+'" data-act="'+(x.done?'shopundo':'shopdone')+'"'+dis+' aria-label="'+(x.done?'Wieder offen: ':'Erledigt: ')+esc(x.title)+'">'+CHECK_SVG+'</button>'+
     (S.shopEdit===x.id?'<input class="stitle sedit" id="shopEditIn" value="'+esc(S.shopEditVal)+'" maxlength="80" enterkeyhint="done" aria-label="Neuer Name für '+esc(x.title)+'">':
       (S.canWrite&&!x.done?'<button type="button" class="stitle sbtn" data-act="shopedit" aria-label="'+esc(x.title)+' umbenennen">'+esc(x.title)+'</button>':'<span class="stitle">'+esc(x.title)+'</span>'))+
@@ -2116,11 +2118,11 @@ function renderFinish(L,open,done){
   box.innerHTML=h;
   if(hadFocus){var si=$(hadFocus);if(si){si.focus();try{si.setSelectionRange(si.value.length,si.value.length);}catch(e){}}}
 }
-var WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+var WDS=['So','Mo','Di','Mi','Do','Fr','Sa'];
 var REC={day:['täglich','alle %n Tage'],week:['wöchentlich','alle %n Wochen'],month:['monatlich','alle %n Monate']};
 function recText(t){var r=REC[t.unit];if(!r||!t.every)return '';return +t.every===1?r[0]:r[1].replace('%n',t.every);}
 function dLabel(ds){return fmtShort.format(parse(ds));}
-function dShort(ds){return WD[parse(ds).getDay()]+', '+parse(ds).getDate()+'.'+(parse(ds).getMonth()+1)+'.';}
+function dShort(ds){return WDS[parse(ds).getDay()]+', '+parse(ds).getDate()+'.'+(parse(ds).getMonth()+1)+'.';}
 function whoTxt(w){return w&&String(w).trim()?String(w).trim():'';}
 function plural(n,a,b){return n+' '+(n===1?a:b);}
 function meName(){
@@ -2302,7 +2304,7 @@ function rbStuckList(B,max){
 function rbDoneList(B,max){
   var l=B.D.done.slice().sort(function(a,b){return a.date<b.date?1:-1;});
   if(!l.length)return '<p class="rnote">Noch nichts abgehakt.</p>';
-  return '<ul class="rb-done">'+l.slice(0,max||6).map(function(e){return '<li>'+pdot(e.by||e.who)+'<span>'+binIcon(e.bin)+esc(e.title)+'</span><em>'+esc(WD[parse(e.date).getDay()])+'</em></li>';}).join('')+'</ul>'+(l.length>(max||6)?'<p class="rnote">+ '+(l.length-(max||6))+' weitere</p>':'');
+  return '<ul class="rb-done">'+l.slice(0,max||6).map(function(e){return '<li>'+pdot(e.by||e.who)+'<span>'+binIcon(e.bin)+esc(e.title)+'</span><em>'+esc(WDS[parse(e.date).getDay()])+'</em></li>';}).join('')+'</ul>'+(l.length>(max||6)?'<p class="rnote">+ '+(l.length-(max||6))+' weitere</p>':'');
 }
 function rbStores(B){
   var bs=B.D.spend.byStore;if(!bs.length)return '';
@@ -2352,7 +2354,7 @@ function rbC(B){
     var p=parse(d.ds),isT=d.ds===B.today,fut=d.ds>B.today;
     var dots=d.done.slice(0,6).map(function(e){return '<i class="pd '+pcls(e.by||e.who)+'" title="'+esc(e.title)+'"></i>';}).join('')+(d.done.length>6?'<b>+'+(d.done.length-6)+'</b>':'');
     var bh=d.spend?Math.max(6,Math.round(d.spend/mxs*56)):0;
-    return '<div class="rbC-day'+(isT?' today':'')+(fut?' fut':'')+'"><span class="rbC-wd">'+WD[p.getDay()]+'</span><span class="rbC-dn">'+p.getDate()+'</span>'+
+    return '<div class="rbC-day'+(isT?' today':'')+(fut?' fut':'')+'"><span class="rbC-wd">'+WDS[p.getDay()]+'</span><span class="rbC-dn">'+p.getDate()+'</span>'+
       '<div class="rbC-dots">'+dots+'</div><div class="rbC-bar">'+(bh?'<i style="height:'+bh+'px"></i>':'')+'</div><span class="rbC-amt">'+(d.spend?esc(fmtEur(d.spend).replace(/,\d\d\s€/,' €')):'')+'</span></div>';
   }).join('');
   return '<section class="rtile rb rbC"><p class="rb-kick">Deine Woche · KW '+B.kw+'</p><h3 class="rbC-head">'+esc(rbHeadline(B))+'</h3>'+
@@ -2405,6 +2407,8 @@ function budHtml(m,B){
   if(m.cur)txt=rest>=0?'<b>noch '+esc(fmtEur(rest))+' übrig</b>':'<b>'+esc(fmtEur(-rest))+' über dem Budget</b>';
   else txt=rest>=0?'<b>'+esc(fmtEur(rest))+' unter dem Budget</b>':'<b>'+esc(fmtEur(-rest))+' über dem Budget</b>';
   var hint=m.cur&&pct>=0.8&&pct<=1?'<p class="rnote" style="margin:4px 0 0">Schon '+Math.round(pct*100)+' % vom Budget ausgegeben.</p>':'';
+  if(m.cur&&m.sum>0){var tn=new Date(),dom=tn.getDate(),dim=new Date(tn.getFullYear(),tn.getMonth()+1,0).getDate();
+    if(dom>=7&&dom<dim){var pj=Math.round(m.sum/dom*dim);hint+='<p class="rnote" style="margin:4px 0 0">Bei diesem Tempo landet der Monat bei etwa '+esc(fmtEur(pj))+(pj>B?', also über dem Budget.':', also im Budget.')+'</p>';}}
   return '<div class="bud'+cls+'"><div class="bud-bar"><i style="width:'+Math.min(100,Math.round(pct*100))+'%"></i></div><div class="bud-txt">'+txt+'<span>Budget '+esc(fmtEur(B))+'</span></div>'+hint+'</div>';
 }
 function renderMonths(){
