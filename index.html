@@ -285,6 +285,13 @@ span.check{cursor:default}
 
 .shop-head{display:flex;align-items:baseline;gap:10px}
 .shop-head .count{font-size:13px;color:var(--fg2);font-variant-numeric:tabular-nums}
+.sortrow{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:8px 0 2px;font-size:12px;color:var(--fg2)}
+.sortrow .sortseg{padding:2px;font-size:12px;width:auto}
+.sortrow .sortseg button{padding:5px 10px;min-height:28px;font-size:12px}
+.shopgrp{list-style:none;padding:10px 0 2px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px}
+.shopgrp.none{color:var(--fg2)}
+.shopgrp em{font-style:normal;font-weight:600;color:var(--fg2);letter-spacing:0;text-transform:none}
+.shopgrp+.shopitem{border-top:0}
 .shop .lead{font-size:14px;color:var(--fg2);margin-top:2px}
 .shoplist{list-style:none;margin:8px 0 0;padding:0}
 .shopitem{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto auto;align-items:center}
@@ -321,6 +328,7 @@ span.check{cursor:default}
 .ofchip:active{opacity:.6}
 .shopitem.long .ofchip{white-space:normal;max-width:92px;text-align:center;line-height:1.2;padding:4px 9px}
 .shopitem.long .ofchip i{display:block;margin:0}
+.scheck.q::before{content:attr(data-q);display:grid;place-items:center;font-size:11px;font-weight:800;line-height:1;color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
 .ofbest{display:flex;align-items:center;gap:10px;width:100%;margin:2px 0 8px;border:0;border-radius:12px;background:var(--accent-soft);color:var(--fg);font:inherit;font-size:14px;line-height:1.35;text-align:left;padding:10px 12px;cursor:pointer}
 .ofbest .ofbi{flex:none;color:var(--accent);display:grid}
 .ofbest .ofbt{flex:1;min-width:0}
@@ -695,6 +703,7 @@ span.check{cursor:default}
   <section class="panel shop" id="shop" aria-label="Einkaufsliste">
     <div class="shop-head"><h2 id="shopTitle">Wocheneinkauf</h2><span class="count" id="shopCount"></span></div>
     <div id="shopBest"></div>
+    <div class="sortrow" id="shopSort" hidden><span>Sortiert nach</span><div class="seg sortseg" role="group" aria-label="Sortierung"><button type="button" data-act="shopsort" data-s="cat" aria-pressed="true">Kategorie</button><button type="button" data-act="shopsort" data-s="store" aria-pressed="false">Laden</button></div></div>
     <ul class="shoplist" id="shopList"></ul>
     <form class="shopadd" id="shopForm" autocomplete="off">
       <button type="button" class="go" id="shopMic" aria-label="Einkauf diktieren"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></button>
@@ -1146,11 +1155,12 @@ function effCat(x){var c=x.cat;if(c==='Kühlsachen'&&guessCat(x.title)==='Tiefk�
 function catOptions(sel){return CATS.map(function(c){return '<option'+(c===sel?' selected':'')+'>'+esc(c)+'</option>';}).join('');}
 var CHECK_SVG='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>';
 function shopRow(x){
+  var q=x.done?{n:0,name:x.title}:qtyOf(x.title);
   var dis=S.canWrite?'':' disabled';
-  return '<li class="shopitem'+(x.done?' done':'')+(x.title.length>11?' long':'')+'" data-id="'+esc(x.id)+'">'+
-    '<button type="button" class="scheck'+(x.done?' done':'')+'" data-act="'+(x.done?'shopundo':'shopdone')+'"'+dis+' aria-label="'+(x.done?'Wieder offen: ':'Erledigt: ')+esc(x.title)+'">'+CHECK_SVG+'</button>'+
+  return '<li class="shopitem'+(x.done?' done':'')+(qName(x.title).length>11?' long':'')+'" data-id="'+esc(x.id)+'">'+
+    '<button type="button" class="scheck'+(x.done?' done':'')+(q.n&&!x.done?' q':'')+'"'+(q.n&&!x.done?' data-q="'+q.n+'"':'')+' data-act="'+(x.done?'shopundo':'shopdone')+'"'+dis+' aria-label="'+(x.done?'Wieder offen: ':'Erledigt: ')+esc(x.title)+'">'+CHECK_SVG+'</button>'+
     (S.shopEdit===x.id?'<input class="stitle sedit" id="shopEditIn" value="'+esc(S.shopEditVal)+'" maxlength="80" enterkeyhint="done" aria-label="Neuer Name für '+esc(x.title)+'">':
-      (S.canWrite&&!x.done?'<button type="button" class="stitle sbtn" data-act="shopedit" aria-label="'+esc(x.title)+' umbenennen">'+esc(x.title)+'</button>':'<span class="stitle">'+esc(x.title)+'</span>'))+
+      (S.canWrite&&!x.done?'<button type="button" class="stitle sbtn" data-act="shopedit" aria-label="'+esc(x.title)+' umbenennen">'+esc(q.name)+'</button>':'<span class="stitle">'+esc(q.name)+'</span>'))+
     (S.shopEdit===x.id?'<select class="rowcat ecat" id="shopEditCat" aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(S.shopEditCat||effCat(x))+'</select>':OFFERS?ofChip(x):'<select class="rowcat"'+dis+' aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(effCat(x))+'</select>')+
     (x.url&&/^https:\/\//.test(x.url)?'<a class="slink" href="'+esc(x.url)+'" target="_blank" rel="noopener" aria-label="Produktseite öffnen: '+esc(x.title)+'"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>':'')+
     (x.done?'<span></span>':favBtn(x.title,'sm'))+
@@ -1164,6 +1174,17 @@ function allLists(){
 }
 function listOf(x){return x.list||DEF_LIST.id;}
 function curList(){var l=allLists();return l.find(function(x){return x.id===S.shopList;})||l[0];}
+/* Nach Laden: jeder Artikel zum Laden mit dem günstigsten Angebot, Läden nach Anzahl, Rest unter "Ohne Angebot". */
+function shopByStoreHtml(open){
+  var ST_ORDER=['Aldi Nord','Aldi Süd','Aldi','Lidl','Netto Marken-Discount','Netto','Rewe','Penny'],sto=function(x){var i=ST_ORDER.indexOf(x);return i<0?99:i;};
+  var g={},rest=[];
+  open.forEach(function(x){var l=ofFor(x.title);if(!l.length){rest.push(x);return;}var k=l[0].store;(g[k]=g[k]||[]).push(x);});
+  var keys=Object.keys(g).sort(function(a,b){return g[b].length-g[a].length||sto(a)-sto(b)||a.localeCompare(b,'de');});
+  var h='';
+  keys.forEach(function(k){h+='<li class="shopgrp">'+esc(ofShort(k))+'<em>'+plural(g[k].length,'Artikel','Artikel')+'</em></li>'+g[k].map(shopRow).join('');});
+  if(rest.length)h+='<li class="shopgrp none">Ohne Angebot<em>'+plural(rest.length,'Artikel','Artikel')+'</em></li>'+rest.map(shopRow).join('');
+  return h;
+}
 function renderShop(){
   var L=curList();S.shopList=L.id;
   $('shopLists').innerHTML=allLists().map(function(l){
@@ -1174,11 +1195,13 @@ function renderShop(){
   $('shopListDel').innerHTML=(S.canWrite&&L.id!==DEF_LIST.id)?'<button type="button" class="listdel" data-act="shoplistdel">'+(S.delList?'Wirklich löschen? Alle Artikel dieser Liste gehen verloren.':'Liste „'+esc(L.name)+'“ löschen')+'</button>':'';
   var mine=S.shop.filter(function(x){return listOf(x)===L.id;});
   var open=mine.filter(function(x){return !x.done;}).sort(function(a,b){return catIdx(effCat(a))-catIdx(effCat(b))||(a.created||0)-(b.created||0);});
+  var byStore=!!OFFERS&&S.shopSort==='store';
+  var ss=$('shopSort');if(ss){ss.hidden=!OFFERS||!open.length;ss.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String((b.dataset.s==='store')===byStore));});}
   var done=mine.filter(function(x){return x.done;}).sort(function(a,b){return (b.doneAt||0)-(a.doneAt||0);});
   $('shopCount').textContent=open.length?open.length+' offen':'';
   $('shopBest').innerHTML=ofBestHtml(open);
   var edF=document.activeElement&&document.activeElement.id==='shopEditIn';
-  $('shopList').innerHTML=open.length?open.map(shopRow).join(''):'<li class="empty" style="margin:6px 0 8px">'+(S.loading?'Lädt …':'Die Liste ist leer.')+'</li>';
+  $('shopList').innerHTML=open.length?(byStore?shopByStoreHtml(open):open.map(shopRow).join('')):'<li class="empty" style="margin:6px 0 8px">'+(S.loading?'Lädt …':'Die Liste ist leer.')+'</li>';
   $('shopForm').hidden=!S.canWrite;
   if(S.shopEdit){var ei=$('shopEditIn');if(ei&&(edF||S.shopEditFocus)){S.shopEditFocus=false;ei.focus();try{ei.setSelectionRange(ei.value.length,ei.value.length);}catch(e){}}else if(!ei)S.shopEdit=null;}
   var h='';
@@ -1198,14 +1221,14 @@ function rhythmDue(L){
   S.trips.forEach(function(tr){
     if((tr.list||DEF_LIST.id)!==L.id||!tr.date)return;
     (tr.items||[]).forEach(function(y){if(y.g)return;
-      var k=nrm(String(y.t||'').trim());if(!k)return;
-      var o=by[k]||(by[k]={t:y.t,c:y.c,dates:{},last:''});
+      var k=nrm(qName(y.t).trim());if(!k)return;
+      var o=by[k]||(by[k]={t:qName(y.t),c:y.c,dates:{},last:''});
       o.dates[tr.date]=1;
-      if(tr.date>=o.last){o.last=tr.date;o.t=y.t;if(y.c)o.c=y.c;}
+      if(tr.date>=o.last){o.last=tr.date;o.t=qName(y.t);if(y.c)o.c=y.c;}
     });
   });
   var onList={};
-  S.shop.forEach(function(x){if(listOf(x)===L.id)onList[nrm(String(x.title||'').trim())]=1;});
+  S.shop.forEach(function(x){if(listOf(x)===L.id)onList[nrm(qName(x.title).trim())]=1;});
   var skip=rhSkipLoad(),out=[];
   Object.keys(by).forEach(function(k){
     var o=by[k],ds=Object.keys(o.dates).sort();
@@ -1635,7 +1658,7 @@ function rcpMatch(name,list){
   var rn=' '+nrm(name).replace(/[^a-z0-9 ]+/g,' ')+' ';
   var best=null;
   list.forEach(function(x){
-    var w=nrm(String(x.title||'')).replace(/[^a-z0-9 ]+/g,' ').trim().split(/\s+/).pop()||'';
+    var w=nrm(qName(x.title)).replace(/[^a-z0-9 ]+/g,' ').trim().split(/\s+/).pop()||'';
     var st=w.replace(/(en|n|e|s)$/,'');
     if(st.length<3)return;
     if(rn.indexOf(' '+st)>=0||rn.indexOf(st+' ')>=0||(st.length>=5&&rn.indexOf(st)>=0)){if(!best)best=x;}
@@ -1921,14 +1944,17 @@ if(!OFFERS&&window.fetch&&location.protocol.indexOf('http')===0){
   }).catch(function(){});
 }
 function ofStem(x){return nrm(String(x||'')).replace(/[^a-z0-9 ]+/g,' ').trim().replace(/(en|n|e|s)$/,'');}
+/* Mengen: "2x Milch", "2 x Milch", "Milch 2x" -> Zahl vorne als Marke, Name bleibt für Angebote und Rhythmus sauber. */
+function qtyOf(t){var m=/^\s*(\d{1,2})\s*[x×]\s+(.+)$/i.exec(t||'')||/^(.+?)\s+(\d{1,2})\s*[x×]\s*$/i.exec(t||'')||/^(.+?)\s+[x×]\s*(\d{1,2})\s*$/i.exec(t||'');if(!m)return {n:0,name:String(t||'')};var n=/^\d/.test(m[1])?+m[1]:+m[2],name=/^\d/.test(m[1])?m[2]:m[1];return n>1?{n:n,name:name.trim()}:{n:0,name:String(t||'')};}
+function qName(t){return qtyOf(t).name;}
 function ofLast(x){var w=nrm(String(x||'')).replace(/[^a-z0-9 ]+/g,' ').trim().split(/\s+/);return w[w.length-1]||'';}
 function ofMatch(item,o){
   var w=ofLast(item).replace(/(en|n|e|s)$/,''),full=nrm(String(item||''));
   if(!w)return false;
   return (o.kw||[]).some(function(k){var ks=nrm(k).replace(/(en|n|e|s)$/,'');return ks&&(w.slice(-ks.length)===ks||full===nrm(k));});
 }
-function ofFor(item){return (OFFERS?OFFERS.offers:[]).filter(function(o){return ofMatch(item,o);}).sort(function(a,b){return a.price-b.price;});}
-function ofOpenItems(){var seen={},out=[];S.shop.forEach(function(x){if(x.done)return;var k=nrm(String(x.title||'').trim());if(!k||seen[k])return;seen[k]=1;out.push(x.title);});return out;}
+function ofFor(item){item=qName(item);return (OFFERS?OFFERS.offers:[]).filter(function(o){return ofMatch(item,o);}).sort(function(a,b){return a.price-b.price;});}
+function ofOpenItems(){var seen={},out=[];S.shop.forEach(function(x){if(x.done)return;var k=nrm(qName(x.title).trim());if(!k||seen[k])return;seen[k]=1;out.push(qName(x.title));});return out;}
 function ofFrequent(){
   var cnt={},name={};
   S.trips.forEach(function(t){var seen={};(t.items||[]).forEach(function(y){if(y.g)return;var k=nrm(String(y.t||'').trim());if(!k||seen[k])return;seen[k]=1;cnt[k]=(cnt[k]||0)+1;name[k]=y.t;});});
@@ -1946,7 +1972,7 @@ function ofChip(x){
 function ofBestHtml(open){
   if(!OFFERS||!open.length)return '';
   var st={};
-  open.forEach(function(x){var l=ofFor(x.title);if(!l.length)return;var s=l[0].store;(st[s]=st[s]||[]).push(x.title);});
+  open.forEach(function(x){var l=ofFor(x.title);if(!l.length)return;var s=l[0].store;(st[s]=st[s]||[]).push(qName(x.title));});
   var r=Object.keys(st).map(function(k){return {s:k,l:st[k]};}).sort(function(a,b){return b.l.length-a.l.length;});
   if(!r.length)return '';
   var best=r[0],tie=r.length>1&&r[1].l.length===best.l.length;
@@ -2528,6 +2554,7 @@ function renderList(today){
 function render(){
   var today=todayIso();
   $('sub').textContent=fmtLong.format(new Date());
+  $('sub').hidden=S.tab==='cal'&&S.view==='cal';
   var st=$('status');
   if(S.loading){st.textContent='verbinde …';st.className='status off';}
   else if(!db){st.textContent='nicht verbunden';st.className='status off';}
@@ -3408,6 +3435,7 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'shopdonetoggle':S.shopDoneOpen=!S.shopDoneOpen;renderShop();break;
+    case 'shopsort':S.shopSort=el.dataset.s==='store'?'store':'cat';try{localStorage.setItem('sommerhaus-shopsort',S.shopSort);}catch(e){}renderShop();break;
     case 'monsel':S.monSel=el.dataset.m;renderReport();break;
     case 'rbshop':S.rbShopOpen=!S.rbShopOpen;renderReport();break;
     case 'rbvar':S.rbVariant=el.dataset.v;renderReport();break;
@@ -3520,7 +3548,8 @@ function setTheme(t,save){
 (function(){try{
   if(localStorage.getItem('sommerhaus-calmode')==='week')S.calMode='week';
   if(localStorage.getItem('sommerhaus-tab')==='shop')S.tab='shop';
-  if(localStorage.getItem('sommerhaus-dayopen')==='1')S.dayOpen=true;
+  if(localStorage.getItem('sommerhaus-dayopen')!=='0')S.dayOpen=true;
+  if(localStorage.getItem('sommerhaus-shopsort')==='store')S.shopSort='store';
   var sl=localStorage.getItem('sommerhaus-shoplist');if(sl)S.shopList=sl;
 }catch(e){}})();
 
