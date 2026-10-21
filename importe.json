@@ -107,6 +107,156 @@
      "date": "2026-10-17"
     }
    ]
+  },
+  {
+   "id": "verlauf-2026-05-bis-10",
+   "trips": [
+    {
+     "store": "Sonstige Läden",
+     "amount": 111.96,
+     "date": "2026-05-21"
+    },
+    {
+     "store": "Trinkgut",
+     "amount": 28.68,
+     "date": "2026-05-27"
+    },
+    {
+     "store": "Netto",
+     "amount": 23.87,
+     "date": "2026-05-29"
+    },
+    {
+     "store": "Bäckerei",
+     "amount": 12.45,
+     "date": "2026-05-27"
+    },
+    {
+     "store": "Aldi",
+     "amount": 3.24,
+     "date": "2026-05-08"
+    },
+    {
+     "store": "Restaurants & Imbiss",
+     "amount": 139.44,
+     "date": "2026-05-27"
+    },
+    {
+     "store": "Bäckerei",
+     "amount": 52.85,
+     "date": "2026-06-17"
+    },
+    {
+     "store": "Aldi",
+     "amount": 52.43,
+     "date": "2026-06-02"
+    },
+    {
+     "store": "Rewe",
+     "amount": 29.55,
+     "date": "2026-06-02"
+    },
+    {
+     "store": "Sonstige Läden",
+     "amount": 6.75,
+     "date": "2026-06-30"
+    },
+    {
+     "store": "Lidl",
+     "amount": 5.36,
+     "date": "2026-06-01"
+    },
+    {
+     "store": "Restaurants & Imbiss",
+     "amount": 143.66,
+     "date": "2026-06-30"
+    },
+    {
+     "store": "Albert Heijn",
+     "amount": 118.46,
+     "date": "2026-07-28"
+    },
+    {
+     "store": "Bäckerei",
+     "amount": 53.77,
+     "date": "2026-07-31"
+    },
+    {
+     "store": "Sonstige Läden",
+     "amount": 51.44,
+     "date": "2026-07-21"
+    },
+    {
+     "store": "Rewe",
+     "amount": 7.7,
+     "date": "2026-07-31"
+    },
+    {
+     "store": "Restaurants & Imbiss",
+     "amount": 213.79,
+     "date": "2026-07-30"
+    },
+    {
+     "store": "Rewe",
+     "amount": 46.12,
+     "date": "2026-08-18"
+    },
+    {
+     "store": "Bäckerei",
+     "amount": 42.37,
+     "date": "2026-08-21"
+    },
+    {
+     "store": "Restaurants & Imbiss",
+     "amount": 188.9,
+     "date": "2026-08-21"
+    },
+    {
+     "store": "Sonstige Läden",
+     "amount": 96.53,
+     "date": "2026-09-22"
+    },
+    {
+     "store": "Lidl",
+     "amount": 91.83,
+     "date": "2026-09-18"
+    },
+    {
+     "store": "Aldi",
+     "amount": 88.87,
+     "date": "2026-09-22"
+    },
+    {
+     "store": "Bäckerei",
+     "amount": 47.88,
+     "date": "2026-09-30"
+    },
+    {
+     "store": "Mercadona",
+     "amount": 42.94,
+     "date": "2026-09-16"
+    },
+    {
+     "store": "Trinkgut",
+     "amount": 2.99,
+     "date": "2026-09-29"
+    },
+    {
+     "store": "Edeka",
+     "amount": 0.84,
+     "date": "2026-09-15"
+    },
+    {
+     "store": "Restaurants & Imbiss",
+     "amount": 377.34,
+     "date": "2026-09-29"
+    },
+    {
+     "store": "Restaurants & Imbiss",
+     "amount": 60.38,
+     "date": "2026-10-20"
+    }
+   ]
   }
  ]
 }
