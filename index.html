@@ -734,7 +734,7 @@ span.check{cursor:default}
     <div id="shopRhy"></div>
     <div id="shopFinish"></div>
     <input type="file" id="rcFile" accept="image/*" capture="environment" hidden>
-    <input type="file" id="rcFile2" accept="image/*" hidden>
+    <input type="file" id="rcFile2" accept="image/*,application/pdf,.pdf" hidden>
     <div id="shopDone"></div>
     <div id="shopListDel"></div>
   </section>
@@ -1344,6 +1344,42 @@ function rcLoadFile(f){
     im.src=url;
   });
 }
+/* PDF (z. B. digitaler Kassenbon aus der Netto-App): erste Seiten als Bild rendern, dann läuft alles wie bei einem Foto. */
+var PDFJS_BASE='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/';
+function pdfLib(){
+  if(window.pdfjsLib&&window.pdfjsLib.GlobalWorkerOptions.workerSrc)return Promise.resolve(window.pdfjsLib);
+  if(OCR.pdf)return OCR.pdf;
+  OCR.pdf=new Promise(function(res,rej){
+    var sc=document.createElement('script');sc.src=PDFJS_BASE+'pdf.min.js';
+    sc.onload=function(){window.pdfjsLib?res(window.pdfjsLib):rej(new Error('lib'));};
+    sc.onerror=function(){rej(new Error('lib'));};document.head.appendChild(sc);
+  }).then(function(lib){
+    return fetch(PDFJS_BASE+'pdf.worker.min.js').then(function(r){if(!r.ok)throw new Error('lib');return r.blob();}).then(function(b){
+      lib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(b);return lib;});
+  }).catch(function(e){OCR.pdf=null;throw e;});
+  return OCR.pdf;
+}
+function rcLoadPdf(f){
+  return Promise.all([f.arrayBuffer(),pdfLib()]).then(function(a){
+    return a[1].getDocument({data:a[0]}).promise;
+  }).then(function(doc){
+    var n=Math.min(doc.numPages,3),pages=[],i=0;
+    function next(){
+      if(i>=n)return Promise.resolve();
+      return doc.getPage(++i).then(function(pg){
+        var v1=pg.getViewport({scale:1}),sc=Math.max(1.5,Math.min(4,1600/v1.width)),v=pg.getViewport({scale:sc});
+        var c=document.createElement('canvas');c.width=Math.round(v.width);c.height=Math.round(v.height);
+        return pg.render({canvasContext:c.getContext('2d'),viewport:v,background:'#ffffff'}).promise.then(function(){pages.push(c);});
+      }).then(next);
+    }
+    return next().then(function(){
+      var W=Math.max.apply(null,pages.map(function(c){return c.width;})),H=pages.reduce(function(t,c){return t+c.height;},0);
+      var out=document.createElement('canvas');out.width=W;out.height=H;var x=out.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);
+      var y=0;pages.forEach(function(c){x.drawImage(c,0,y);y+=c.height;});
+      return out;
+    });
+  });
+}
 function rcGray(ctx,w,h){
   var d=ctx.getImageData(0,0,w,h).data,g=new Uint8ClampedArray(w*h);
   for(var i=0,j=0;i<g.length;i++,j+=4)g[i]=(d[j]*77+d[j+1]*150+d[j+2]*29)>>8;
@@ -1568,17 +1604,18 @@ function rcClick(ev){
 function rcOnFile(f){
   if(!f)return;
   rcShow(true);RC.mode='load';$('rcvTitle').textContent='Kassenzettel';$('rcvHint').textContent='';
-  $('rcvStage').innerHTML='<p class="rcv-msg">Foto wird geladen …</p>';$('rcvBar').innerHTML='';
-  rcLoadFile(f).then(function(im){
-    var W=im.naturalWidth,H=im.naturalHeight,k=Math.min(1,2400/Math.max(W,H));
+  var isPdf=/pdf/i.test(f.type||'')||/\.pdf$/i.test(f.name||'');
+  $('rcvStage').innerHTML='<p class="rcv-msg">'+(isPdf?'PDF wird geladen …':'Foto wird geladen …')+'</p>';$('rcvBar').innerHTML='';
+  (isPdf?rcLoadPdf(f).then(function(cv){return {el:cv,W:cv.width,H:cv.height,max:3200,pdf:true};}):rcLoadFile(f).then(function(im){return {el:im,W:im.naturalWidth,H:im.naturalHeight,max:2400};})).then(function(o){
+    var W=o.W,H=o.H,k=Math.min(1,o.max/Math.max(W,H));
     W=Math.round(W*k);H=Math.round(H*k);
-    var c=document.createElement('canvas');c.width=W;c.height=H;c.getContext('2d').drawImage(im,0,0,W,H);
-    RC.src=c;RC.W=W;RC.H=H;RC.q=rcDetect(c,W,H);
+    var c=document.createElement('canvas');c.width=W;c.height=H;c.getContext('2d').drawImage(o.el,0,0,W,H);
+    RC.src=c;RC.W=W;RC.H=H;RC.q=o.pdf?rcFull(W,H):rcDetect(c,W,H);
     rcCropRender();
-  },function(){$('rcvStage').innerHTML='<p class="rcv-msg">Das Foto konnte nicht geöffnet werden.</p>';$('rcvBar').innerHTML='<button type="button" class="rcb" data-rc="cancel">Schließen</button>';});
+  },function(){$('rcvStage').innerHTML='<p class="rcv-msg">'+(isPdf?'Das PDF konnte nicht geöffnet werden. Prüfe die Verbindung oder mach einen Screenshot davon.':'Das Foto konnte nicht geöffnet werden.')+'</p>';$('rcvBar').innerHTML='<button type="button" class="rcb" data-rc="cancel">Schließen</button>';});
 }
 /* ---------- Kassenzettel lesen: Texterkennung auf dem Handy (Tesseract), Produkte und Summe herausziehen ---------- */
-var OCR={lib:null,worker:null};
+var OCR={lib:null,worker:null,pdf:null};
 function ocrLib(){
   if(window.Tesseract)return Promise.resolve(window.Tesseract);
   if(OCR.lib)return OCR.lib;
@@ -1886,7 +1923,7 @@ function renderTrips(){
     h+=im?'<img src="'+im+'" alt="Kassenzettel" data-act="tripzoom">':'<div class="rcload" id="tripRcLoad">Kassenzettel wird geladen …</div>';
   }else h+='<div class="rcload">Kein Kassenzettel gespeichert.</div>';
   h+='</div><div class="tact">';
-  if(S.canWrite&&!x.receipt)h+='<button type="button" data-act="rcadd" data-t="'+esc(x.id)+'">Kassenzettel fotografieren</button><button type="button" data-act="rcaddgal" data-t="'+esc(x.id)+'">Foto aus der Mediathek wählen</button>';
+  if(S.canWrite&&!x.receipt)h+='<button type="button" data-act="rcadd" data-t="'+esc(x.id)+'">Kassenzettel fotografieren</button><button type="button" data-act="rcaddgal" data-t="'+esc(x.id)+'">Foto oder PDF auswählen</button>';
   if(x.receipt)h+='<button type="button" data-act="tripzoom">Kassenzettel groß ansehen</button>';
   if(S.canWrite)h+='<button type="button" class="del'+(TV.delAsk?' ask':'')+'" data-act="tripdel">'+(TV.delAsk?'Wirklich löschen? Nochmal tippen':'Einkauf löschen')+'</button>';
   h+='</div>';
@@ -2106,7 +2143,7 @@ function rcPendingHtml(){
   if(!S.canWrite)return '';
   if(RC.pending)return rcPendThumb()+rcOcrHtml();
   if(false)return '<div class="rcthumb"><img src="'+RC.pending.data+'" alt=""><span>Kassenzettel ist dabei</span><button type="button" data-act="rcpview">Ansehen</button><button type="button" data-act="rcpdrop">Entfernen</button></div>';
-  return '<button type="button" class="fbtn sec rcbtn" data-act="rcshoot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Kassenzettel fotografieren</button><button type="button" class="fbtn sec rcbtn" data-act="rcgal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 16l-5-5-8.5 8.5"/></svg>Foto aus der Mediathek</button>';
+  return '<button type="button" class="fbtn sec rcbtn" data-act="rcshoot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Kassenzettel fotografieren</button><button type="button" class="fbtn sec rcbtn" data-act="rcgal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 16l-5-5-8.5 8.5"/></svg>Foto oder PDF auswählen</button>';
 }
 var fmtEurN=new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'});
 function fmtEur(v){return fmtEurN.format(v||0);}
