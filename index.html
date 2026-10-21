@@ -2527,6 +2527,10 @@ function renderMonths(){
     h+='<div class="zline" style="margin-top:14px"><b>'+esc(EAT_LABEL)+'</b><b>'+esc(fmtEur(eatO?eatO.sum:0))+'</b></div>'+budHtml({sum:eatO?eatO.sum:0,cur:selM.cur},BE);
     selM={key:selM.key,d:selM.d,sum:selM.sum,n:selM.n,stores:selM.stores,cur:selM.cur,other:selM.other.filter(function(o){return o.name!==EAT_LABEL;})};
   }
+  var eatSum=eatO?eatO.sum:0,allSum=selM.sum+eatSum;
+  if(allSum>0){
+    h+='<div class="zline" style="margin-top:16px;padding-top:12px;border-top:1px solid var(--sep)"><b>Ernährung gesamt</b><b>'+esc(fmtEur(allSum))+'</b></div><p class="rnote" style="margin:2px 0 0">Lebensmittel '+esc(fmtEur(selM.sum))+' + Essen gehen &amp; bestellen '+esc(fmtEur(eatSum))+'</p>'+((B>0&&BE>0)?budHtml({sum:allSum,cur:selM.cur},B+BE):'');
+  }
   if(selM.other.length){var omx=selM.other[0].sum||1,osum=selM.other.reduce(function(a,e){return a+e.sum;},0);
     h+='<div class="zline" style="margin-top:14px"><b>Außerdem ausgegeben</b><b>'+esc(fmtEur(osum))+'</b></div><p class="rnote" style="margin:2px 0 8px">zählt nicht zu den Lebensmitteln</p><div class="rb-stores">'+selM.other.map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/omx*100))+'%;background:var(--fg2)"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
   h+='<p class="rnote">Zählt nur Lebensmittel aus dem Wocheneinkauf mit eingetragenem Betrag. Supermarkt-Einkäufe zählen komplett. Essen gehen und Bestellen (Pizza, Döner &amp; Co.), Drogeriemärkte, Baumärkte und andere Listen laufen extra. Tipp auf einen Monat zeigt die Läden.</p></div></section>';
