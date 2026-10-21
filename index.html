@@ -79,6 +79,7 @@
 .palrow button svg{display:none;width:18px;height:18px;color:#fff}
 .palrow button[aria-pressed="true"] svg{display:block;margin:auto}
 *,*::before,*::after{box-sizing:border-box}
+html,body,button,a,input,select,textarea,label,[role="button"],.tabbar{touch-action:manipulation}
 body{background:var(--bg);color:var(--fg);font:400 16px/1.4 var(--font);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
 h1,h2,h3,p{margin:0}
 h1,h2,h3{text-wrap:balance}
@@ -863,6 +864,9 @@ span.check{cursor:default}
           <p class="fhead" style="margin:0 0 0 4px">Budget für Lebensmittel</p>
           <div class="fgroup"><label class="frow text"><span class="fl">Pro Monat</span><input id="f-budget" inputmode="decimal" maxlength="9" placeholder="kein Budget" style="text-align:right"><span class="fl" style="margin-left:6px">€</span></label></div>
           <p class="fnote" style="margin-top:0" id="budgetNote">Im Überblick seht ihr dann bei „Ausgaben pro Monat“, wie viel noch übrig ist. Feld leer lassen für kein Budget.</p>
+          <p class="fhead" style="margin:10px 0 0 4px">Budget für Essen gehen &amp; bestellen</p>
+          <div class="fgroup"><label class="frow text"><span class="fl">Pro Monat</span><input id="f-budget-eat" inputmode="decimal" maxlength="9" placeholder="kein Budget" style="text-align:right"><span class="fl" style="margin-left:6px">€</span></label></div>
+          <p class="fnote" style="margin-top:0" id="budgetEatNote">Restaurants, Imbiss, Cafés und Lieferdienste. Zählt extra, nicht zu den Lebensmitteln.</p>
         </div>
         <div class="stack" id="muStack" hidden>
           <p class="fhead" style="margin:0 0 0 4px">Mülltonnen</p>
@@ -2517,7 +2521,12 @@ function renderMonths(){
   }).join('')+'</div>';
   h+='<div class="mon-det"><div class="zline"><b>'+esc(fmtMonth.format(selM.d))+(selM.cur?' (läuft noch)':'')+'</b><b>'+esc(fmtEur(selM.sum))+'</b></div>'+
     budHtml(selM,B)+'<p class="rnote" style="margin:2px 0 8px">'+plural(selM.n,'Einkauf','Einkäufe')+' mit Betrag'+(avg&&!selM.cur?' · Schnitt der Vormonate '+esc(fmtEur(avg)):'')+(avg&&selM.cur?' · bisheriger Monatsschnitt '+esc(fmtEur(avg)):'')+'</p>';
-  if(selM.stores.length){var smx=selM.stores[0].sum||1;h+='<div class="rb-stores">'+selM.stores.slice(0,6).map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/smx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
+  if(selM.stores.length){var smx=selM.stores[0].sum||1;h+='<div class="rb-stores">'+selM.stores.slice(0,8).map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/smx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
+  var BE=S.budgetEat==null?100:S.budgetEat,eatO=selM.other.filter(function(o){return o.name===EAT_LABEL;})[0];
+  if(BE>0){
+    h+='<div class="zline" style="margin-top:14px"><b>'+esc(EAT_LABEL)+'</b><b>'+esc(fmtEur(eatO?eatO.sum:0))+'</b></div>'+budHtml({sum:eatO?eatO.sum:0,cur:selM.cur},BE);
+    selM={key:selM.key,d:selM.d,sum:selM.sum,n:selM.n,stores:selM.stores,cur:selM.cur,other:selM.other.filter(function(o){return o.name!==EAT_LABEL;})};
+  }
   if(selM.other.length){var omx=selM.other[0].sum||1,osum=selM.other.reduce(function(a,e){return a+e.sum;},0);
     h+='<div class="zline" style="margin-top:14px"><b>Außerdem ausgegeben</b><b>'+esc(fmtEur(osum))+'</b></div><p class="rnote" style="margin:2px 0 8px">zählt nicht zu den Lebensmitteln</p><div class="rb-stores">'+selM.other.map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/omx*100))+'%;background:var(--fg2)"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
   h+='<p class="rnote">Zählt nur Lebensmittel aus dem Wocheneinkauf mit eingetragenem Betrag. Supermarkt-Einkäufe zählen komplett. Essen gehen und Bestellen (Pizza, Döner &amp; Co.), Drogeriemärkte, Baumärkte und andere Listen laufen extra. Tipp auf einen Monat zeigt die Läden.</p></div></section>';
@@ -2882,7 +2891,7 @@ function openNames(){
   $('form').hidden=true;$('shopSheet').hidden=true;$('voiceSheet').hidden=true;$('tripSheet').hidden=true;$('namesForm').hidden=false;
   $('f-names').value=knownNames().join(', ');
   $('f-names').disabled=!S.canWrite;
-  $('budgetNote').textContent='Im Überblick seht ihr dann bei „Ausgaben pro Monat“, wie viel noch übrig ist. Feld leer lassen für kein Budget.';$('f-budget').value=S.budget>0?String(S.budget).replace('.',','):'';$('f-budget').disabled=!S.canWrite;
+  $('budgetNote').textContent='Im Überblick seht ihr dann bei „Ausgaben pro Monat“, wie viel noch übrig ist. Feld leer lassen für kein Budget.';$('f-budget').value=S.budget>0?String(S.budget).replace('.',','):'';$('f-budget').disabled=!S.canWrite;$('f-budget-eat').value=S.budgetEat>0?String(S.budgetEat).replace('.',','):'';$('f-budget-eat').disabled=!S.canWrite;$('budgetEatNote').textContent='Restaurants, Imbiss, Cafés und Lieferdienste. Zählt extra, nicht zu den Lebensmitteln.';
   $('btnNamesSave').hidden=!S.canWrite;
   $('scrim').hidden=false;
   pushRefresh();renderMuBox();
@@ -2952,7 +2961,9 @@ $('namesForm').addEventListener('submit',function(ev){
   var seen={},names=$('f-names').value.split(',').map(function(s){return s.trim();}).filter(function(s){if(!s||seen[s])return false;seen[s]=1;return true;}).slice(0,6);
   var bv=parseAmt($('f-budget').value);
   if(bv!==null&&!(bv>=0)){$('budgetNote').textContent='Bitte nur eine Zahl eintragen, zum Beispiel 600 oder 650,50.';$('f-budget').focus();return;}
-  var bnew=bv?Math.round(bv*100)/100:0,bp=bnew!==(S.budget||0)?db.doc('settings/budget').set({amount:bnew}):Promise.resolve();
+  var be=parseAmt($('f-budget-eat').value);
+  if(be!==null&&!(be>=0)){$('budgetEatNote').textContent='Bitte nur eine Zahl eintragen, zum Beispiel 100.';$('f-budget-eat').focus();return;}
+  var bnew=bv?Math.round(bv*100)/100:0,benew=be?Math.round(be*100)/100:0,bp=(bnew!==(S.budget||0)||benew!==(S.budgetEat||0))?db.doc('settings/budget').set({amount:bnew,eat:benew}):Promise.resolve();
   Promise.all([db.doc('settings/members').set({names:names}),bp]).then(function(){closeSheet();toast('Gespeichert.');},fail);
 });
 document.addEventListener('submit',function(ev){
@@ -3635,8 +3646,17 @@ function runImports(){
     if(!d||!Array.isArray(d.imports)||!d.imports.length)return;
     return db.doc('settings/imports').get().then(function(snap){
       var done=(snap&&snap.data&&snap.data()||{}).done||{};
-      var todo=d.imports.filter(function(im){return im&&im.id&&!done[im.id]&&im.list&&im.list.id&&Array.isArray(im.items);});
+      var todo=d.imports.filter(function(im){return im&&im.id&&!done[im.id]&&((im.list&&im.list.id&&Array.isArray(im.items))||Array.isArray(im.trips));});
       return todo.reduce(function(p,im){return p.then(function(){
+        if(Array.isArray(im.trips)){
+          /* Einmalige Nachträge: Einkäufe von vor SommerHaus, mit festen IDs, damit nichts doppelt entsteht. */
+          var tn=0,tps=im.trips.map(function(x,k){
+            var amt=+x.amount;if(!(amt>0)||!x.date||x.date>todayIso())return Promise.resolve();
+            tn++;
+            return db.collection('shopTrips').doc(im.id+'-'+(k+1)).set({list:DEF_LIST.id,listName:DEF_LIST.name,at:parse(x.date).getTime()+43200000,date:x.date,n:0,items:[],carriedN:0,carried:[],spont:true,amount:amt,store:String(x.store||'').slice(0,40),vorher:true});
+          });
+          return Promise.all(tps).then(function(){done[im.id]=todayIso();return db.doc('settings/imports').set({done:done});}).then(function(){toast(tn+(tn===1?' Einkauf':' Einkäufe')+' von vor SommerHaus nachgetragen.');});
+        }
         var t0=im.created||Date.now(),ps=[db.collection('shopLists').doc(im.list.id).set({name:im.list.name,created:t0})];
         im.items.forEach(function(x,k){var it={title:x.t,cat:CATS.indexOf(x.c)>=0?x.c:'Sonstiges',list:im.list.id,done:false,created:t0+k};if(x.url&&/^https:\/\//.test(x.url))it.url=x.url;ps.push(db.collection('shopping').doc(im.list.id+'-'+(k<9?'0':'')+(k+1)).set(it));});
         return Promise.all(ps).then(function(){done[im.id]=todayIso();return db.doc('settings/imports').set({done:done});}).then(function(){toast('Liste „'+im.list.name+'“ mit '+im.items.length+' Artikeln angelegt.');});
@@ -3694,7 +3714,7 @@ render();
   },4000);
   db.doc('settings/vocab').onSnapshot(function(s){S.vocab=vocabParse(s&&s.data&&s.data());},function(){});
   db.doc('settings/favs').onSnapshot(function(s){var d=s&&s.data&&s.data();S.favs=d&&Array.isArray(d.names)?d.names.slice():[];render();},function(){});
-  db.doc('settings/budget').onSnapshot(function(s){var d=s&&s.data&&s.data();S.budget=d&&d.amount>0?+d.amount:0;render();},function(){});
+  db.doc('settings/budget').onSnapshot(function(s){var d=s&&s.data&&s.data();S.budget=d&&d.amount>0?+d.amount:0;S.budgetEat=d&&d.eat!=null?(d.eat>0?+d.eat:0):100;render();},function(){});
   db.doc('settings/members').onSnapshot(function(s){
     var d=s.data();S.members=d&&Array.isArray(d.names)?d.names.slice():[];render();
   },onErr);

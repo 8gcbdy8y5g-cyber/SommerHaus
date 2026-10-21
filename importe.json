@@ -77,6 +77,36 @@
      "c": "Sonstiges"
     }
    ]
+  },
+  {
+   "id": "vor-sommerhaus-2026-10",
+   "trips": [
+    {
+     "store": "Bäckerei",
+     "amount": 53.41,
+     "date": "2026-10-17"
+    },
+    {
+     "store": "Scheiding Handels",
+     "amount": 23.62,
+     "date": "2026-10-17"
+    },
+    {
+     "store": "Al Jasmin Supermarkt",
+     "amount": 10.2,
+     "date": "2026-10-17"
+    },
+    {
+     "store": "Trinkgut",
+     "amount": 4.48,
+     "date": "2026-10-17"
+    },
+    {
+     "store": "Getränkewelt",
+     "amount": 4.4,
+     "date": "2026-10-17"
+    }
+   ]
   }
  ]
 }
