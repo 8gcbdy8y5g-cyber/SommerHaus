@@ -3,7 +3,6 @@
 // denselben Speicher-Zugriff bereit (collection, doc, onSnapshot, add, update, set, delete),
 // nur eben mit Firebase Firestore statt dem Claude-Speicher.
 import { firebaseConfig } from './firebase-config.js';
-import * as L from './sh-lock.js';
 
 const V = '10.12.2';
 const BASE = 'https://www.gstatic.com/firebasejs/' + V + '/';
@@ -120,7 +119,6 @@ function addSettings() {
     <p class="fhead" style="margin:0 0 0 4px">Konto</p>
     <div class="fgroup">
       <div class="frow"><span class="fl">Angemeldet</span><span id="shWho" style="flex:1;text-align:right;color:var(--fg2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span></div>
-      <button type="button" class="frow act" id="shFace" hidden><span class="fl" style="flex:1;text-align:left">Beim Öffnen mit Face ID sperren</span><span id="shFaceVal" style="color:var(--fg2)"></span></button>
       <button type="button" class="frow act" id="shImport">Daten importieren (JSON)</button>
       <button type="button" class="frow act danger" id="shOut">Abmelden</button>
     </div>
@@ -128,13 +126,6 @@ function addSettings() {
     <p class="fnote" style="margin-top:0">Der Import übernimmt einmalig die Daten aus der Claude-Version. Bereits vorhandene Einträge mit derselben Kennung werden überschrieben.</p>
   </div>`);
   box.appendChild(extra);
-  faceRow();
-  document.getElementById('shFace').addEventListener('click', async () => {
-    const v = document.getElementById('shFaceVal');
-    if (L.faceOn()) { L.disable(); faceRow(); return; }
-    v.textContent = 'Wird eingerichtet …';
-    try { await L.setup(); faceRow(); } catch (e) { v.textContent = 'Hat nicht geklappt'; }
-  });
   document.getElementById('shOut').addEventListener('click', () => A.signOut(auth).then(() => location.reload()));
   document.getElementById('shImport').addEventListener('click', () => document.getElementById('shFile').click());
   document.getElementById('shFile').addEventListener('change', async ev => {
@@ -160,18 +151,14 @@ function addSettings() {
   });
 }
 
-async function faceRow() {
-  const b = document.getElementById('shFace'); if (!b) return;
-  b.hidden = !(await L.faceAvailable());
-  document.getElementById('shFaceVal').textContent = L.faceOn() ? 'Ein' : 'Aus';
-}
 try { if (localStorage.getItem('sommerhaus-keep') === '0') document.getElementById('shKeep').checked = false; } catch (e) {}
+
+// Face ID wurde am 22.10. wieder entfernt: alte Einstellung auf diesem Gerät aufräumen.
+try { ['sommerhaus-lock', 'sommerhaus-lock-cred', 'sommerhaus-lock-asked'].forEach(k => localStorage.removeItem(k)); } catch (e) {}
 
 let resolved = false;
 A.onAuthStateChanged(auth, user => {
   if (user) {
-    L.start({ email: user.email || '', reauth: pw => A.signInWithEmailAndPassword(auth, user.email, pw),
-      toast: t => { if (typeof window.toast === 'function') window.toast(t); }, onChange: faceRow });
     leave();
     addSettings();
     const w = document.getElementById('shWho'); if (w) w.textContent = user.email || '';

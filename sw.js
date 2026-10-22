@@ -1,8 +1,8 @@
 // SommerHaus Service Worker: App-Dateien zwischenspeichern, damit die App auch ohne Netz startet.
 // Strategie wie bei Doku-Fix: erst Netz (neue Version kommt an), ohne Netz die gespeicherte Datei.
 // Die Daten selbst puffert Firebase im Browser, sie laufen nicht über diesen Cache.
-const CACHE = 'sommerhaus-v3';
-const DATEIEN = ['./', './index.html', './sh-firebase.js', './sh-lock.js', './firebase-config.js', './manifest.webmanifest',
+const CACHE = 'sommerhaus-v4';
+const DATEIEN = ['./', './index.html', './sh-firebase.js', './firebase-config.js', './manifest.webmanifest',
   './icon.svg', './icon-180.png', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './favicon-32.png'];
 const FREMD = ['https://www.gstatic.com', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'];
 
