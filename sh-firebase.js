@@ -11,6 +11,13 @@ const BASE = 'https://www.gstatic.com/firebasejs/' + V + '/';
 const css = `
 .shl{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;padding:24px 16px;overflow:auto}
 .shl[hidden]{display:none!important}
+.shl{transition:opacity .35s ease}
+.shl.out{opacity:0;pointer-events:none}
+.shl-wait{display:flex;align-items:center;justify-content:center;gap:10px;color:var(--fg2);font-size:15px}
+.shl-wait[hidden]{display:none}
+.shl-spin{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--fill);border-top-color:var(--accent);animation:shlspin .8s linear infinite}
+@keyframes shlspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.shl{transition:none}.shl-spin{animation-duration:2.4s}}
 .shl-box{width:100%;max-width:360px;display:grid;gap:16px;text-align:center}
 .shl-box .logo{width:88px;height:88px;margin:0 auto;border-radius:22px;box-shadow:0 2px 6px rgba(90,62,54,.18)}
 .shl-box h1{justify-content:center;font-size:32px}
@@ -35,20 +42,37 @@ const screen = el(`<div class="shl" id="shLogin">
   <div class="shl-box">
     ${LOGO}
     <h1><span>Sommer<b>Haus</b></span></h1>
-    <p id="shMsg">Bitte melde dich an.</p>
-    <form class="shl-form" id="shForm" autocomplete="on">
+    <div class="shl-wait" id="shWait" role="status"><span class="shl-spin" aria-hidden="true"></span><span id="shWaitT">Wird geöffnet …</span></div>
+    <p id="shMsg" hidden>Bitte melde dich an.</p>
+    <form class="shl-form" id="shForm" autocomplete="on" hidden>
       <input id="shEmail" type="email" autocomplete="username" placeholder="E-Mail" required>
       <input id="shPass" type="password" autocomplete="current-password" placeholder="Passwort" required>
       <label class="shl-keep"><input type="checkbox" id="shKeep" checked> Angemeldet bleiben</label>
       <button type="submit" class="btn primary" id="shGo">Anmelden</button>
     </form>
-    <button type="button" class="shl-link" id="shReset">Passwort vergessen?</button>
+    <button type="button" class="shl-link" id="shReset" hidden>Passwort vergessen?</button>
   </div>
 </div>`);
 document.body.appendChild(screen);
-const msg = (t, err) => { const m = document.getElementById('shMsg'); m.textContent = t; m.className = err ? 'shl-err' : ''; };
+const msg = (t, err) => { const m = document.getElementById('shMsg'); m.hidden = false; m.textContent = t; m.className = err ? 'shl-err' : ''; };
+// Start: erst „wird geöffnet“, dann entweder das Anmeldefenster oder ein weicher Übergang in die App.
+function showForm() {
+  document.getElementById('shWait').hidden = true;
+  document.getElementById('shForm').hidden = false;
+  document.getElementById('shReset').hidden = false;
+  screen.hidden = false; screen.classList.remove('out');
+}
+function leave() {
+  if (screen.hidden) return;
+  document.getElementById('shWaitT').textContent = 'Angemeldet. Einen Moment …';
+  document.getElementById('shWait').hidden = false;
+  document.getElementById('shForm').hidden = true; document.getElementById('shReset').hidden = true; document.getElementById('shMsg').hidden = true;
+  requestAnimationFrame(() => screen.classList.add('out'));
+  setTimeout(() => { screen.hidden = true; }, 380);
+}
 
 if (!firebaseConfig || String(firebaseConfig.apiKey).includes('HIER_EINTRAGEN')) {
+  document.getElementById('shWait').hidden = true;
   document.getElementById('shForm').hidden = true;
   document.getElementById('shReset').hidden = true;
   msg('Firebase ist noch nicht eingerichtet. Trag die Zugangsdaten in firebase-config.js ein (siehe Anleitung).', true);
@@ -148,12 +172,12 @@ A.onAuthStateChanged(auth, user => {
   if (user) {
     L.start({ email: user.email || '', reauth: pw => A.signInWithEmailAndPassword(auth, user.email, pw),
       toast: t => { if (typeof window.toast === 'function') window.toast(t); }, onChange: faceRow });
-    screen.hidden = true;
+    leave();
     addSettings();
     const w = document.getElementById('shWho'); if (w) w.textContent = user.email || '';
     if (!resolved) { resolved = true; window.__shResolve(db); }
   } else {
-    screen.hidden = false;
+    showForm();
     msg('Bitte melde dich an.');
   }
 });

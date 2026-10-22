@@ -408,6 +408,53 @@ span.check{cursor:default}
 .listchips button{flex:none;border:0;border-radius:999px;background:var(--fill);color:var(--fg);font-weight:600;font-size:14px;min-height:36px;padding:0 16px;cursor:pointer;white-space:nowrap}
 .listchips button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
 .rgrid{display:grid;gap:12px}
+.ausgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.aust{background:var(--bg);border-radius:16px;min-width:0;overflow:hidden;transition:opacity .2s;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--kc) 45%,transparent)}
+.aust-img{position:relative;display:block;aspect-ratio:300/170;background:color-mix(in srgb,var(--kc) 55%,var(--card));overflow:hidden}
+.aust-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.aust.open .aust-img{aspect-ratio:300/130}
+.aust-img .aust-k{position:absolute;left:8px;bottom:8px;background:var(--kc);color:#2A1D18;border-radius:999px;padding:3px 9px;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;max-width:calc(100% - 16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aust-t{display:grid;gap:3px;padding:10px 12px 12px;border-top:4px solid var(--kc)}
+.auskr{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;margin:0 -2px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.auskr::-webkit-scrollbar{display:none}
+.ausk{flex:none;width:112px;scroll-snap-align:start;border:0;padding:0;background:var(--card);color:var(--fg);border-radius:16px;overflow:hidden;cursor:pointer;text-align:left;font:inherit;display:grid;grid-template-rows:auto auto;box-shadow:inset 0 0 0 2px transparent}
+.ausk-i{position:relative;display:block;height:70px;background:var(--kc,var(--fill))}
+.ausk-i img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ausk-i::after{content:'';position:absolute;inset:auto 0 0 0;height:5px;background:var(--kc,var(--accent))}
+.ausk.all .ausk-i{background:linear-gradient(135deg,#f3a4b8,#f49a48 35%,#eedc6c 55%,#7dc085 75%,#76c5ba)}
+.ausk b{display:block;font-size:13px;line-height:1.2;padding:7px 9px 0}
+.ausk em{display:block;font-style:normal;font-size:12px;color:var(--fg2);padding:1px 9px 8px}
+.ausk[aria-pressed="true"]{box-shadow:inset 0 0 0 3px var(--kc,var(--accent))}
+.ausk[aria-pressed="true"] b{color:var(--fg)}
+.aust.open{grid-column:1/-1}
+.aust.done{opacity:.5;filter:grayscale(.7)}
+.aust-h{display:block;width:100%;border:0;background:none;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer;min-height:44px}
+.aust-n{font-size:15px;line-height:1.25;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto}
+.aust.big .aust-n{font-size:16px}
+.aust-o{font-size:13px;color:var(--fg2)}
+.aust-b{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.aust-b i{font-style:normal;font-size:11px;font-weight:600;padding:2px 7px;border-radius:999px;background:var(--fill);color:var(--fg2)}
+.aust-b i.fr{background:color-mix(in srgb,var(--kc) 40%,transparent);color:var(--fg)}
+.aust-b i.sh{background:transparent;box-shadow:inset 0 0 0 1px var(--sep)}
+.aust-x{padding:0 12px 12px;display:grid;gap:8px}
+.aust-x p{margin:0;font-size:14px}
+.aust-x .aust-s{font-size:13px;color:var(--fg2)}
+.aust-a{display:flex;flex-wrap:wrap;gap:8px}
+.aust-a .btn{min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;text-decoration:none;display:inline-flex;align-items:center}
+.ausf{display:flex;flex-wrap:wrap;gap:6px}
+.ausf button{border:0;border-radius:999px;background:var(--fill);color:var(--fg);font:inherit;font-size:13px;font-weight:600;padding:7px 12px;min-height:34px;cursor:pointer}
+.ausf button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.aus-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:10px 0 6px}
+.aus-day{background:var(--fill);border-radius:14px;padding:10px 12px;display:grid;gap:2px}
+.aus-day span{font-size:13px;color:var(--fg2)}
+.aus-day b{font-size:24px;font-variant-numeric:tabular-nums}
+.aus-day em{font-style:normal;font-size:13px;color:var(--fg2)}
+.aus-mood{font-size:15px;font-weight:600;margin:4px 0 8px}
+.aus-dh{font-size:13px;font-weight:700;color:var(--fg2);margin:16px 0 8px}
+.ofdockw{margin-top:12px}
+.ofdockw .rfoldh h3{display:flex;align-items:center;gap:8px}
+.ofdockw .rfoldh h3 svg{color:var(--accent)}
+.ofdockv{margin-top:12px}
 @media(min-width:760px){.rgrid{grid-template-columns:1fr 1fr;align-items:start}.rgrid .rhero,.rgrid .rfoot{grid-column:1/-1}}
 .pc0{--pc:var(--m0)}.pc1{--pc:var(--m1)}.pc2{--pc:var(--m2)}.pc3{--pc:var(--m3)}.pcx{--pc:var(--fg2)}
 .rtile{background:var(--card);border-radius:20px;padding:16px;min-width:0}
@@ -740,8 +787,12 @@ span.check{cursor:default}
     <div id="shopListDel"></div>
   </section>
   </div>
-  <div id="offersView" hidden>
+  <div id="ofDockWrap" class="ofdockw" hidden></div>
+  <div id="offersView" class="ofdockv" hidden>
     <div class="rgrid" id="offers" aria-label="Angebote"></div>
+  </div>
+  <div id="ausView" hidden>
+    <div class="rgrid" id="aus" aria-label="Ausflüge"></div>
   </div>
   <div id="moreView" hidden>
     <div class="rgrid" id="report" aria-label="Wochenbericht"></div>
@@ -947,6 +998,7 @@ span.check{cursor:default}
   <button type="button" role="tab" data-act="tab" data-tab="cal" aria-selected="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Kalender</button>
   <button type="button" role="tab" data-act="tab" data-tab="shop" aria-selected="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.2l2.3 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>Einkauf</button>
  <button type="button" role="tab" data-act="tab" data-tab="offers" id="tabOffers" aria-selected="false" hidden><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.6V4.5a1 1 0 0 1 1-1h8.1l8 8a1.4 1.4 0 0 1 0 2l-7.1 7.1a1.4 1.4 0 0 1-2 0z"/><circle cx="8.2" cy="8.2" r="1.6"/></svg>Angebote</button>
+  <button type="button" role="tab" data-act="tab" data-tab="aus" aria-selected="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>Ausflüge</button>
   <button type="button" role="tab" data-act="tab" data-tab="more" aria-selected="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="12" width="4.5" height="8" rx="1.4"/><rect x="9.75" y="4" width="4.5" height="16" rx="1.4"/><rect x="16" y="8.5" width="4.5" height="11.5" rx="1.4"/></svg>Überblick</button>
 </nav>
 
@@ -2065,7 +2117,7 @@ function favToggle(t){
   var k=favKey(t),l=(S.favs||[]).slice(),had=l.some(function(f){return favKey(f)===k;});
   l=had?l.filter(function(f){return favKey(f)!==k;}):l.concat([t]);
   S.favs=l;render();
-  db.doc('settings/favs').set({names:l}).then(function(){toast(had?t+' ist kein Favorit mehr.':t+' ist jetzt Favorit. Angebote dafür zeige ich oben im Reiter Angebote.');},fail);
+  db.doc('settings/favs').set({names:l}).then(function(){toast(had?t+' ist kein Favorit mehr.':t+' ist jetzt Favorit. Angebote dafür stehen in der Angebote-Kachel im Einkauf.');},fail);
 }
 function ofRow(o,showAdd){
   return '<div class="ofrow"><div class="ofm"><b>'+esc(o.product)+'</b><span>'+esc(o.store)+(o.valid?' · '+esc(o.valid):'')+(o.note?' · '+esc(o.note):'')+'</span></div>'+
@@ -2076,6 +2128,178 @@ function ofFold(key,title,sum,body){
   var o=!!(S.ofOpen&&S.ofOpen[key]);
   return '<section class="rtile rfold'+(o?' open':'')+'"><button type="button" class="rfoldh" data-act="offold" data-k="'+key+'" aria-expanded="'+o+'"><h3>'+title+'</h3><span class="rfs">'+esc(sum)+'</span><svg class="chev'+(o?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>'+(o?'<div class="rfoldb">'+body+'</div>':'')+'</section>';
 }
+/* ---------- Ausflüge: Ziele der RUHR.TOPCARD als Kacheln, Wochenend-Wetter sortiert vor ---------- */
+/* Ziele kommen aus ausfluege.json neben der index.html. Abgehakt wird gemeinsam in settings/ausflug. */
+var AUS=window.SH_AUSFLUG||null,AUSW=window.SH_WETTER||null,AUS_HOME=[51.48,7.22];
+if(!AUS&&window.fetch&&location.protocol.indexOf('http')===0){
+  fetch('ausfluege.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(d&&Array.isArray(d.ziele)&&d.ziele.length){AUS=d;render();}
+  }).catch(function(){});
+}
+function ausDays(){
+  /* Samstag und Sonntag dieses Wochenendes; am Sonntag nur noch heute */
+  var t=todayIso(),dw=parse(t).getDay();
+  if(dw===6)return [t,addDays(t,1)];
+  if(dw===0)return [t];
+  return [addDays(t,6-dw),addDays(t,7-dw)];
+}
+function ausWxLoad(){
+  if(AUSW||!window.fetch)return;
+  try{var c=JSON.parse(localStorage.getItem('sommerhaus-wetter')||'null');if(c&&c.at&&Date.now()-c.at<3*3600e3&&c.d){AUSW=c.d;return;}}catch(e){}
+  if(S.ausWxBusy)return;S.ausWxBusy=true;
+  fetch('https://api.open-meteo.com/v1/forecast?latitude='+AUS_HOME[0]+'&longitude='+AUS_HOME[1]+'&daily=weathercode,temperature_2m_max,precipitation_probability_max,precipitation_sum&timezone=Europe%2FBerlin&forecast_days=9')
+    .then(function(r){return r.ok?r.json():null;}).then(function(j){
+      S.ausWxBusy=false;if(!j||!j.daily||!j.daily.time)throw new Error('wx');
+      var d={};j.daily.time.forEach(function(ds,i){d[ds]={code:j.daily.weathercode[i],tmax:j.daily.temperature_2m_max[i],pp:j.daily.precipitation_probability_max[i],ps:j.daily.precipitation_sum[i]};});
+      AUSW=d;try{localStorage.setItem('sommerhaus-wetter',JSON.stringify({at:Date.now(),d:d}));}catch(e){}
+      if(S.tab==='aus')render();
+    }).catch(function(){S.ausWxBusy=false;S.ausWxFail=true;if(S.tab==='aus')render();});
+}
+function ausWxWord(c){
+  if(c==null)return '';
+  if(c===0)return 'sonnig';if(c<=2)return 'heiter';if(c===3)return 'bewölkt';if(c===45||c===48)return 'Nebel';
+  if(c>=51&&c<=57)return 'Niesel';if(c>=61&&c<=67)return 'Regen';if(c>=71&&c<=77)return 'Schnee';if(c>=80&&c<=82)return 'Schauer';if(c>=85&&c<=86)return 'Schneeschauer';if(c>=95)return 'Gewitter';return '';
+}
+function ausWet(w){return w&&((w.pp!=null&&w.pp>=60)||(w.ps!=null&&w.ps>=3)||(w.code>=61&&w.code<=99&&!(w.code>=71&&w.code<=77&&w.ps<1)));}
+function ausMood(){
+  var ds=ausDays(),ws=ds.map(function(d){return AUSW&&AUSW[d];}).filter(Boolean);
+  if(!ws.length)return null;
+  var wet=ws.filter(ausWet).length,t=ws.reduce(function(a,w){return a+(w.tmax||0);},0)/ws.length,m;
+  if(wet===ws.length)m={k:'regen',t:'Eher nass. Drinnen steht oben.'};
+  else if(wet)m={k:'gemischt',t:'Ein Tag nass, einer trocken. Was drinnen und draußen geht, steht oben.'};
+  else if(t>=23)m={k:'warm',t:'Trocken und warm. Wasser und draußen stehen oben.'};
+  else if(t<=11)m={k:'kalt',t:'Trocken, aber kalt. Was auch drinnen geht, steht oben.'};
+  else m={k:'mild',t:'Trocken und mild. Draußen steht oben.'};
+  m.days=ds.map(function(d){return {d:d,w:AUSW&&AUSW[d]};});m.temp=t;return m;
+}
+var AUS_MON=['jan','feb','mär','apr','mai','jun','jul','aug','sep','okt','nov','dez'];
+function ausMonIdx(w){w=String(w||'').toLowerCase().replace('mar','mär').slice(0,3);return AUS_MON.indexOf(w);}
+/* Saison: "Apr–Okt", "20.03.–08.11.2026", "27.06.2026", "Dezember 2026". Antwort: 'offen', 'pause' oder 'vorbei'. */
+function ausState(z,ds){
+  var t=String(z.saison||''),d=ds||todayIso(),y=+d.slice(0,4),md=d.slice(5),m;
+  if(/nicht einlösbar|geschlossen/i.test(t))return 'vorbei';
+  var pad=function(n){return ('0'+n).slice(-2);};
+  if((m=/(\d{1,2})\.(\d{1,2})\.(\d{4})?\s*[–-]\s*(\d{1,2})\.(\d{1,2})\.(\d{4})?/.exec(t))){
+    var a=pad(m[2])+'-'+pad(m[1]),b=pad(m[5])+'-'+pad(m[4]),ey=+(m[6]||m[3]||y);
+    if(ey<y)return 'vorbei';
+    if(a<=b){if(md<a)return 'pause';if(md>b)return 'vorbei';return 'offen';}
+    return (md>=a||md<=b)?'offen':'pause';
+  }
+  if((m=/(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(t))){
+    var e=m[3]+'-'+pad(m[2])+'-'+pad(m[1]);return e<d?'vorbei':'offen';
+  }
+  if((m=/(jan|feb|mär|mar|apr|mai|jun|jul|aug|sep|okt|nov|dez)\w*\.?\s*[–-]\s*(jan|feb|mär|mar|apr|mai|jun|jul|aug|sep|okt|nov|dez)/i.exec(t))){
+    var i=ausMonIdx(m[1]),j=ausMonIdx(m[2]),mo=parse(d).getMonth();
+    if(i<0||j<0)return 'offen';
+    if(i<=j)return (mo>=i&&mo<=j)?'offen':(mo>j?'vorbei':'pause');
+    return (mo>=i||mo<=j)?'offen':'pause';
+  }
+  if((m=/^(januar|februar|märz|april|mai|juni|juli|august|september|oktober|november|dezember)\s+(\d{4})/i.exec(t))){
+    var k=ausMonIdx(m[1]),mo2=parse(d).getMonth();
+    return k===mo2?'offen':(k<mo2?'vorbei':'pause');
+  }
+  return 'offen';
+}
+function ausOpenNow(z,ds){return ausState(z,ds)==='offen';}
+function ausScore(z,m){
+  var o=z.ort_typ||'beides',s=2;
+  if(m){
+    if(m.k==='regen')s={drinnen:3,beides:2,draussen:0}[o];
+    else if(m.k==='gemischt')s={beides:3,drinnen:2.5,draussen:2}[o];
+    else if(m.k==='warm')s=z.wasser?4:{draussen:3,beides:2,drinnen:1}[o];
+    else if(m.k==='kalt')s={drinnen:3,beides:2.5,draussen:1}[o];
+    else s={draussen:3,beides:2.5,drinnen:1.5}[o];
+  }
+  if(s==null)s=2;
+  if(z.kinder)s+=.5;
+  if(!ausOpenNow(z,m&&m.days[0]?m.days[0].d:null))s-=6;
+  return s;
+}
+function ausDist(z){
+  if(typeof z.lat!=='number'||typeof z.lon!=='number')return null;
+  var r=Math.PI/180,dl=(z.lat-AUS_HOME[0])*r,dn=(z.lon-AUS_HOME[1])*r,a=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(AUS_HOME[0]*r)*Math.cos(z.lat*r)*Math.sin(dn/2)*Math.sin(dn/2);
+  return Math.round(6371*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
+}
+function ausDoneYear(id){var v=(S.ausDone||{})[id];return !!(v&&String(v).slice(0,4)===todayIso().slice(0,4));}
+var AUS_TYP={drinnen:'drinnen',draussen:'draußen',beides:'drinnen & draußen'};
+/* Farben wie auf der RUHR.TOPCARD (Kategorien von ruhrtopcard.de) */
+var AUS_KAT=[['Bad & Therme','#76c5ba','Schwimmbad'],['Zoo & Tiere','#f3a4b8','Zoo & Tiere'],['Freizeitpark','#b2c65f','Freizeitpark'],['Museum','#f49a48','Museum'],['Industriekultur','#7dc085','Industriekultur'],['Sport & Action','#ce90bf','Sport & Action'],['Indoor-Spaß','#eedc6c','Indoor-Spaß'],['Schiff & Führung','#76c5ba','Schiff & Führung'],['Natur & Aussicht','#8fa4d1','Natur & Aussicht'],['Kultur & Bühne','#ee7577','Bühne & Show'],['Sonstiges','#eedc6c','Sonstiges']];
+function ausCol(k){for(var i=0;i<AUS_KAT.length;i++)if(AUS_KAT[i][0]===k)return AUS_KAT[i][1];return '#eedc6c';}
+function ausImg(z){return z&&z.img&&/^https:\/\/ruhrtopcard\.de\/cms\/media\//.test(z.img)?z.img:'';}
+var AUS_F=[['alle','Alle'],['frei','Frei'],['50','50 %'],['drinnen','Drinnen'],['draussen','Draußen'],['kind','Mit Kind']];
+function ausPass(z){
+  if(S.ausK&&z.kat!==S.ausK)return false;
+  var f=S.ausF||'alle';
+  if(f==='frei')return z.leistung==='frei';if(f==='50')return z.leistung!=='frei';
+  if(f==='drinnen')return z.ort_typ==='drinnen'||z.ort_typ==='beides';if(f==='draussen')return z.ort_typ==='draussen'||z.ort_typ==='beides';
+  if(f==='kind')return !!z.kinder;return true;
+}
+function ausTile(z,m,big){
+  var done=ausDoneYear(z.id),open=S.ausOpen===z.id,km=ausDist(z),shut=!ausOpenNow(z,m&&m.days[0]?m.days[0].d:null);
+  var im=ausImg(z);
+  var h='<article class="aust'+(done?' done':'')+(open?' open':'')+(big?' big':'')+'" data-id="'+esc(z.id)+'" style="--kc:'+ausCol(z.kat)+'">'+
+    '<button type="button" class="aust-h" data-act="ausopen" data-id="'+esc(z.id)+'" aria-expanded="'+open+'">'+
+      '<span class="aust-img">'+(im?'<img src="'+esc(im)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'<span class="aust-k">'+esc(z.kat||'')+(done?' · gemacht':'')+'</span></span>'+
+      '<span class="aust-t">'+
+      '<b class="aust-n">'+esc(z.name)+'</b>'+
+      '<span class="aust-o">'+esc(z.ort||'')+(km!=null?' · '+km+' km':'')+'</span>'+
+      '<span class="aust-b"><i class="'+(z.leistung==='frei'?'fr':'hf')+'">'+(z.leistung==='frei'?'frei':'50 %')+'</i><i>'+esc(AUS_TYP[z.ort_typ]||'')+'</i>'+(shut?'<i class="sh">'+(ausState(z,m&&m.days[0]?m.days[0].d:null)==='vorbei'?'für '+todayIso().slice(0,4)+' vorbei':'Saisonpause')+'</i>':'')+'</span></span>'+
+    '</button>';
+  if(open){
+    h+='<div class="aust-x">'+(z.kurz?'<p>'+esc(z.kurz)+'</p>':'')+
+      '<p class="aust-s">'+(z.saison?'Saison: '+esc(z.saison)+' · ':'')+(z.leistung==='frei'?'einmal kostenlos mit der Karte':'50 % Rabatt mit der Karte')+(z.kinder?' · gut mit Kind':'')+'</p>'+
+      '<div class="aust-a">'+(z.url&&/^https:\/\//.test(z.url)?'<a class="btn" href="'+esc(z.url)+'" target="_blank" rel="noopener">Website</a>':'')+(z.rtc&&/^https:\/\/ruhrtopcard\.de\//.test(z.rtc)?'<a class="btn" href="'+esc(z.rtc)+'" target="_blank" rel="noopener">Bei RUHR.TOPCARD</a>':'')+
+      '<a class="btn" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(z.name+' '+(z.ort||''))+'" target="_blank" rel="noopener">Route</a>'+
+      (S.canWrite?'<button type="button" class="btn'+(done?'':' primary')+'" data-act="ausdone" data-id="'+esc(z.id)+'">'+(done?'Doch noch nicht gemacht':'Dieses Jahr gemacht')+'</button>':'')+'</div></div>';
+  }
+  return h+'</article>';
+}
+function renderAus(){
+  var box=$('aus');if(!box)return;
+  if(!AUS){box.innerHTML='<section class="rtile"><h3>Ausflüge</h3><p class="empty">Die Ausflugsziele werden geladen …</p></section>';return;}
+  ausWxLoad();
+  var m=ausMood(),all=AUS.ziele.slice(),yr=todayIso().slice(0,4);
+  var doneN=all.filter(function(z){return ausDoneYear(z.id);}).length,freeOpen=all.filter(function(z){return z.leistung==='frei'&&!ausDoneYear(z.id);}).length;
+  var h='<section class="rtile rhero aus-wx"><h3>Am Wochenende</h3>';
+  if(m){
+    h+='<div class="aus-days">'+m.days.map(function(x){var w=x.w;return '<div class="aus-day"><span>'+esc(WDS[parse(x.d).getDay()])+', '+parse(x.d).getDate()+'.'+(parse(x.d).getMonth()+1)+'.</span><b>'+Math.round(w.tmax)+'°</b><em>'+esc((function(){var wd=ausWxWord(w.code),r=/Regen|Schauer|Niesel|Gewitter/.test(wd);return wd+(w.pp!=null&&w.pp>=20?(r?' · ':' · Regen ')+w.pp+' %':'');})())+'</em></div>';}).join('')+'</div><p class="aus-mood">'+esc(m.t)+'</p>';
+  }else h+='<p class="rsub">'+(S.ausWxFail?'Das Wetter ist gerade nicht abrufbar. Die Ziele stehen in normaler Reihenfolge.':'Wetter wird geladen …')+'</p>';
+  h+='<div class="kpis k22"><div class="kpi"><b>'+freeOpen+'</b><span>frei, noch offen</span></div><div class="kpi"><b>'+doneN+'</b><span>'+yr+' schon gemacht</span></div></div></section>';
+  var sc={};all.forEach(function(z){sc[z.id]=ausScore(z,m);});
+  var kats=AUS_KAT.filter(function(k){return all.some(function(z){return z.kat===k[0];});});
+  h='<div class="auskr" role="group" aria-label="Arten von Ausflügen"><button type="button" class="ausk all" data-act="ausk" data-k="" aria-pressed="'+!S.ausK+'"><span class="ausk-i"></span><b>Alle</b><em>'+all.length+'</em></button>'+
+    kats.map(function(k){var zs=all.filter(function(z){return z.kat===k[0];}),pic=zs.filter(function(z){return ausImg(z);}).sort(function(a,b){return (b.kinder?1:0)-(a.kinder?1:0)||(ausDist(a)||99)-(ausDist(b)||99);})[0];
+      return '<button type="button" class="ausk" data-act="ausk" data-k="'+esc(k[0])+'" aria-pressed="'+(S.ausK===k[0])+'" style="--kc:'+k[1]+'"><span class="ausk-i">'+(pic?'<img src="'+esc(ausImg(pic))+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</span><b>'+esc(k[2])+'</b><em>'+zs.length+'</em></button>';}).join('')+'</div>'+h;
+  var byS=function(a,b){return sc[b.id]-sc[a.id]||(ausDist(a)||99)-(ausDist(b)||99)||a.name.localeCompare(b.name,'de');};
+  var openL=all.filter(function(z){return !ausDoneYear(z.id);}).sort(byS);
+  var topIds={};
+  if(m&&!S.ausK){var top=openL.filter(function(z){return ausOpenNow(z,m.days[0].d);}).slice(0,4);top.forEach(function(z){topIds[z.id]=1;});
+    if(top.length)h+='<section class="rtile"><h3>Passt zum Wetter</h3><div class="ausgrid">'+top.map(function(z){return ausTile(z,m,true);}).join('')+'</div></section>';}
+  var list=openL.filter(function(z){return ausPass(z)&&!((S.ausF||'alle')==='alle'&&topIds[z.id]);}),doneL=all.filter(function(z){return ausDoneYear(z.id)&&ausPass(z);}).sort(byS);
+  h+='<section class="rtile" id="ausList"><h3>'+(S.ausK?esc((AUS_KAT.filter(function(k){return k[0]===S.ausK;})[0]||[0,0,S.ausK])[2]):'Alle Ziele')+'</h3><div class="ausf" role="group" aria-label="Filter">'+AUS_F.map(function(f){return '<button type="button" data-act="ausf" data-f="'+f[0]+'" aria-pressed="'+((S.ausF||'alle')===f[0])+'">'+f[1]+'</button>';}).join('')+'</div>'+
+    '<p class="rnote" style="margin:6px 0 10px">'+plural(list.length,'Ziel','Ziele')+(Object.keys(topIds).length&&(S.ausF||'alle')==='alle'?' (ohne die '+Object.keys(topIds).length+' oben)':'')+(m?', nach Wetter sortiert':'')+'</p>'+
+    (list.length?'<div class="ausgrid">'+list.map(function(z){return ausTile(z,m,false);}).join('')+'</div>':'<p class="empty">Keine offenen Ziele für diesen Filter.</p>')+
+    (doneL.length?'<p class="aus-dh">'+yr+' schon gemacht ('+doneL.length+')</p><div class="ausgrid">'+doneL.map(function(z){return ausTile(z,m,false);}).join('')+'</div>':'')+
+    '</section>';
+  h+='<p class="rnote" style="margin:0 4px">Ziele laut RUHR.TOPCARD '+esc(String(AUS.jahr||yr))+(AUS.stand?', Stand '+esc(AUS.stand):'')+'. Öffnungszeiten vorher auf der Website prüfen. Wetter: Open-Meteo.</p>';
+  box.innerHTML=h;
+}
+function ausToggleDone(id){
+  if(!db||!S.canWrite)return;
+  var d=Object.assign({},S.ausDone||{}),was=ausDoneYear(id),z=(AUS&&AUS.ziele||[]).filter(function(x){return x.id===id;})[0];
+  if(was)delete d[id];else d[id]=todayIso();
+  S.ausDone=d;render();
+  db.doc('settings/ausflug').set({done:d}).then(function(){toast(was?(z?z.name:'Ziel')+' ist wieder offen.':(z?z.name:'Ziel')+' ist für '+todayIso().slice(0,4)+' abgehakt.');},fail);
+}
+/* Angebote als aufklappbare Kachel unten im Einkauf (früher eigener Reiter). */
+function renderOfDock(){
+  var w=$('ofDockWrap');if(!w)return;
+  var o=!!S.ofDock,sum;
+  if(!OFFERS)sum='diese Woche noch keine';
+  else{var hits=ofOpenItems().filter(function(t){return ofFor(t).length;}).length,fh=(S.favs||[]).filter(function(f){return ofFor(f).length;}).length;
+    sum=[hits?hits+' für eure Liste':'',fh?fh+(fh===1?' Favorit':' Favoriten'):''].filter(Boolean).join(' · ')||OFFERS.offers.length+' Angebote';}
+  w.innerHTML='<section class="rtile rfold'+(o?' open':'')+'"><button type="button" class="rfoldh" data-act="ofdock" aria-expanded="'+o+'" aria-controls="offersView"><h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.6V4.5a1 1 0 0 1 1-1h8.1l8 8a1.4 1.4 0 0 1 0 2l-7.1 7.1a1.4 1.4 0 0 1-2 0z"/><circle cx="8.2" cy="8.2" r="1.6"/></svg>Angebote</h3><span class="rfs">'+esc(sum)+'</span><svg class="chev'+(o?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></section>';
+}
 function renderOffers(){
   var box=$('offers');if(!box)return;
   if(!OFFERS){box.innerHTML='<section class="rtile"><h3>Angebote</h3><p class="empty">Für diese Woche liegen noch keine Angebote vor.</p></section>';return;}
@@ -2085,7 +2309,7 @@ function renderOffers(){
   var stores={};
   hits.concat(freq).forEach(function(x){var best=x.l[0];var s=stores[best.store]||(stores[best.store]={n:0,items:[]});s.n++;s.items.push(x.t);});
   var ranking=Object.keys(stores).map(function(k){return {s:k,n:stores[k].n,items:stores[k].items};}).sort(function(a,b){return b.n-a.n;});
-  h+='<section class="rtile rhero"><h3>Angebote</h3><p class="rsub">'+esc(OFFERS.week)+' · Stand '+esc(OFFERS.updated)+'</p>'+
+  h+='<section class="rtile rhero"><h3>Diese Woche</h3><p class="rsub">'+esc(OFFERS.week)+' · Stand '+esc(OFFERS.updated)+'</p>'+
     '<div class="kpis k22"><div class="kpi"><b>'+(S.favs||[]).filter(function(f){return ofFor(f).length;}).length+'</b><span>Favoriten im Angebot</span></div><div class="kpi"><b>'+hits.length+'</b><span>auf eurer Liste</span></div><div class="kpi"><b>'+freq.length+'</b><span>oft gekauft</span></div><div class="kpi"><b>'+OFFERS.offers.length+'</b><span>Angebote</span></div></div></section>';
   // Favoriten
   var favs=(S.favs||[]).slice().sort(function(a,b){return a.localeCompare(b,'de');}),favHit=favs.filter(function(f){return ofFor(f).length;});
@@ -2645,9 +2869,12 @@ function render(){
   $('listView').hidden=!onCal||S.view!=='list';
   $('shopView').hidden=S.tab!=='shop';
   $('moreView').hidden=S.tab!=='more';
-  $('offersView').hidden=S.tab!=='offers';
-  $('tabOffers').hidden=!OFFERS;document.querySelector('.tabbar').classList.toggle('t4',!!OFFERS);
-  document.querySelector('.fab').hidden=!S.canWrite||S.tab==='more'||S.tab==='offers';
+  $('ausView').hidden=S.tab!=='aus';
+  $('ofDockWrap').hidden=S.tab!=='shop';
+  $('offersView').hidden=!(S.tab==='shop'&&S.ofDock);
+  if(S.tab==='shop')renderOfDock();
+  $('tabOffers').hidden=true;document.querySelector('.tabbar').classList.add('t4');
+  document.querySelector('.fab').hidden=!S.canWrite||S.tab==='more'||S.tab==='offers'||S.tab==='aus';
   document.querySelectorAll('.tabbar button').forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.tab===S.tab));});
   document.querySelector('.fab').setAttribute('aria-label',onCal?'Neue Aufgabe oder Termin':'Neuer Artikel oder neue Liste');
   document.querySelectorAll('.viewseg button').forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.view===S.view));});
@@ -2655,7 +2882,8 @@ function render(){
   else renderList(today);
   renderShop();
   if(S.tab==='more')renderReport();
-  if(S.tab==='offers')renderOffers();
+  if(S.tab==='shop'&&S.ofDock)renderOffers();
+  if(S.tab==='aus')renderAus();
 }
 
 /* Toast */
@@ -3449,7 +3677,12 @@ document.addEventListener('click',function(ev){
     case 'rcocr':rcOcrStart();break;
     case 'tripsheet':openTrips(el.dataset.t);break;
     case 'kpi':openKpi(el.dataset.m);break;
-    case 'ofgo':S.tab='offers';try{localStorage.setItem('sommerhaus-tab',S.tab);}catch(e){}render();window.scrollTo(0,0);break;
+    case 'ofgo':S.tab='shop';S.ofDock=true;try{localStorage.setItem('sommerhaus-tab',S.tab);localStorage.setItem('sommerhaus-ofdock','1');}catch(e){}render();setTimeout(function(){var d=$('ofDockWrap');if(d)d.scrollIntoView({behavior:'smooth',block:'start'});},30);break;
+    case 'ausk':S.ausK=el.dataset.k||'';S.ausOpen=null;try{localStorage.setItem('sommerhaus-ausk',S.ausK);}catch(e){}renderAus();if(S.ausK)setTimeout(function(){var l=$('ausList');if(l)l.scrollIntoView({behavior:'smooth',block:'start'});},30);break;
+    case 'ausopen':S.ausOpen=S.ausOpen===el.dataset.id?null:el.dataset.id;renderAus();break;
+    case 'ausdone':ausToggleDone(el.dataset.id);break;
+    case 'ausf':S.ausF=el.dataset.f||'alle';S.ausOpen=null;try{localStorage.setItem('sommerhaus-ausf',S.ausF);}catch(e){}renderAus();break;
+    case 'ofdock':S.ofDock=!S.ofDock;try{localStorage.setItem('sommerhaus-ofdock',S.ofDock?'1':'0');}catch(e){}render();if(S.ofDock)setTimeout(function(){var d=$('ofDockWrap');if(d)d.scrollIntoView({behavior:'smooth',block:'start'});},30);break;
     case 'ofstore':S.ofStore=S.ofStore||{};S.ofStore[el.dataset.s]=!S.ofStore[el.dataset.s];renderOffers();break;
     case 'offold':S.ofOpen=S.ofOpen||{};S.ofOpen[el.dataset.k]=!S.ofOpen[el.dataset.k];renderOffers();break;
     case 'favtoggle':favToggle(el.dataset.t);break;
@@ -3528,7 +3761,7 @@ document.addEventListener('click',function(ev){
     case 'add-task':openSheet('task',null,el.dataset.date);break;
     case 'fab':if(S.tab==='shop')openShopSheet();else openSheet('task',null);break;
     case 'tab':
-      S.tab=['shop','more','offers'].indexOf(el.dataset.tab)>=0?el.dataset.tab:'cal';S.delList=false;
+      S.tab=['shop','more','aus'].indexOf(el.dataset.tab)>=0?el.dataset.tab:el.dataset.tab==='offers'?'shop':'cal';S.delList=false;
       try{localStorage.setItem('sommerhaus-tab',S.tab);}catch(e){}
       render();window.scrollTo(0,0);break;
     case 'shopkind':setShopKind(el.dataset.k);break;
@@ -3637,7 +3870,11 @@ function setPalette(p,save){
 
 (function(){try{
   if(localStorage.getItem('sommerhaus-calmode')==='week')S.calMode='week';
-  if(localStorage.getItem('sommerhaus-tab')==='shop')S.tab='shop';
+  if(localStorage.getItem('sommerhaus-tab')==='shop'||localStorage.getItem('sommerhaus-tab')==='offers')S.tab='shop';
+  if(localStorage.getItem('sommerhaus-tab')==='aus')S.tab='aus';
+  if(localStorage.getItem('sommerhaus-ausf'))S.ausF=localStorage.getItem('sommerhaus-ausf');
+  if(localStorage.getItem('sommerhaus-ausk'))S.ausK=localStorage.getItem('sommerhaus-ausk');
+  if(localStorage.getItem('sommerhaus-ofdock')==='1')S.ofDock=true;
   if(localStorage.getItem('sommerhaus-dayopen')!=='0')S.dayOpen=true;
   if(localStorage.getItem('sommerhaus-shopsort')==='store')S.shopSort='store';
   var sl=localStorage.getItem('sommerhaus-shoplist');if(sl)S.shopList=sl;
@@ -3717,6 +3954,7 @@ render();
     },onErr);
   },4000);
   db.doc('settings/vocab').onSnapshot(function(s){S.vocab=vocabParse(s&&s.data&&s.data());},function(){});
+  db.doc('settings/ausflug').onSnapshot(function(s){var d=s&&s.data&&s.data();S.ausDone=d&&d.done&&typeof d.done==='object'?d.done:{};if(S.tab==='aus')render();},function(){});
   db.doc('settings/favs').onSnapshot(function(s){var d=s&&s.data&&s.data();S.favs=d&&Array.isArray(d.names)?d.names.slice():[];render();},function(){});
   db.doc('settings/budget').onSnapshot(function(s){var d=s&&s.data&&s.data();S.budget=d&&d.amount>0?+d.amount:0;S.budgetEat=d&&d.eat!=null?(d.eat>0?+d.eat:0):100;render();},function(){});
   db.doc('settings/members').onSnapshot(function(s){
