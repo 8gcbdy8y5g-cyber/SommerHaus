@@ -2916,17 +2916,18 @@ function logDone(t,today){
   catch(e){return Promise.resolve(null);}
 }
 function unlogDone(lp){lp.then(function(id){if(id)db.collection('doneLog').doc(id).delete().catch(function(){});});}
-function doneTask(id){
+function doneTask(id,onDay){
   var t=S.tasks.find(function(x){return x.id===id;});
   if(!t||!db||!S.canWrite||busy[id])return Promise.resolve();
   busy[id]=true;
-  var today=todayIso(),ref=db.collection('tasks').doc(id);
+  /* onDay: erledigt an einem früheren Tag (z. B. per Ziehen in die Vergangenheit) */
+  var past=!!(onDay&&onDay<todayIso()),today=past?onDay:todayIso(),ref=db.collection('tasks').doc(id),when=past?' am '+fmtShort.format(parse(onDay)):'';
   var p;
   if(t.unit==='once'||!t.every){
     var oldLast2=t.lastDone||'',wasDone=!!t.done;
     p=ref.update({done:true,lastDone:today}).then(function(){
       var lp=logDone(t,today);
-      toast('Erledigt: '+t.title,function(){ref.update({done:wasDone,lastDone:oldLast2}).catch(fail);unlogDone(lp);});
+      toast('Erledigt'+when+': '+t.title,function(){ref.update({done:wasDone,lastDone:oldLast2}).catch(fail);unlogDone(lp);});
     },fail);
   }else{
     var bx=binTarget(t,today,addDays(today,1));
@@ -2934,7 +2935,7 @@ function doneTask(id){
     var ch={due:nd,lastDone:today};if(bx)ch.binWait=bx.wait;
     p=ref.update(ch).then(function(){
       var lp=logDone(t,today);
-      var msg=bx&&bx.wait?t.title+' erledigt. Nächster Tonnendienst im '+MU_MON[parse(nd).getMonth()]+'.':t.title+' erledigt. Wieder fällig am '+fmtShort.format(parse(nd))+'.';
+      var msg=bx&&bx.wait?t.title+' erledigt'+when+'. Nächster Tonnendienst im '+MU_MON[parse(nd).getMonth()]+'.':t.title+' erledigt'+when+'. Wieder fällig am '+fmtShort.format(parse(nd))+'.';msg=msg.replace(/\.\.+/g,'.');
       toast(msg,function(){var u={due:oldDue,lastDone:oldLast};if(bx)u.binWait=oldWait;ref.update(u).catch(fail);unlogDone(lp);});
     },fail);
   }
@@ -2944,7 +2945,10 @@ function moveItem(kind,id,date){
   if(!S.canWrite||!db)return;
   if(kind==='task'){
     var t=S.tasks.find(function(x){return x.id===id;});
-    if(!t||t.due===date)return;
+    if(!t)return;
+    /* In die Vergangenheit gezogen: offene Aufgabe gilt an dem Tag als erledigt (sonst stünde sie gleich wieder als überfällig bei heute). */
+    if(date<todayIso()&&isOpen(t)){doneTask(id,date);return;}
+    if(t.due===date)return;
     var old=t.due;
     upd('tasks',id,{due:date}).then(function(ok){if(ok)toast(t.title+': verschoben auf '+fmtShort.format(parse(date)),function(){upd('tasks',id,{due:old});});});
   }else{
