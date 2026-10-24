@@ -2785,7 +2785,7 @@ function renderMonths(){
   }).join('')+'</div>';
   h+='<div class="mon-det"><div class="zline"><b>'+esc(fmtMonth.format(selM.d))+(selM.cur?' (läuft noch)':'')+'</b><b>'+esc(fmtEur(selM.sum))+'</b></div>'+
     budHtml(selM,B)+'<p class="rnote" style="margin:2px 0 8px">'+plural(selM.n,'Einkauf','Einkäufe')+' mit Betrag'+(avg&&!selM.cur?' · Schnitt der Vormonate '+esc(fmtEur(avg)):'')+(avg&&selM.cur?' · bisheriger Monatsschnitt '+esc(fmtEur(avg)):'')+'</p>';
-  if(selM.stores.length){var smx=selM.stores[0].sum||1;h+='<div class="rb-stores">'+selM.stores.slice(0,8).map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/smx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
+  if(selM.stores.length){var smx=selM.stores[0].sum||1;h+='<div class="rb-stores">'+selM.stores.map(function(o){return '<div class="rb-st"><span class="rb-stn">'+esc(o.name)+'</span><span class="rb-stb"><i style="width:'+Math.max(4,Math.round(o.sum/smx*100))+'%"></i></span><span class="rb-stv">'+esc(fmtEur(o.sum))+'</span></div>';}).join('')+'</div>';}
   var BE=S.budgetEat==null?100:S.budgetEat,eatO=selM.other.filter(function(o){return o.name===EAT_LABEL;})[0];
   if(BE>0){
     h+='<div class="zline" style="margin-top:14px"><b>'+esc(EAT_LABEL)+'</b><b>'+esc(fmtEur(eatO?eatO.sum:0))+'</b></div>'+budHtml({sum:eatO?eatO.sum:0,cur:selM.cur},BE);
