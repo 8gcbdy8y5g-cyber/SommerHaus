@@ -1779,6 +1779,7 @@ function parseReceipt(text){
     var price=parseFloat(m[1].replace(',','.'));if(!(price>0))continue;
     var name=rcpName(l.slice(0,m.index));
     if((name.match(/[a-zäöüß]/gi)||[]).length<3)continue;
+    if(/\d+\s*[x×]\s*$/i.test(name)&&(name.replace(/\d+\s*[x×]\s*$/i,'').match(/[a-zäöüß]/gi)||[]).length<=3)continue;
     items.push({t:name,p:price});
   }
   if(items.length<2){var bk=parseBank(lines);if(bk&&(bk.total!=null||bk.merchant)){if(bk.total==null)bk.total=total;return bk;}}
@@ -1836,6 +1837,17 @@ function rcDetectStore(text){
   if(/metzgerei|fleischerei/.test(head))return 'Metzgerei';
   var all=storeRecent().concat(STORES);
   for(var i=0;i<all.length;i++){var k=storeKey(all[i]);if(k.length>=3&&(' '+head.replace(/[^a-z0-9]+/g,' ')+' ').indexOf(' '+k+' ')>=0)return all[i];}
+  /* Kopf unleserlich: Ketten stehen oft noch im Fußtext (z. B. "ALDI SE & Co. KG") */
+  var full=nrm(String(text||'')),FT=[[/aldi\s*(se|sud|nord|gmbh)/,'Aldi'],[/penny[- ]markt/,'Penny'],[/netto\s*marken|netto apps|netto-online/,'Netto'],[/lidl\s*(dienstleistung|vertriebs|stiftung|gmbh|plus)|\blidl\b/,'Lidl'],[/rewe\s*(markt|group|dortmund)|\brewe\b/,'Rewe'],[/kaufland/,'Kaufland'],[/\bedeka\b/,'Edeka'],[/dm-drogerie|\bdm markt/,'dm'],[/rossmann/,'Rossmann'],[/\bsb\s+hof\b|hofladen/,'Hofladen']];
+  for(var f=0;f<FT.length;f++)if(FT[f][0].test(full))return FT[f][1];
+  var ls=String(text||'').split(/\n/).slice(0,12);
+  for(var q=0;q<ls.length;q++){
+    var rm=ls[q].match(/(pizzeria|ristorante|restaurant|trattoria|imbiss|d(?:ö|oe)ner|grill)(?:[ \t]+([A-ZÄÖÜa-zäöüß][\wäöüß-]{2,}))?/i);
+    if(!rm)continue;
+    if(rm[2])return rm[1].charAt(0).toUpperCase()+rm[1].slice(1).toLowerCase()+' '+rm[2].charAt(0).toUpperCase()+rm[2].slice(1);
+    var whole=ls[q].replace(/[^\wäöüßÄÖÜ &'.-]+/g,' ').replace(/\s+/g,' ').trim();
+    if(whole.length>=4&&whole.length<=40)return whole;
+  }
   return '';
 }
 function rcOcrSummary(p){
@@ -1891,9 +1903,20 @@ function tripReparse(x){
 }
 /* Einkäufe der letzten 14 Tage ohne Betrag, aber mit Bon: Text neu auswerten oder Bon im Hintergrund lesen. */
 var TAF={};
+var TAF2={};
 function tripsAutoFix(){
   if(!db||!S.canWrite)return;
-  var lim=addDays(todayIso(),-14);
+  var lim=addDays(todayIso(),-14),lim2=addDays(todayIso(),-60);
+  /* Ältere Bons mit dem verbesserten Leser nachbessern: fehlender Laden, und Artikel nur wenn die Summe genau passt */
+  S.trips.forEach(function(x){
+    if(!x.rtext||!x.date||x.date<lim2||TAF2[x.id])return;
+    TAF2[x.id]=1;
+    var up={};
+    if(!x.store){var st=rcDetectStore(x.rtext);if(st)up.store=st;}
+    var r=parseReceipt(x.rtext);
+    if(r.items.length>=4&&(x.items||[]).length<r.items.length&&x.amount>0&&r.total!=null&&Math.abs(r.total-x.amount)<0.01){up.items=r.items.map(function(o){return {t:o.t,c:guessCat(o.t),p:o.p,r:1};});up.n=up.items.length;}
+    if(Object.keys(up).length)db.collection('shopTrips').doc(x.id).update(up).catch(function(){});
+  });
   S.trips.forEach(function(x){
     if(!x.receipt||x.amount>0||!x.date||x.date<lim||TAF[x.id])return;
     TAF[x.id]=1;
