@@ -1697,7 +1697,7 @@ function ocrRun(dataUrl,onStep){
     return OCR.worker;
   }).then(function(w){onStep&&onStep('Kassenzettel wird gelesen …');return w.recognize(dataUrl);}).then(function(r){return ocrClean((r&&r.data&&r.data.text)||'');});
 }
-var RCP_STOP=/^(summe|zwischensumme|zu zahlen|zuzahlen|gesamt|total|bar|ruckgeld|gegeben|ec|ec-karte|karte|kartenzahlung|girocard|visa|mastercard|maestro|mwst|ust|netto|brutto|steuer|betrag|eur|euro|datum|uhrzeit|kasse|bon|beleg|filiale|markt|tel|telefon|www|ust-id|steuer-nr|st\.?nr|tse|trans|terminal|vielen|danke|ihr einkauf|kundenbeleg|payback|deutschlandcard|coupon|rabatt|pfand|leergut|posten|anzahl)\b/;
+var RCP_STOP=/^(summe|zwischensumme|zu zahlen|zuzahlen|gesamt|total|bar|ruckgeld|gegeben|ec|ec-karte|karte|kartenzahlung|girocard|visa|mastercard|maestro|mwst|ust|netto|brutto|steuer|betrag|eur|euro|datum|uhrzeit|kasse|bon|beleg|filiale|markt|tel|telefon|www|ust-id|steuer-nr|st\.?nr|tse|trans|terminal|vielen|danke|ihr einkauf|kundenbeleg|payback|deutschlandcard|coupon|rabatt|pfand|pfandwert|pfandruckgabe|leergut|posten|anzahl)\b/;
 function rcpName(s){
   s=s.replace(/^\d{4,}\s+/,'').replace(/\s{2,}/g,' ').replace(/[|_]+/g,' ').trim();
   return s.split(' ').map(function(w){
@@ -1734,6 +1734,8 @@ function parseSlip(lines){
   var hits={};lines.forEach(function(l){(nrm(l).match(SLIP_RE)||[]).forEach(function(h){hits[h]=1;});});
   if(Object.keys(hits).length<2)return null;
   var total=null,pr=/(\d{1,4}[.,]\d{2})(?!\d)/;
+  /* Zuerst die eindeutigen Zeilen: Summe, zu zahlen, Kartenzahlung. Die größte davon ist der Einkauf. */
+  lines.forEach(function(l){var n=nrm(l);if(/summe|zu zahlen|zuzahlen|kartenzahlung|zahlbetrag|gesamtbetrag|endbetrag/.test(n)&&!/zwischensumme|mwst|steuer|netto/.test(n)){var m=l.match(pr);if(m){var v=parseFloat(m[1].replace(',','.'));if(v>0&&(total==null||v>total))total=v;}}});
   for(var i=0;i<lines.length&&total==null;i++){
     var n=nrm(lines[i]);
     if(/^(betrag|summe|gesamt|total|umsatz|zahlbetrag)|\bbetrag\b/.test(n)){
@@ -1748,6 +1750,7 @@ function parseSlip(lines){
     var c=lines[k].replace(/[*#|]+/g,' ').replace(/\s+/g,' ').trim(),cn=nrm(c);
     if((c.match(/[a-zäöüß]/gi)||[]).length<4)continue;
     if(/\d{5}|str\.|stra(ss|ß)e|\bweg\b|platz|datum|uhrzeit/.test(cn))continue;
+    if(/\d[.,]\d{2}|zahlung|betrag|summe|\beur\b|€|girocard|visa|mastercard|kontaktlos|beleg/.test(cn))continue;
     merchant=c.slice(0,40);break;
   }
   return {items:[],total:total,merchant:merchant,slip:true};
@@ -1761,12 +1764,15 @@ function rcpGuessTotal(lines){
 }
 function parseReceipt(text){
   var lines=String(text||'').split(/\r?\n/).map(function(l){return l.replace(/\s+/g,' ').trim();}).filter(Boolean);
-  var items=[],total=null,priceRe=/(-?\d{1,4}[.,]\d{2})(?:\s*(?:€|eur))?(?:\s+[a-z*]{1,2}\d?)?\s*$/i;
+  var items=[],total=null,priceRe=/(-?\d{1,4}[.,]\d{2})(?:\s*(?:€|eur))?(?:\s*[a-z*£$|\]]{1,2}\d?|\s+\d)?[\s;,.:|\]'’`]*$/i;
   for(var i=0;i<lines.length;i++){
     var l=lines[i],n=nrm(l),m=l.match(priceRe);
     if(/^(summe|su[mn]{1,2}e|zu zahlen|zuzahlen|gesamt|tota|total|gesamtbetrag|betrag|endbetrag|endsumme)/.test(n)&&m){if(total==null)total=parseFloat(m[1].replace(',','.'));if(total!=null)break;continue;}
+    /* Ab dem Kartenbeleg oder der Steuertabelle kommen keine Artikel mehr */
+    if(items.length>=2&&/k\W?u\W?n\W?d\W?e\W?n\W?b\W?e\W?l\W?e\W?g|terminal-?\s?id|genehmigungs|bitte beleg|mwst\s+netto|h(a|ä)ndlerbeleg/.test(n))break;
     if(!m)continue;
     if(RCP_STOP.test(n))continue;
+    if(/\b(gesamt|mwst|steuer|netto|brutto|zwischensumme|gen\.?\s?nr)\b/.test(n))continue;
     if(/\d{1,2}[.:]\d{2}[.:]\d{2,4}/.test(l)&&!/[a-z]{3}/i.test(l.replace(/\d/g,'')))continue;
     if(/^\s*\d+([.,]\d+)?\s*(x|×|\*)\s*\d/i.test(l))continue;
     if(/\bkg\b.*(x|×)|eur\s*\/\s*kg|€\s*\/\s*kg/i.test(l))continue;
@@ -1776,7 +1782,7 @@ function parseReceipt(text){
     items.push({t:name,p:price});
   }
   if(items.length<2){var bk=parseBank(lines);if(bk&&(bk.total!=null||bk.merchant)){if(bk.total==null)bk.total=total;return bk;}}
-  if(items.length<2){var sl=parseSlip(lines);if(sl){if(sl.total==null)sl.total=total;return sl;}}
+  if(items.length<2){var sl=parseSlip(lines);if(sl){if(sl.total==null)sl.total=total;if(!sl.merchant){var st=rcDetectStore(text);if(st)sl.merchant=st;}return sl;}}
   if(total==null)total=rcpGuessTotal(lines);
   return {items:items,total:total};
 }
@@ -1972,7 +1978,7 @@ function renderTrips(){
   h+='<div class="tdet">'+
     '<div class="frow"><span class="fl">Datum</span><span class="fv">'+esc(x.date?fmtLong.format(parse(x.date)):'')+'</span></div>'+
     '<div class="frow"><span class="fl">Supermarkt</span><span class="fv">'+esc(x.store||'ohne Angabe')+'</span></div>'+
-    (x.amount||!S.canWrite?'<div class="frow"><span class="fl">Betrag</span><span class="fv">'+(x.amount?esc(fmtEur(x.amount)):'nicht eingetragen')+'</span></div>':'<div class="frow"><span class="fl">Betrag</span><span class="twhat" style="margin-left:auto"><input id="tripAmt" inputmode="decimal" placeholder="z. B. 4,80" style="width:110px;min-height:36px;border:0;border-radius:8px;background:var(--fill);color:var(--fg);font:inherit;padding:0 10px;text-align:right"><button type="button" data-act="tripamt" style="min-height:36px">Speichern</button></span></div>')+
+    (!S.canWrite?'<div class="frow"><span class="fl">Betrag</span><span class="fv">'+(x.amount?esc(fmtEur(x.amount)):'nicht eingetragen')+'</span></div>':'<div class="frow"><span class="fl">Betrag</span><span class="twhat" style="margin-left:auto"><input id="tripAmt" inputmode="decimal" placeholder="z. B. 4,80" value="'+(x.amount?esc(String(x.amount.toFixed(2)).replace('.',',')):'')+'" style="width:110px;min-height:36px;border:0;border-radius:8px;background:var(--fill);color:var(--fg);font:inherit;padding:0 10px;text-align:right"><button type="button" data-act="tripamt" style="min-height:36px">Speichern</button></span></div>')+
     '<div class="frow"><span class="fl">Art</span><span class="fv">'+(x.spont?'Spontaner Einkauf':plural(x.n||0,'Artikel','Artikel')+' von der Liste'+(x.carriedN?', '+x.carriedN+' übernommen':''))+'</span></div>'+
     '</div>';
   if(names.length)h+='<div class="stack"><p class="fhead" style="margin:0 0 0 4px">Gekauft</p><div class="tdet"><p class="titems">'+esc(names.join(', '))+'</p></div></div>';
@@ -1985,6 +1991,7 @@ function renderTrips(){
   h+='</div><div class="tact">';
   if(S.canWrite&&!x.receipt)h+='<button type="button" data-act="rcadd" data-t="'+esc(x.id)+'">Kassenzettel fotografieren</button><button type="button" data-act="rcaddgal" data-t="'+esc(x.id)+'">Foto oder PDF auswählen</button>';
   if(x.receipt)h+='<button type="button" data-act="tripzoom">Kassenzettel groß ansehen</button>';
+  if(S.canWrite&&x.rtext)h+='<button type="button" data-act="tripreread">Kassenzettel neu auswerten</button>';
   if(S.canWrite)h+='<button type="button" class="del'+(TV.delAsk?' ask':'')+'" data-act="tripdel">'+(TV.delAsk?'Wirklich löschen? Nochmal tippen':'Einkauf löschen')+'</button>';
   h+='</div>';
   body.innerHTML=h;
@@ -3719,12 +3726,29 @@ document.addEventListener('click',function(ev){
       tripDelete(tx);break;
     }
     case 'rcadd':rcPick(el.dataset.t);break;
+    case 'tripreread':{
+      /* Gespeicherten Bon-Text mit dem aktuellen Leser neu auswerten: Artikel und Summe ersetzen, mit Rückgängig. */
+      var tr=S.trips.find(function(t){return t.id===TV.id;});
+      if(!tr||!tr.rtext||!db||!S.canWrite)break;
+      var rr=parseReceipt(tr.rtext),nup={};
+      if(rr.items.length>=2){nup.items=rr.items.map(function(o){return {t:o.t,c:guessCat(o.t),p:o.p,r:1};});nup.n=nup.items.length;}
+      if(rr.total>0)nup.amount=rr.total;
+      if(!tr.store){var dst=rcDetectStore(tr.rtext)||rr.merchant||'';if(dst)nup.store=dst;}
+      if(!Object.keys(nup).length){toast('Auf dem Bon finde ich nichts Neues.');break;}
+      var prev={items:tr.items||[],n:tr.n||0,amount:tr.amount||0};
+      db.collection('shopTrips').doc(tr.id).update(nup).then(function(){
+        toast('Neu ausgewertet: '+(nup.items?plural(nup.items.length,'Artikel','Artikel'):'')+(nup.items&&nup.amount?', ':'')+(nup.amount?'Summe '+fmtEur(nup.amount):'')+'.',function(){db.collection('shopTrips').doc(tr.id).update(prev).catch(fail);});
+      },fail);
+      break;
+    }
     case 'tripamt':{
       var ta2=S.trips.find(function(t){return t.id===TV.id;}),av=parseAmt($('tripAmt')&&$('tripAmt').value);
       if(!ta2||!db||!S.canWrite)break;
       if(!(av>0)){toast('Bitte einen Betrag wie 4,80 eintragen.');break;}
       var aup={amount:av};if(ta2.items&&ta2.items.length===1&&ta2.items[0].g&&!(ta2.items[0].p>0)){aup.items=[Object.assign({},ta2.items[0],{p:av})];}
-      db.collection('shopTrips').doc(ta2.id).update(aup).then(function(){toast('Betrag gespeichert: '+fmtEur(av));},fail);
+      if(av===ta2.amount){toast('Der Betrag ist schon '+fmtEur(av)+'.');break;}
+      var oldA=ta2.amount;
+      db.collection('shopTrips').doc(ta2.id).update(aup).then(function(){toast('Betrag gespeichert: '+fmtEur(av),function(){db.collection('shopTrips').doc(ta2.id).update({amount:oldA||0}).catch(fail);});},fail);
       break;
     }
     case 'tripwhat':{
