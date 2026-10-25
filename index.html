@@ -412,7 +412,8 @@ span.check{cursor:default}
 .rtcbtn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;background:#C8102E;color:#fff;font:inherit;font-size:15px;font-weight:700;padding:10px 18px;min-height:44px;cursor:pointer;box-shadow:0 2px 8px rgba(200,16,46,.28)}
 .rtcbtn:active{opacity:.8}
 .rtcv .rtc-stage{flex:1;min-height:0;display:grid;place-items:center;padding:12px 16px}
-.rtcv .rtc-stage img{max-width:100%;max-height:100%;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.5);background:#fff}
+.rtcv .rtc-stage img{max-width:100%;max-height:100%;border-radius:3.72%/5.89%;box-shadow:0 6px 24px rgba(0,0,0,.5);background:#fff}
+.rtcv .rtc-stage img.port{border-radius:5.89%/3.72%}
 .rtcv .rtc-stage.empty p{color:#ddd;max-width:320px;text-align:center;font-size:15px;line-height:1.5;margin:0}
 .rtcv .rtc-side{display:flex;justify-content:center;gap:8px;padding:0 16px 6px}
 .rtcv .rtc-msg{color:#ffd2c2;text-align:center;font-size:14px;margin:0 16px 10px}
@@ -1557,8 +1558,8 @@ function rcProcess(){
 }
 function rcCropRender(){
   var st=$('rcvStage');RC.mode='crop';
-  $('rcvTitle').textContent='Kassenzettel zuschneiden';
-  $('rcvHint').textContent='Zieh die Ecken auf die Ränder des Zettels.';
+  $('rcvTitle').textContent=RC.kind==='rtc'?'Karte zuschneiden':'Kassenzettel zuschneiden';
+  $('rcvHint').textContent=RC.kind==='rtc'?'Zieh die Punkte auf die Kartenecken, als wären sie spitz. Die runden Ecken schneide ich danach selbst ab.':'Zieh die Ecken auf die Ränder des Zettels.';
   var sw=st.clientWidth-24,sh=st.clientHeight-24,sc=Math.min(sw/RC.W,sh/RC.H);RC.scale=sc;
   var dw=Math.round(RC.W*sc),dh=Math.round(RC.H*sc),dpr=Math.min(2,window.devicePixelRatio||1);
   st.innerHTML='<div class="rcv-crop" id="rcCrop" style="width:'+dw+'px;height:'+dh+'px"><canvas id="rcCv" width="'+Math.round(dw*dpr)+'" height="'+Math.round(dh*dpr)+'"></canvas>'+
@@ -1650,6 +1651,16 @@ function rcClick(ev){
   var b=ev.target.closest('[data-rc]');
   if(!b){if(RC.mode==='view'&&ev.target.id==='rcImg'){$('rcScroll').classList.toggle('zoom');}return;}
   var a=b.dataset.rc;
+  if(RC.kind==='rtc'&&(a==='cancel'||a==='close'||a==='again'||a==='ok')){
+    if(a==='ok'){var dta;try{dta=rtcProcess();}catch(e){dta=null;}
+      RC.kind='';RC.src=null;rcShow(false);rtcEl().hidden=false;document.documentElement.style.overflow='hidden';
+      if(!dta){RTC.msg='Das Zuschneiden hat nicht geklappt. Bitte nochmal fotografieren.';rtcRender();return;}
+      if(!rtcSet(RTC.target,dta)){RTC.msg='Das Foto passt nicht in den Speicher dieses Geräts.';rtcRender();return;}
+      RTC.side=RTC.target;rtcRender();return;}
+    RC.kind='';RC.src=null;rcShow(false);rtcEl().hidden=false;document.documentElement.style.overflow='hidden';
+    if(a==='again')rtcPick(RTC.target,true);else rtcRender();
+    return;
+  }
   if(a==='cancel'||a==='close'){if(RC.mode!=='view')RC.target=null;RC.src=null;rcShow(false);return;}
   if(a==='again'){rcShow(false);rcPick(RC.target);return;}
   if(a==='full'){RC.q=rcFull(RC.W,RC.H);rcCropDraw();return;}
@@ -2342,6 +2353,74 @@ function ausToggleDone(id){
   db.doc('settings/ausflug').set({done:d}).then(function(){toast(was?(z?z.name:'Ziel')+' ist wieder offen.':(z?z.name:'Ziel')+' ist für '+todayIso().slice(0,4)+' abgehakt.');},fail);
 }
 
+/* Karte im Foto finden: Hintergrundfarbe vom Rand schätzen, abweichende Fläche suchen, kleinstes umschließendes Rechteck.
+   Die runden Ecken der Karte liegen innerhalb dieses Rechtecks, die Ecken des Rechtecks sind die gedachten Kartenecken. */
+function rtcDetect(src,W,H){
+  var s=Math.min(1,400/Math.max(W,H)),w=Math.max(8,Math.round(W*s)),h=Math.max(8,Math.round(H*s));
+  var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');x.drawImage(src,0,0,w,h);
+  var d=x.getImageData(0,0,w,h).data,n=w*h,i,px,py;
+  var br=[],bg=[],bb=[],m=Math.max(2,Math.round(Math.min(w,h)*0.02));
+  for(py=0;py<h;py++)for(px=0;px<w;px++){if(px<m||py<m||px>=w-m||py>=h-m){i=(py*w+px)*4;br.push(d[i]);bg.push(d[i+1]);bb.push(d[i+2]);}}
+  var med=function(a){a.sort(function(p,q){return p-q;});return a[a.length>>1];},mr=med(br),mg=med(bg),mb=med(bb);
+  var g=new Uint8ClampedArray(n);
+  for(i=0;i<n;i++){var j=i*4;g[i]=Math.min(255,(Math.abs(d[j]-mr)+Math.abs(d[j+1]-mg)+Math.abs(d[j+2]-mb))/1.5);}
+  var t=Math.max(18,rcOtsu(g));
+  var lab=new Uint8Array(n),best=null,stack=new Int32Array(n);
+  for(var p0=0;p0<n;p0++){
+    if(lab[p0]||g[p0]<=t)continue;
+    var sp=0,cnt=0,pts=[];stack[sp++]=p0;lab[p0]=1;
+    while(sp){var q=stack[--sp],qx=q%w,qy=(q/w)|0;cnt++;
+      var edge=false,nb=[q-1,q+1,q-w,q+w],ok=[qx>0,qx<w-1,qy>0,qy<h-1];
+      for(var k=0;k<4;k++){if(!ok[k]){edge=true;continue;}var r2=nb[k];if(g[r2]>t){if(!lab[r2]){lab[r2]=1;stack[sp++]=r2;}}else edge=true;}
+      if(edge)pts.push([qx,qy]);
+    }
+    if(!best||cnt>best.cnt)best={cnt:cnt,pts:pts};
+  }
+  var fb=function(){var mx=W*0.08,my=H*0.08;return [[mx,my],[W-mx,my],[W-mx,H-my],[mx,H-my]];};
+  if(!best||best.cnt<n*0.06||best.cnt>n*0.97)return fb();
+  /* konvexe Hülle (Andrew) */
+  var P=best.pts.sort(function(a,b){return a[0]-b[0]||a[1]-b[1];}),cr=function(o,a,b){return (a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);},lo=[],up=[];
+  for(i=0;i<P.length;i++){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],P[i])<=0)lo.pop();lo.push(P[i]);}
+  for(i=P.length-1;i>=0;i--){while(up.length>=2&&cr(up[up.length-2],up[up.length-1],P[i])<=0)up.pop();up.push(P[i]);}
+  var hull=lo.slice(0,-1).concat(up.slice(0,-1));if(hull.length<3)return fb();
+  /* kleinstes umschließendes Rechteck über alle Hüllenkanten */
+  var bestA=Infinity,R=null;
+  for(i=0;i<hull.length;i++){
+    var a=hull[i],b=hull[(i+1)%hull.length],ang=Math.atan2(b[1]-a[1],b[0]-a[0]),ux=Math.cos(ang),uy=Math.sin(ang);
+    var u0=Infinity,u1=-Infinity,v0=Infinity,v1=-Infinity;
+    for(var z=0;z<hull.length;z++){var hx=hull[z][0],hy=hull[z][1],u=hx*ux+hy*uy,v=-hx*uy+hy*ux;if(u<u0)u0=u;if(u>u1)u1=u;if(v<v0)v0=v;if(v>v1)v1=v;}
+    var A=(u1-u0)*(v1-v0);if(A<bestA){bestA=A;R={ux:ux,uy:uy,u0:u0,u1:u1,v0:v0,v1:v1};}
+  }
+  var cp=function(u,v){return [(u*R.ux-v*R.uy+.5)/s,(u*R.uy+v*R.ux+.5)/s];};
+  var cs=[cp(R.u0,R.v0),cp(R.u1,R.v0),cp(R.u1,R.v1),cp(R.u0,R.v1)];
+  var tl=cs.slice().sort(function(p,q){return (p[0]+p[1])-(q[0]+q[1]);})[0],br2=cs.slice().sort(function(p,q){return (q[0]+q[1])-(p[0]+p[1]);})[0];
+  var tr=cs.slice().sort(function(p,q){return (q[0]-q[1])-(p[0]-p[1]);})[0],bl=cs.slice().sort(function(p,q){return (p[0]-p[1])-(q[0]-q[1]);})[0];
+  return [tl,tr,br2,bl].map(function(p){return [Math.min(W,Math.max(0,p[0])),Math.min(H,Math.max(0,p[1]))];});
+}
+/* Entzerren in Farbe auf das Kartenformat (85,6 x 54 mm) und die runden Ecken abschneiden. */
+var RTC_RATIO=85.6/54,RTC_RAD=3.18/85.6;
+function rtcProcess(){
+  var q=RC.q,W=RC.W,H=RC.H,qw=(rcDist(q[0],q[1])+rcDist(q[3],q[2]))/2,qh=(rcDist(q[0],q[3])+rcDist(q[1],q[2]))/2,land=qw>=qh;
+  var ow=land?1100:Math.round(1100/RTC_RATIO),oh=land?Math.round(1100/RTC_RATIO):1100;
+  var sc=document.createElement('canvas');sc.width=W;sc.height=H;var sx=sc.getContext('2d');sx.drawImage(RC.src,0,0,W,H);
+  var sd=sx.getImageData(0,0,W,H).data,hm=rcHomog(ow,oh,q),c=document.createElement('canvas');c.width=ow;c.height=oh;
+  var cx=c.getContext('2d'),img=cx.createImageData(ow,oh),od=img.data;
+  for(var y=0;y<oh;y++)for(var x=0;x<ow;x++){
+    var dz=hm[6]*x+hm[7]*y+1,u=(hm[0]*x+hm[1]*y+hm[2])/dz,v=(hm[3]*x+hm[4]*y+hm[5])/dz,x0=Math.floor(u),y0=Math.floor(v),j=(y*ow+x)*4;
+    if(x0<0||y0<0||x0>=W-1||y0>=H-1){od[j]=od[j+1]=od[j+2]=20;od[j+3]=255;continue;}
+    var fx=u-x0,fy=v-y0,i0=(y0*W+x0)*4,i1=i0+4,i2=i0+W*4,i3=i2+4;
+    for(var ch=0;ch<3;ch++)od[j+ch]=(sd[i0+ch]*(1-fx)+sd[i1+ch]*fx)*(1-fy)+(sd[i2+ch]*(1-fx)+sd[i3+ch]*fx)*fy;
+    od[j+3]=255;
+  }
+  cx.putImageData(img,0,0);
+  /* runde Ecken: außerhalb in Hintergrundfarbe der Ansicht füllen */
+  var r=Math.round(Math.max(ow,oh)*RTC_RAD),o=document.createElement('canvas');o.width=ow;o.height=oh;var ox=o.getContext('2d');
+  ox.fillStyle='#141110';ox.fillRect(0,0,ow,oh);ox.save();ox.beginPath();
+  ox.moveTo(r,0);ox.lineTo(ow-r,0);ox.arcTo(ow,0,ow,r,r);ox.lineTo(ow,oh-r);ox.arcTo(ow,oh,ow-r,oh,r);ox.lineTo(r,oh);ox.arcTo(0,oh,0,oh-r,r);ox.lineTo(0,r);ox.arcTo(0,0,r,0,r);ox.closePath();ox.clip();
+  ox.drawImage(c,0,0);ox.restore();
+  var qual=.88,data=o.toDataURL('image/jpeg',qual);while(data.length>900000&&qual>.5){qual-=.08;data=o.toDataURL('image/jpeg',qual);}
+  return data;
+}
 /* Meine RUHR.TOPCARD: Foto der Karte, nur auf diesem Gerät gespeichert (nicht in der Cloud). Vorder- und Rückseite. */
 var RTC_K={v:'sommerhaus-rtc-v',r:'sommerhaus-rtc-r'},RTC={side:'v'};
 function rtcGet(k){try{return localStorage.getItem(RTC_K[k])||'';}catch(e){return '';}}
@@ -2355,9 +2434,9 @@ function rtcRender(){
   var o=rtcEl(),v=rtcGet('v'),r=rtcGet('r'),side=RTC.side==='r'&&r?'r':'v',img=side==='r'?r:v;
   var h='<div class="rcv-top"><b>Meine RUHR.TOPCARD</b><span>'+(img?'Kopie zum Vorzeigen, das Original bitte dabeihaben':'Einmal fotografieren, dann hast du sie immer dabei')+'</span></div>';
   if(img){
-    h+='<div class="rtc-stage"><img src="'+img+'" alt="RUHR.TOPCARD '+(side==='r'?'Rückseite':'Vorderseite')+'"></div>';
+    h+='<div class="rtc-stage"><img src="'+img+'" alt="RUHR.TOPCARD '+(side==='r'?'Rückseite':'Vorderseite')+'" onload="if(this.naturalWidth<this.naturalHeight)this.classList.add(\'port\')"></div>';
     h+='<div class="rtc-side">'+(r?'<button type="button" class="rcb'+(side==='v'?' pri':'')+'" data-rtc="side" data-s="v">Vorderseite</button><button type="button" class="rcb'+(side==='r'?' pri':'')+'" data-rtc="side" data-s="r">Rückseite</button>':'<button type="button" class="rcb" data-rtc="add" data-s="r">Rückseite hinzufügen</button>')+'</div>';
-    h+='<div class="rcv-bar"><button type="button" class="rcb" data-rtc="close">Schließen</button><button type="button" class="rcb" data-rtc="add" data-s="'+side+'">Neu fotografieren</button><button type="button" class="rcb" data-rtc="del" data-s="'+side+'">'+(RTC.delAsk?'Wirklich löschen?':'Löschen')+'</button></div>';
+    h+='<div class="rcv-bar"><button type="button" class="rcb" data-rtc="close">Schließen</button><button type="button" class="rcb" data-rtc="crop" data-s="'+side+'">Zuschneiden</button><button type="button" class="rcb" data-rtc="add" data-s="'+side+'">Neu fotografieren</button><button type="button" class="rcb" data-rtc="del" data-s="'+side+'">'+(RTC.delAsk?'Wirklich löschen?':'Löschen')+'</button></div>';
   }else{
     h+='<div class="rtc-stage empty"><p>Leg die Karte auf einen ruhigen Untergrund und fotografiere sie von oben. Das Foto bleibt nur auf diesem Gerät gespeichert.</p></div>';
     h+='<div class="rcv-bar"><button type="button" class="rcb" data-rtc="close">Schließen</button><button type="button" class="rcb" data-rtc="gal" data-s="v">Aus der Mediathek</button><button type="button" class="rcb pri" data-rtc="cam" data-s="v">Karte fotografieren</button></div>';
@@ -2371,13 +2450,16 @@ function rtcFile(f){
   if(!f)return;
   if(RTC.target!=='r')RTC.target='v';
   RTC.msg='Foto wird verarbeitet …';rtcRender();
-  rcLoadFile(f).then(function(im){
-    var W=im.naturalWidth,H=im.naturalHeight,k=Math.min(1,1600/Math.max(W,H)),c=document.createElement('canvas');
-    c.width=Math.round(W*k);c.height=Math.round(H*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
-    var q=.85,d=c.toDataURL('image/jpeg',q);while(d.length>1600000&&q>.4){q-=.1;d=c.toDataURL('image/jpeg',q);}
-    if(!rtcSet(RTC.target,d)){RTC.msg='Das Foto passt nicht in den Speicher dieses Geräts. Versuch es mit einem kleineren Bild.';rtcRender();return;}
-    RTC.side=RTC.target;RTC.msg='';rtcRender();
-  },function(){RTC.msg='Das Foto konnte nicht geöffnet werden.';rtcRender();});
+  rcLoadFile(f).then(rtcCropImg,function(){RTC.msg='Das Foto konnte nicht geöffnet werden.';rtcRender();});
+}
+function rtcCropImg(im){
+  {
+    var W=im.naturalWidth,H=im.naturalHeight,k=Math.min(1,2000/Math.max(W,H)),c=document.createElement('canvas');
+    W=Math.round(W*k);H=Math.round(H*k);c.width=W;c.height=H;c.getContext('2d').drawImage(im,0,0,W,H);
+    /* Zuschneiden mit dem Werkzeug vom Kassenzettel, Ecken auf die Karte gesetzt */
+    RC.kind='rtc';RC.src=c;RC.W=W;RC.H=H;RC.q=rtcDetect(c,W,H);RTC.msg='';
+    rtcEl().hidden=true;rcShow(true);$('rcvBar').innerHTML='';rcCropRender();
+  }
 }
 document.addEventListener('click',function(ev){
   var b=ev.target.closest&&ev.target.closest('[data-rtc]');if(!b)return;
@@ -2386,6 +2468,7 @@ document.addEventListener('click',function(ev){
   else if(a==='cam')rtcPick(sd,true);
   else if(a==='gal')rtcPick(sd,false);
   else if(a==='add'){RTC.target=sd;rtcPick(sd,true);}
+  else if(a==='crop'){var src=rtcGet(sd);if(!src)return;RTC.target=sd;var im=new Image();im.onload=function(){rtcCropImg(im);};im.src=src;}
   else if(a==='side'){RTC.side=sd;RTC.delAsk=false;rtcRender();}
   else if(a==='del'){if(!RTC.delAsk){RTC.delAsk=true;rtcRender();return;}rtcSet(sd,'');if(sd==='v'&&rtcGet('r')){rtcSet('v',rtcGet('r'));rtcSet('r','');}RTC.delAsk=false;RTC.side='v';rtcRender();}
 });
