@@ -2353,50 +2353,160 @@ function ausToggleDone(id){
   db.doc('settings/ausflug').set({done:d}).then(function(){toast(was?(z?z.name:'Ziel')+' ist wieder offen.':(z?z.name:'Ziel')+' ist für '+todayIso().slice(0,4)+' abgehakt.');},fail);
 }
 
-/* Karte im Foto finden: Hintergrundfarbe vom Rand schätzen, abweichende Fläche suchen, kleinstes umschließendes Rechteck.
-   Die runden Ecken der Karte liegen innerhalb dieses Rechtecks, die Ecken des Rechtecks sind die gedachten Kartenecken. */
+/* Karte im Foto finden.
+   1. Untergrund-Farbe und ihr Rauschen am Bildrand messen.
+   2. Alles, was deutlich anders ist, gehört zur Karte (auch weiße, blaue und schwarze Teile).
+   3. Lücken schließen, Löcher füllen, größte Fläche nehmen, Ausläufer abschneiden.
+   4. Kleinstes Rechteck um die Fläche, dann jede Seite als Gerade an die echte Kante anpassen (auch bei schräger Aufnahme).
+   Runde Ecken stören nicht: Für die Geraden zählen nur die mittleren 70 % jeder Seite. */
 function rtcDetect(src,W,H){
-  var s=Math.min(1,400/Math.max(W,H)),w=Math.max(8,Math.round(W*s)),h=Math.max(8,Math.round(H*s));
-  var c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');x.drawImage(src,0,0,w,h);
-  var d=x.getImageData(0,0,w,h).data,n=w*h,i,px,py;
-  var br=[],bg=[],bb=[],m=Math.max(2,Math.round(Math.min(w,h)*0.02));
-  for(py=0;py<h;py++)for(px=0;px<w;px++){if(px<m||py<m||px>=w-m||py>=h-m){i=(py*w+px)*4;br.push(d[i]);bg.push(d[i+1]);bb.push(d[i+2]);}}
-  var med=function(a){a.sort(function(p,q){return p-q;});return a[a.length>>1];},mr=med(br),mg=med(bg),mb=med(bb);
-  var g=new Uint8ClampedArray(n);
-  for(i=0;i<n;i++){var j=i*4;g[i]=Math.min(255,(Math.abs(d[j]-mr)+Math.abs(d[j+1]-mg)+Math.abs(d[j+2]-mb))/1.5);}
-  var t=Math.max(18,rcOtsu(g));
-  var lab=new Uint8Array(n),best=null,stack=new Int32Array(n);
-  for(var p0=0;p0<n;p0++){
-    if(lab[p0]||g[p0]<=t)continue;
-    var sp=0,cnt=0,pts=[];stack[sp++]=p0;lab[p0]=1;
-    while(sp){var q=stack[--sp],qx=q%w,qy=(q/w)|0;cnt++;
-      var edge=false,nb=[q-1,q+1,q-w,q+w],ok=[qx>0,qx<w-1,qy>0,qy<h-1];
-      for(var k=0;k<4;k++){if(!ok[k]){edge=true;continue;}var r2=nb[k];if(g[r2]>t){if(!lab[r2]){lab[r2]=1;stack[sp++]=r2;}}else edge=true;}
-      if(edge)pts.push([qx,qy]);
-    }
-    if(!best||cnt>best.cnt)best={cnt:cnt,pts:pts};
-  }
+  var s=Math.min(1,420/Math.max(W,H)),w=Math.max(16,Math.round(W*s)),h=Math.max(16,Math.round(H*s)),n=w*h,i,x,y;
+  var cv=document.createElement('canvas');cv.width=w;cv.height=h;var cx=cv.getContext('2d');cx.drawImage(src,0,0,w,h);
+  var d=cx.getImageData(0,0,w,h).data,R=new Float32Array(n),G=new Float32Array(n),B=new Float32Array(n);
+  for(i=0;i<n;i++){R[i]=d[i*4];G[i]=d[i*4+1];B[i]=d[i*4+2];}
+  var blur=function(a){var t=new Float32Array(n),o=new Float32Array(n);
+    for(y=0;y<h;y++)for(x=0;x<w;x++){var k=y*w+x;t[k]=(a[k-(x>0)]+a[k]+a[k+(x<w-1)])/3;}
+    for(y=0;y<h;y++)for(x=0;x<w;x++){var k2=y*w+x;o[k2]=(t[k2-(y>0)*w]+t[k2]+t[k2+(y<h-1)*w])/3;}return o;};
+  R=blur(blur(blur(R)));G=blur(blur(blur(G)));B=blur(blur(blur(B)));
   var fb=function(){var mx=W*0.08,my=H*0.08;return [[mx,my],[W-mx,my],[W-mx,H-my],[mx,H-my]];};
-  if(!best||best.cnt<n*0.06||best.cnt>n*0.97)return fb();
-  /* konvexe Hülle (Andrew) */
-  var P=best.pts.sort(function(a,b){return a[0]-b[0]||a[1]-b[1];}),cr=function(o,a,b){return (a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);},lo=[],up=[];
+  /* 1. Untergrund am Rand messen, mit Helligkeitsverlauf (Vignette, Schatten): Fläche 2. Grades je Farbkanal */
+  var m=Math.max(3,Math.round(Math.min(w,h)*0.035)),ring=[];
+  for(y=0;y<h;y++)for(x=0;x<w;x++)if(x<m||y<m||x>=w-m||y>=h-m)ring.push(y*w+x);
+  var basis=function(k){var u=(k%w)/w-0.5,v=((k/w)|0)/h-0.5;return [1,u,v,u*u,u*v,v*v];};
+  var solve=function(A,b){var N=b.length,M2=A.map(function(r,i){return r.concat([b[i]]);});
+    for(var c=0;c<N;c++){var pv=c;for(var r=c+1;r<N;r++)if(Math.abs(M2[r][c])>Math.abs(M2[pv][c]))pv=r;var tt=M2[c];M2[c]=M2[pv];M2[pv]=tt;if(Math.abs(M2[c][c])<1e-9)return null;
+      for(r=0;r<N;r++){if(r===c)continue;var f=M2[r][c]/M2[c][c];for(var kk=c;kk<=N;kk++)M2[r][kk]-=f*M2[c][kk];}}
+    return M2.map(function(r,i){return r[N]/r[i];});};
+  var fitCh=function(Ch){var A=[],b=[0,0,0,0,0,0],a,c;for(a=0;a<6;a++)A.push([0,0,0,0,0,0]);
+    ring.forEach(function(k){var f=basis(k),val=Ch[k];for(var a2=0;a2<6;a2++){b[a2]+=f[a2]*val;for(var c2=0;c2<6;c2++)A[a2][c2]+=f[a2]*f[c2];}});
+    for(a=0;a<6;a++)A[a][a]+=1e-6*ring.length;return solve(A,b);};
+  var cR=fitCh(R),cG=fitCh(G),cB=fitCh(B);if(!cR||!cG||!cB)return fb();
+  var model=function(cc,k){var f=basis(k);return cc[0]*f[0]+cc[1]*f[1]+cc[2]*f[2]+cc[3]*f[3]+cc[4]*f[4]+cc[5]*f[5];};
+  var dist=new Float32Array(n);for(i=0;i<n;i++){var dr=R[i]-model(cR,i),dg=G[i]-model(cG,i),db=B[i]-model(cB,i);dist[i]=Math.sqrt(dr*dr+dg*dg+db*db);}
+  var rd=ring.map(function(k){return dist[k];}).sort(function(p,q){return p-q;}),p90=rd[Math.floor(rd.length*0.9)];
+  var t=Math.max(22,p90*1.6);
+  /* 2. Maske */
+  var M=new Uint8Array(n);for(i=0;i<n;i++)M[i]=dist[i]>t?1:0;
+  /* Rechteck-Filter über Integralbild: min (erode) / max (dilate) */
+  var morph=function(A,r,dil){var I=new Int32Array((w+1)*(h+1)),O=new Uint8Array(n);
+    for(y=0;y<h;y++){var rs=0;for(x=0;x<w;x++){rs+=A[y*w+x];I[(y+1)*(w+1)+x+1]=I[y*(w+1)+x+1]+rs;}}
+    for(y=0;y<h;y++){var y0=Math.max(0,y-r),y1=Math.min(h,y+r+1);for(x=0;x<w;x++){var x0=Math.max(0,x-r),x1=Math.min(w,x+r+1);
+      var sm=I[y1*(w+1)+x1]-I[y0*(w+1)+x1]-I[y1*(w+1)+x0]+I[y0*(w+1)+x0];O[y*w+x]=dil?(sm>0?1:0):(sm===(y1-y0)*(x1-x0)?1:0);}}return O;};
+  var r1=Math.max(1,Math.round(Math.min(w,h)*0.012));
+  M=morph(morph(M,r1,true),r1,false);
+  /* Löcher füllen: was vom Rand aus über Nicht-Karte erreichbar ist, ist Untergrund */
+  var bgR=new Uint8Array(n),st=new Int32Array(n),sp=0;
+  for(x=0;x<w;x++){[x,(h-1)*w+x].forEach(function(k){if(!M[k]&&!bgR[k]){bgR[k]=1;st[sp++]=k;}});}
+  for(y=0;y<h;y++){[y*w,y*w+w-1].forEach(function(k){if(!M[k]&&!bgR[k]){bgR[k]=1;st[sp++]=k;}});}
+  while(sp){var q=st[--sp],qx=q%w,qy=(q/w)|0;
+    if(qx>0&&!M[q-1]&&!bgR[q-1]){bgR[q-1]=1;st[sp++]=q-1;}if(qx<w-1&&!M[q+1]&&!bgR[q+1]){bgR[q+1]=1;st[sp++]=q+1;}
+    if(qy>0&&!M[q-w]&&!bgR[q-w]){bgR[q-w]=1;st[sp++]=q-w;}if(qy<h-1&&!M[q+w]&&!bgR[q+w]){bgR[q+w]=1;st[sp++]=q+w;}}
+  var F=new Uint8Array(n);for(i=0;i<n;i++)F[i]=bgR[i]?0:1;
+  /* Ausläufer (Schatten, Falten) abschneiden */
+  var r2=Math.max(2,Math.round(Math.min(w,h)*0.025));F=morph(morph(F,r2,false),r2,true);
+  /* 3. größte Fläche */
+  var lab=new Int32Array(n),cur=0,best=0,bestN=0;
+  for(var p0=0;p0<n;p0++){if(!F[p0]||lab[p0])continue;cur++;var cnt=0;sp=0;st[sp++]=p0;lab[p0]=cur;
+    while(sp){var q2=st[--sp],ax=q2%w,ay=(q2/w)|0;cnt++;
+      if(ax>0&&F[q2-1]&&!lab[q2-1]){lab[q2-1]=cur;st[sp++]=q2-1;}if(ax<w-1&&F[q2+1]&&!lab[q2+1]){lab[q2+1]=cur;st[sp++]=q2+1;}
+      if(ay>0&&F[q2-w]&&!lab[q2-w]){lab[q2-w]=cur;st[sp++]=q2-w;}if(ay<h-1&&F[q2+w]&&!lab[q2+w]){lab[q2+w]=cur;st[sp++]=q2+w;}}
+    if(cnt>bestN){bestN=cnt;best=cur;}}
+  if(!best||bestN<n*0.06||bestN>n*0.96)return fb();
+  var bp=[];for(y=0;y<h;y++)for(x=0;x<w;x++){var k3=y*w+x;if(lab[k3]!==best)continue;
+    if(x===0||y===0||x===w-1||y===h-1||lab[k3-1]!==best||lab[k3+1]!==best||lab[k3-w]!==best||lab[k3+w]!==best)bp.push([x,y]);}
+  /* 4. Hülle und kleinstes Rechteck */
+  var P=bp.slice().sort(function(a,b){return a[0]-b[0]||a[1]-b[1];}),cr=function(o,a,b){return (a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);},lo=[],up=[];
   for(i=0;i<P.length;i++){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],P[i])<=0)lo.pop();lo.push(P[i]);}
   for(i=P.length-1;i>=0;i--){while(up.length>=2&&cr(up[up.length-2],up[up.length-1],P[i])<=0)up.pop();up.push(P[i]);}
   var hull=lo.slice(0,-1).concat(up.slice(0,-1));if(hull.length<3)return fb();
-  /* kleinstes umschließendes Rechteck über alle Hüllenkanten */
-  var bestA=Infinity,R=null;
-  for(i=0;i<hull.length;i++){
-    var a=hull[i],b=hull[(i+1)%hull.length],ang=Math.atan2(b[1]-a[1],b[0]-a[0]),ux=Math.cos(ang),uy=Math.sin(ang);
-    var u0=Infinity,u1=-Infinity,v0=Infinity,v1=-Infinity;
-    for(var z=0;z<hull.length;z++){var hx=hull[z][0],hy=hull[z][1],u=hx*ux+hy*uy,v=-hx*uy+hy*ux;if(u<u0)u0=u;if(u>u1)u1=u;if(v<v0)v0=v;if(v>v1)v1=v;}
-    var A=(u1-u0)*(v1-v0);if(A<bestA){bestA=A;R={ux:ux,uy:uy,u0:u0,u1:u1,v0:v0,v1:v1};}
-  }
-  var cp=function(u,v){return [(u*R.ux-v*R.uy+.5)/s,(u*R.uy+v*R.ux+.5)/s];};
-  var cs=[cp(R.u0,R.v0),cp(R.u1,R.v0),cp(R.u1,R.v1),cp(R.u0,R.v1)];
-  var tl=cs.slice().sort(function(p,q){return (p[0]+p[1])-(q[0]+q[1]);})[0],br2=cs.slice().sort(function(p,q){return (q[0]+q[1])-(p[0]+p[1]);})[0];
-  var tr=cs.slice().sort(function(p,q){return (q[0]-q[1])-(p[0]-p[1]);})[0],bl=cs.slice().sort(function(p,q){return (p[0]-p[1])-(q[0]-q[1]);})[0];
-  return [tl,tr,br2,bl].map(function(p){return [Math.min(W,Math.max(0,p[0])),Math.min(H,Math.max(0,p[1]))];});
+  var bestA=Infinity,Rc=null;
+  for(i=0;i<hull.length;i++){var a1=hull[i],b1=hull[(i+1)%hull.length],ang=Math.atan2(b1[1]-a1[1],b1[0]-a1[0]),ux=Math.cos(ang),uy=Math.sin(ang),u0=1e9,u1=-1e9,v0=1e9,v1=-1e9;
+    for(var z=0;z<hull.length;z++){var u=hull[z][0]*ux+hull[z][1]*uy,v=-hull[z][0]*uy+hull[z][1]*ux;if(u<u0)u0=u;if(u>u1)u1=u;if(v<v0)v0=v;if(v>v1)v1=v;}
+    var A=(u1-u0)*(v1-v0);if(A<bestA){bestA=A;Rc={ux:ux,uy:uy,u0:u0,u1:u1,v0:v0,v1:v1};}}
+  var toXY=function(u,v){return [u*Rc.ux-v*Rc.uy,u*Rc.uy+v*Rc.ux];};
+  /* Seiten als Geraden anpassen (mittlere 70 %, Punkte nahe der Rechteckseite) */
+  var L=Rc.u1-Rc.u0,Hh=Rc.v1-Rc.v0,band=Math.max(3,Math.min(L,Hh)*0.06),lines=[];
+  var sides=[{fix:'v',val:Rc.v0},{fix:'u',val:Rc.u1},{fix:'v',val:Rc.v1},{fix:'u',val:Rc.u0}];
+  sides.forEach(function(sd){
+    var pts=[];bp.forEach(function(p){var u=p[0]*Rc.ux+p[1]*Rc.uy,v=-p[0]*Rc.uy+p[1]*Rc.ux;
+      if(sd.fix==='v'){if(Math.abs(v-sd.val)<band&&u>Rc.u0+L*0.15&&u<Rc.u1-L*0.15)pts.push([u,v]);}
+      else{if(Math.abs(u-sd.val)<band&&v>Rc.v0+Hh*0.15&&v<Rc.v1-Hh*0.15)pts.push([v,u]);}});
+    /* Gerade val = a + b*pos, robust: zweimal fitten, Ausreißer weg */
+    var fit=function(ps){var sx=0,sy=0,sxx=0,sxy=0,k=ps.length;ps.forEach(function(p){sx+=p[0];sy+=p[1];sxx+=p[0]*p[0];sxy+=p[0]*p[1];});var den=k*sxx-sx*sx;if(k<8||Math.abs(den)<1e-9)return null;var b2=(k*sxy-sx*sy)/den;return {a:(sy-b2*sx)/k,b:b2};};
+    var f=fit(pts);if(f){var res=pts.map(function(p){return Math.abs(p[1]-(f.a+f.b*p[0]));}).sort(function(p,q){return p-q;}),lim=Math.max(1.2,res[Math.floor(res.length*0.8)]||0);var f2=fit(pts.filter(function(p){return Math.abs(p[1]-(f.a+f.b*p[0]))<=lim;}));if(f2)f=f2;}
+    if(!f||Math.abs(f.b)>0.25)f={a:sd.val,b:0};
+    lines.push({fix:sd.fix,a:f.a,b:f.b});
+  });
+  /* Schnittpunkte: v-Seite v=a+b*u, u-Seite u=a+b*v */
+  var cut=function(lv,lu){var u=(lu.a+lu.b*lv.a)/(1-lu.b*lv.b),v=lv.a+lv.b*u;return toXY(u,v);};
+  var cs=[cut(lines[0],lines[3]),cut(lines[0],lines[1]),cut(lines[2],lines[1]),cut(lines[2],lines[3])];
+  /* in Bildreihenfolge oben links, oben rechts, unten rechts, unten links */
+  var c0=cs.map(function(p){return [p[0]/s,p[1]/s];}),mxc=0,myc=0;c0.forEach(function(p){mxc+=p[0]/4;myc+=p[1]/4;});
+  c0.sort(function(p,q){return Math.atan2(p[1]-myc,p[0]-mxc)-Math.atan2(q[1]-myc,q[0]-mxc);});
+  var st0=0;for(i=1;i<4;i++)if(c0[i][0]+c0[i][1]<c0[st0][0]+c0[st0][1])st0=i;
+  var ord=[0,1,2,3].map(function(k){return c0[(st0+k)%4];});
+  return rtcRefine(src,W,H,ord).map(function(p){return [Math.min(W,Math.max(0,p[0])),Math.min(H,Math.max(0,p[1]))];});
 }
+/* Feinabstimmung in höherer Auflösung: entlang jeder Seite quer zur Kante die stärkste Farbkante suchen, Gerade durchlegen. */
+function rtcRefine(src,W,H,q){
+  var s=Math.min(1,1400/Math.max(W,H)),w=Math.round(W*s),h=Math.round(H*s);
+  var cv=document.createElement('canvas');cv.width=w;cv.height=h;var cx=cv.getContext('2d');cx.drawImage(src,0,0,w,h);
+  var d=cx.getImageData(0,0,w,h).data;
+  var px=function(x,y,ch){var x0=Math.floor(x),y0=Math.floor(y);if(x0<0||y0<0||x0>=w-1||y0>=h-1)return -1;var fx=x-x0,fy=y-y0,i=(y0*w+x0)*4+ch;
+    return (d[i]*(1-fx)+d[i+4]*fx)*(1-fy)+(d[i+w*4]*(1-fx)+d[i+w*4+4]*fx)*fy;};
+  var P=q.map(function(p){return [p[0]*s,p[1]*s];}),S=Math.max(6,Math.round(Math.max(w,h)*0.02)),SI=S*3,lines=[];
+  var mcx=(P[0][0]+P[1][0]+P[2][0]+P[3][0])/4,mcy=(P[0][1]+P[1][1]+P[2][1]+P[3][1])/4;
+  for(var k=0;k<4;k++){
+    var a=P[k],b=P[(k+1)%4],dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy);if(len<20)return q;
+    var tx=dx/len,ty=dy/len,nx=-ty,ny=tx,found=[];
+    /* Normale nach außen drehen */
+    if(((a[0]+b[0])/2-mcx)*nx+((a[1]+b[1])/2-mcy)*ny<0){nx=-nx;ny=-ny;}
+    /* je Messstelle alle deutlichen Kanten sammeln, danach die gerade Linie suchen, die an den meisten Stellen passt */
+    var cand=[],NS=48;
+    for(var j=0;j<=NS;j++){
+      var f=0.16+0.68*j/NS,bx=a[0]+dx*f,by=a[1]+dy*f,best=-1,gs=[];
+      for(var o=-SI;o<=S;o++){
+        var x1=bx+nx*(o-1.5),y1=by+ny*(o-1.5),x2=bx+nx*(o+1.5),y2=by+ny*(o+1.5),g=0,ok=true;
+        for(var ch=0;ch<3;ch++){var v1=px(x1,y1,ch),v2=px(x2,y2,ch);if(v1<0||v2<0){ok=false;break;}g+=Math.abs(v2-v1);}
+        gs.push(ok?g:0);if(ok&&g>best)best=g;
+      }
+      for(var z=1;z<gs.length-1;z++){if(gs[z]>=30&&gs[z]>=best*0.35&&gs[z]>=gs[z-1]&&gs[z]>=gs[z+1]){var oo=z-SI;cand.push({j:j,o:oo,g:gs[z],x:bx+nx*oo,y:by+ny*oo});}}
+    }
+    if(cand.length<10){lines.push(null);continue;}
+    /* RANSAC über Paare an verschiedenen Messstellen */
+    var hyps=[],tries=0,tol=Math.max(1.5,S*0.08);
+    var countFor=function(p,q2){var lx=q2.x-p.x,ly=q2.y-p.y,ll=Math.hypot(lx,ly);if(ll<1)return null;lx/=ll;ly/=ll;var got={},inl=[];
+      cand.forEach(function(c){var dd=Math.abs((c.x-p.x)*-ly+(c.y-p.y)*lx);if(dd<=tol&&(!got[c.j]||got[c.j].d>dd)){got[c.j]={d:dd,c:c};}});
+      Object.keys(got).forEach(function(k2){inl.push(got[k2].c);});return inl;};
+    var seed=12345+k*7,rnd=function(){seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;};
+    for(tries=0;tries<700;tries++){
+      var p1=cand[Math.floor(rnd()*cand.length)],p2=cand[Math.floor(rnd()*cand.length)];
+      if(Math.abs(p1.j-p2.j)<8)continue;
+      /* nur Linien fast parallel zur groben Seite (höchstens ca. 4 Grad) */
+      var ldx=p2.x-p1.x,ldy=p2.y-p1.y,lln=Math.hypot(ldx,ldy);if(lln<1||Math.abs((ldx*tx+ldy*ty)/lln)<0.9994)continue;
+      var inl=countFor(p1,p2);if(!inl||inl.length<8)continue;
+      var mo=0,mg=0;inl.forEach(function(c){mo+=c.o;mg+=c.g;});hyps.push({n:inl.length,mo:mo/inl.length,mg:mg/inl.length,inl:inl});
+    }
+    if(!hyps.length){lines.push(null);continue;}
+    var bestN=0,bestG=0;hyps.forEach(function(hh){if(hh.n>bestN){bestN=hh.n;bestG=hh.mg;}});
+    /* unter den gut gestützten Linien die äußerste: innen liegen Streifen, Barcodes und Bilder der Karte */
+    var pick=null;hyps.forEach(function(hh){if(hh.n>=bestN*0.9&&hh.mg>=bestG*0.6&&(!pick||hh.mo>pick.mo+0.5||(Math.abs(hh.mo-pick.mo)<=0.5&&hh.n>pick.n)))pick=hh;});
+    found=pick.inl.map(function(c){return [c.x,c.y];});
+    if(found.length<10){lines.push(null);continue;}
+    /* Gerade durch die Punkte (Hauptachse), zweimal mit Ausreißer-Abschnitt */
+    var fitL=function(ps){var mx=0,my=0;ps.forEach(function(p){mx+=p[0];my+=p[1];});mx/=ps.length;my/=ps.length;var sxx=0,syy=0,sxy=0;ps.forEach(function(p){var u=p[0]-mx,v=p[1]-my;sxx+=u*u;syy+=v*v;sxy+=u*v;});
+      var th=0.5*Math.atan2(2*sxy,sxx-syy);return {x:mx,y:my,dx:Math.cos(th),dy:Math.sin(th)};};
+    var L=fitL(found),res=found.map(function(p){return Math.abs((p[0]-L.x)*-L.dy+(p[1]-L.y)*L.dx);}),srt=res.slice().sort(function(p2,q2){return p2-q2;}),lim=Math.max(1.5,srt[Math.floor(srt.length*0.7)]*1.5);
+    var keep=found.filter(function(p,i){return res[i]<=lim;});if(keep.length>=8)L=fitL(keep);
+    /* nicht weiter als S vom groben Ergebnis entfernt und ähnlich ausgerichtet */
+    if(Math.abs(L.dx*tx+L.dy*ty)<0.97){lines.push(null);continue;}
+    lines.push(L);
+  }
+  var cut=function(A,B){var den=A.dx*B.dy-A.dy*B.dx;if(Math.abs(den)<1e-6)return null;var t=((B.x-A.x)*B.dy-(B.y-A.y)*B.dx)/den;return [A.x+A.dx*t,A.y+A.dy*t];};
+  return q.map(function(p,k){var A=lines[(k+3)%4],B=lines[k];if(!A||!B)return p;var c=cut(A,B);if(!c)return p;
+    var cs=[c[0]/s,c[1]/s];return Math.hypot(cs[0]-p[0],cs[1]-p[1])>Math.max(W,H)*0.09?p:cs;});
+}
+
 /* Entzerren in Farbe auf das Kartenformat (85,6 x 54 mm) und die runden Ecken abschneiden. */
 var RTC_RATIO=85.6/54,RTC_RAD=3.18/85.6;
 function rtcProcess(){
