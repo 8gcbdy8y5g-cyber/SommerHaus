@@ -2,7 +2,7 @@
 # Die Adresse steht verschlüsselt in geheim.enc. In muell.json landen nur Daten, keine Adresse.
 # Alle Abfuhrtage kommen rein: Erinnerung zum Runterbringen das ganze Jahr, Rausstellen nur in MONTHS (macht die App).
 import json, re, sys, datetime, requests
-MONTHS = [1, 7]  # Januar und Juli: dann seid ihr mit den Tonnen dran
+MONTHS = [1, 8]  # Januar und August: dann seid ihr mit den Tonnen dran
 KIND = {'Grau': 'black', 'Blau': 'blue', 'Gelb': 'yellow'}
 H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537"}
 URL = "https://www.muellmax.de/abfallkalender/usb/res/UsbStart.php"
