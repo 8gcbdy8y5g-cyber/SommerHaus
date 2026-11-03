@@ -1,5 +1,6 @@
 # Holt die Abfuhrtermine vom USB Bochum (Müllmax) und schreibt muell.json.
 # Die Adresse steht verschlüsselt in geheim.enc. In muell.json landen nur Daten, keine Adresse.
+# Alle Abfuhrtage kommen rein: Erinnerung zum Runterbringen das ganze Jahr, Rausstellen nur in MONTHS (macht die App).
 import json, re, sys, datetime, requests
 MONTHS = [1, 7]  # Januar und Juli: dann seid ihr mit den Tonnen dran
 KIND = {'Grau': 'black', 'Blau': 'blue', 'Gelb': 'yellow'}
@@ -39,7 +40,7 @@ for ev in ics.split('BEGIN:VEVENT')[1:]:
 try: old = json.load(open('muell.json'))
 except Exception: old = {'dates': {}}
 today = datetime.date.today().isoformat()
-dates = {k: sorted(set([v for v in old.get('dates', {}).get(k, []) if v >= today] + [v for kk, v in found if kk == k and int(v[5:7]) in MONTHS])) for k in KIND.values()}
+dates = {k: sorted(set([v for v in old.get('dates', {}).get(k, []) if v >= today] + [v for kk, v in found if kk == k])) for k in KIND.values()}
 out = {'source': 'USB Bochum (Müllmax)', 'months': MONTHS, 'dates': dates, 'seenUntil': max([v for _, v in found], default='')}
 if {k: old.get(k) for k in ('months', 'dates', 'seenUntil')} == {k: out[k] for k in ('months', 'dates', 'seenUntil')}:
     print('unverändert'); sys.exit(0)

@@ -166,7 +166,10 @@ h2,h3{font-family:var(--display)}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
 .dot.w{background:var(--green)}.dot.bw{background:var(--yellow)}.dot.m{background:var(--blue)}
 .dot.p0{background:var(--m0)}.dot.p1{background:var(--m1)}.dot.p2{background:var(--m2)}.dot.p3{background:var(--m3)}
-.dot.event{background:var(--purple)}.dot.over{background:var(--red)}.dot.done{background:var(--fg2);opacity:.45}
+.dot.event{background:var(--purple)}.dot.mu{background:var(--fg2)}.dot.mu.b-yellow{background:var(--bin-yellow)}.dot.mu.b-blue{background:var(--bin-blue)}.dot.mu.b-black{background:var(--bin-black);box-shadow:0 0 0 1px var(--fg2)}
+.chip.mu{--c:var(--fg2);cursor:pointer;background:var(--fill)}
+.row.mu .muic{width:48px;height:48px;display:grid;place-items:center}.row.mu .muic .bin{width:26px;height:26px;margin:0}.row.mu .rowmain{cursor:default}
+.legend i.mu{background:var(--fg2)}.dot.over{background:var(--red)}.dot.done{background:var(--fg2);opacity:.45}
 .chips{display:none}
 .binrow{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;line-height:0}
 .binmark{border:0;background:none;padding:0;cursor:pointer;line-height:0;color:var(--fg)}
@@ -2229,7 +2232,7 @@ function itemsOn(ds){
     var ta=a.time||'',tb=b.time||'';
     return ta<tb?-1:ta>tb?1:byTitle(a,b);
   });
-  return {t:t,e:e,d:d};
+  return {t:t,e:e,d:d,m:muRemOn(ds)};
 }
 function taskRow(t,today,o){
   o=o||{};
@@ -2315,16 +2318,17 @@ function renderCal(today){
       return '<button type="button" class="binmark" draggable="true" data-act="open" data-kind="task" data-id="'+esc(a.x.id)+'" title="'+esc(a.x.title)+'">'+binIcon(a.x.icon)+'</button>';
     }).join('')+'</div>':'';
     if(rest.length>lim)chips+='<div class="more">+'+(rest.length-lim)+' weitere</div>';
+    chips=it.m.map(function(k){return '<div class="chip mu" title="'+esc(BINS[k].label)+' runterbringen, morgen ist Abholung">'+binIcon(k)+esc(BINS[k].label)+' runterbringen</div>';}).join('')+chips;
     var dots=rest.slice(0,5).map(function(a){
       var c=a.k==='event'?'event':a.k==='done'?'done':(a.over?'over':freqClass(a.x));
       if(a.k!=='done'&&personClass(a.x))c=personClass(a.x);
       return '<i class="dot '+c+'"></i>';
-    }).join('');
-    h+='<div class="cell'+(!wk&&d.getMonth()!==m?' out':'')+(ds===today?' today':'')+(ds===S.selected?' sel':'')+'" role="button" tabindex="0" data-act="day" data-date="'+ds+'" aria-label="'+esc(fmtLong.format(d))+', '+all.length+' Einträge">'+
+    }).join('')+it.m.map(function(k){return '<i class="dot mu b-'+k+'"></i>';}).join('');
+    h+='<div class="cell'+(!wk&&d.getMonth()!==m?' out':'')+(ds===today?' today':'')+(ds===S.selected?' sel':'')+'" role="button" tabindex="0" data-act="day" data-date="'+ds+'" aria-label="'+esc(fmtLong.format(d))+', '+(all.length+it.m.length)+' Einträge">'+
       (wk?'<span class="wd">'+WD[i]+'</span>':'')+'<span class="num">'+d.getDate()+'</span>'+binRow+'<div class="chips">'+chips+'</div><div class="dots">'+dots+'</div></div>';
   }
   h+='</div>';
-  h+='<div class="legend">'+S.members.map(function(n,i){return '<span><i class="p'+(i%4)+'"></i>'+esc(n)+'</span>';}).join('')+(S.members.length?'<b>Ohne Person:</b>':'')+'<span><i class="w"></i>wöchentlich</span><span><i class="bw"></i>alle 2 Wochen</span><span><i class="m"></i>monatlich oder seltener</span><span><i class="event"></i>Termin</span><span><i class="over"></i>überfällig</span></div>';
+  h+='<div class="legend">'+S.members.map(function(n,i){return '<span><i class="p'+(i%4)+'"></i>'+esc(n)+'</span>';}).join('')+(S.members.length?'<b>Ohne Person:</b>':'')+'<span><i class="w"></i>wöchentlich</span><span><i class="bw"></i>alle 2 Wochen</span><span><i class="m"></i>monatlich oder seltener</span><span><i class="event"></i>Termin</span><span><i class="mu"></i>Müll runterbringen</span><span><i class="over"></i>überfällig</span></div>';
   $('cal').innerHTML=h;
 }
 var CATS=['Obst & Gemüse','Brot','Kühlsachen','Tiefkühl','Getränke','Vorrat','Drogerie','Sonstiges'];
@@ -3203,6 +3207,8 @@ function tripDelete(x){
 var MUELL=window.SH_MUELL||null,muBusy={};
 var MU_MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 function muOk(d){return !!(d&&d.dates&&typeof d.dates==='object'&&Array.isArray(d.months)&&d.months.length);}
+/* Müll runterbringen: am Tag vor jeder Abfuhr, das ganze Jahr, auch wenn andere mit den Tonnen dran sind */
+function muRemOn(ds){if(!muOk(MUELL))return [];var tm=addDays(ds,1);return ['black','yellow','blue'].filter(function(k){return (MUELL.dates[k]||[]).indexOf(tm)>=0;});}
 if(!MUELL&&window.fetch&&location.protocol.indexOf('http')===0){
   fetch('muell.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
     if(muOk(d)){MUELL=d;binSync();render();}
@@ -3215,7 +3221,8 @@ function muNextStart(today){
 }
 function binTarget(t,today,from){
   if(!muOk(MUELL)||!t||!t.icon||!BINS[t.icon]||t.unit==='once'||!t.every)return null;
-  var L=(MUELL.dates[t.icon]||[]).slice().sort();
+  /* Rausstellen nur in euren Dienstmonaten, muell.json enthält alle Abfuhrtage */
+  var L=(MUELL.dates[t.icon]||[]).filter(function(v){return MUELL.months.indexOf(+v.slice(5,7))>=0;}).sort();
   for(var i=0;i<L.length;i++)if(L[i]>=from)return {due:L[i],wait:false};
   return {due:muNextStart(today)||t.due,wait:true};
 }
@@ -3243,7 +3250,7 @@ function renderMuBox(){
   if(!h)h='<div class="frow"><span class="fl">Keine Tonnen-Aufgaben angelegt</span></div>';
   box.innerHTML=h;
   var wait=bins.some(function(t){return t.binWait;}),ns=muNextStart(today);
-  note.textContent='Ihr seid im '+mon+' mit den Tonnen dran. Die Termine kommen vom USB Bochum, in den anderen Monaten blendet die App die Tonnen aus.'+
+  note.textContent='Ihr seid im '+mon+' mit den Tonnen dran. Die Termine kommen vom USB Bochum, in den anderen Monaten blendet die App die Aufgaben zum Rausstellen aus. Am Tag vor jeder Abfuhr steht im Kalender, welchen Müll ihr runterbringen müsst.'+
     (wait&&ns?' Der nächste Dienst beginnt im '+MU_MON[parse(ns).getMonth()]+' '+parse(ns).getFullYear()+'. Die genauen Termine erscheinen, sobald der USB seinen Kalender dafür veröffentlicht.':'');
 }
 
@@ -4267,23 +4274,28 @@ function renderReport(){
   if(rqF){var qi=$('rcQ');if(qi){qi.focus();try{qi.setSelectionRange(qi.value.length,qi.value.length);}catch(e){}}}
 }
 function weekStartIso(ds){var d=parse(ds),k=(d.getDay()+6)%7;return addDays(ds,-k);}
+function muRow(k){
+  var c={black:'die graue Tonne',yellow:'die gelbe Tonne',blue:'die blaue Tonne'}[k];
+  return '<div class="row mu"><span class="muic">'+binIcon(k)+'</span><div class="rowmain"><span class="title">'+esc(BINS[k].label)+' runterbringen</span><span class="meta">Morgen leert der USB '+c+'</span></div><span class="right"></span></div>';
+}
 function renderDay(today){
   var ds=S.selected,it=itemsOn(ds);
   var done=S.tasks.filter(function(t){return t.lastDone===ds;});
   var h='<div class="cal-head"><h2>'+esc(fmtLong.format(parse(ds)))+(ds===today?'<span class="tag">Heute</span>':'')+'</h2>'+
     '<div class="nav"><button type="button" class="btn round" data-act="dayprev" aria-label="Vorheriger Tag">'+CHEV_L+'</button>'+
     '<button type="button" class="btn round" data-act="daynext" aria-label="Nächster Tag">'+CHEV_R+'</button></div></div>';
-  var nt=it.t.length,ne=it.e.length,nd=done.length,nover=it.t.filter(function(t){return t.due&&t.due<today;}).length;
+  var nm=it.m.length,nt=it.t.length,ne=it.e.length,nd=done.length,nover=it.t.filter(function(t){return t.due&&t.due<today;}).length;
   var parts=[];
   if(nt)parts.push('<b>'+nt+'</b> '+(nt===1?'Aufgabe':'Aufgaben')+' offen'+(nover?' <span class="dsover">('+nover+' überfällig)</span>':''));
   if(ne)parts.push('<b>'+ne+'</b> '+(ne===1?'Termin':'Termine'));
   if(nd)parts.push(nd+' erledigt');
+  if(nm)parts.unshift('Müll runterbringen');
   var summ=S.loading?'Lädt …':parts.length?parts.join(' · '):(ds===today?'Für heute ist nichts offen.':'Für diesen Tag ist nichts geplant.');
   var canOpen=!S.loading;
   h+='<button type="button" class="daysum'+(S.dayOpen?' open':'')+'" data-act="daytoggle" aria-expanded="'+S.dayOpen+'"'+(canOpen?'':' disabled')+'><span>'+summ+'</span><svg class="chev'+(S.dayOpen?' open':'')+'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>';
   if(!S.dayOpen||S.loading){$('day').innerHTML=h;return;}
-  if(ne||nt||nd){
-    h+='<div style="margin-top:4px">'+it.e.map(function(e){return eventRow(e);}).join('')+it.t.map(function(t){return taskRow(t,today);}).join('')+done.map(doneRow).join('')+'</div>';
+  if(ne||nt||nd||nm){
+    h+='<div style="margin-top:4px">'+it.m.map(muRow).join('')+it.e.map(function(e){return eventRow(e);}).join('')+it.t.map(function(t){return taskRow(t,today);}).join('')+done.map(doneRow).join('')+'</div>';
   }
   if(S.canWrite)h+='<div class="addrow"><button type="button" class="btn small" data-act="add-task" data-date="'+ds+'">Aufgabe</button><button type="button" class="btn small" data-act="add-event" data-date="'+ds+'">Termin</button></div>';
   $('day').innerHTML=h;

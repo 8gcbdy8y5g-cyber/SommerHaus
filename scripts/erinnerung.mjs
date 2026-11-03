@@ -55,12 +55,20 @@ function mineOk(t, sub) {
 }
 function listText(l, max) { const a = l.slice(0, max).map(t => t.title); return a.join(', ') + (l.length > max ? ` und ${l.length - max} weitere` : ''); }
 
-export function buildMessages(mode, today, tasks, sub) {
+const BIN_NAME = { black: 'Restmüll', yellow: 'Gelbe Tonne', blue: 'Pappe' };
+export function buildMessages(mode, today, tasks, sub, muell) {
   const msgs = [];
   if (mode === 'evening' && sub.prefs?.bins !== false) {
     const tm = addDays(today, 1);
     const bins = tasks.filter(t => isOpen(t) && t.icon && t.due === tm);
     if (bins.length) msgs.push({ title: 'Morgen ist Abholung', body: bins.map(t => t.title).join(', '), tag: 'bins-' + tm, url: './' });
+    // Das ganze Jahr: am Vorabend jeder Abfuhr Bescheid sagen, welcher Müll runter muss (Tonnen mit eigener Aufgabe stehen schon oben)
+    const d = muell && muell.dates ? muell.dates : {};
+    const down = Object.keys(BIN_NAME).filter(k => (d[k] || []).includes(tm) && !bins.some(t => t.icon === k));
+    if (down.length) {
+      const n = down.map(k => BIN_NAME[k]), txt = n.length > 1 ? n.slice(0, -1).join(', ') + ' und ' + n[n.length - 1] : n[0];
+      msgs.push({ title: 'Morgen ist Abholung', body: txt + ': bitte heute noch den Müll runterbringen.', tag: 'down-' + tm, url: './' });
+    }
   }
   if (mode === 'morning' && sub.prefs?.morning !== false) {
     const due = tasks.filter(t => isOpen(t) && t.due <= today && mineOk(t, sub));
@@ -77,11 +85,12 @@ async function main() {
   if (!mode) { console.log('Keine Versandzeit (Berlin ' + now.hour + ' Uhr), nichts zu tun.'); return; }
   const tok = await login();
   const [tasks, subs] = await Promise.all([list(tok, 'tasks'), list(tok, 'pushSubs')]);
+  let muell = null; try { muell = JSON.parse(readFileSync('muell.json', 'utf8')); } catch (e) { muell = null; }
   console.log(`Modus ${mode}, ${tasks.length} Aufgaben, ${subs.length} Handys`);
   if (!DRY) { webpush = (await import('web-push')).default; }
   if (!DRY) webpush.setVapidDetails('mailto:brunosommerfeld@web.de', process.env.VAPID_PUBLIC_KEY, SEC.vapid || process.env.VAPID_PRIVATE_KEY);
   for (const s of subs) {
-    const msgs = mode === 'test' ? [{ title: 'SommerHaus', body: 'Test: Erinnerungen funktionieren auf diesem Handy.', tag: 'test' }] : buildMessages(mode, now.iso, tasks, s);
+    const msgs = mode === 'test' ? [{ title: 'SommerHaus', body: 'Test: Erinnerungen funktionieren auf diesem Handy.', tag: 'test' }] : buildMessages(mode, now.iso, tasks, s, muell);
     for (const m of msgs) {
       if (DRY) { console.log('[Probe]', s.name || '?', JSON.stringify(m)); continue; }
       try { await webpush.sendNotification(s.sub, JSON.stringify(m), { TTL: 6 * 3600 }); console.log('gesendet an', s.name || 'unbekannt'); }
