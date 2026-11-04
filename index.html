@@ -318,8 +318,16 @@ span.check{cursor:default}
 .shopgrp+.shopitem{border-top:0}
 .shop .lead{font-size:14px;color:var(--fg2);margin-top:2px}
 .shoplist{list-style:none;margin:8px 0 0;padding:0}
-.shopitem{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto auto;align-items:center}
-.shopitem:has(.slink){grid-template-columns:44px minmax(0,1fr) auto auto auto auto}
+.shopitem{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto auto auto;align-items:center}
+.shopitem:has(.slink){grid-template-columns:44px minmax(0,1fr) auto auto auto auto auto}
+.sgrip{width:30px;height:44px;border:0;background:none;padding:0;margin-right:-6px;color:var(--fg2);opacity:.55;display:grid;place-items:center;cursor:grab;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.sgrip:active{cursor:grabbing;opacity:1}
+.ordreset{display:block;border:0;background:none;color:var(--fg2);font:inherit;font-size:13px;font-weight:600;padding:4px 0;min-height:36px;cursor:pointer}
+.ordreset[hidden]{display:none}
+.shopitem.sdragging{position:relative;z-index:6;background:var(--card);border-radius:12px;box-shadow:var(--shadow);transition:box-shadow .15s}
+.shopitem.sdragging+.shopitem{border-top-color:transparent}
+.shopitem.sshift{transition:transform .16s ease}
+body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbing}
 .slink{width:30px;height:40px;display:inline-grid;place-items:center;color:var(--accent)}
 .favbtn{width:34px;height:40px;border:0;background:none;color:var(--fg2);display:inline-grid;place-items:center;cursor:pointer;padding:0;flex:none;opacity:.55}
 .favbtn.on{color:#E3A400;opacity:1;--sf:1}
@@ -797,6 +805,7 @@ span.check{cursor:default}
     <div id="shopBest"></div>
     <div class="sortrow" id="shopSort" hidden><span>Sortiert nach</span><div class="seg sortseg" role="group" aria-label="Sortierung"><button type="button" data-act="shopsort" data-s="cat" aria-pressed="true">Kategorie</button><button type="button" data-act="shopsort" data-s="store" aria-pressed="false">Laden</button></div></div>
     <ul class="shoplist" id="shopList"></ul>
+    <button type="button" class="ordreset" id="shopOrdReset" data-act="shopordreset" hidden>Wieder nach Kategorie sortieren</button>
     <form class="shopadd" id="shopForm" autocomplete="off">
       <button type="button" class="go" id="shopMic" aria-label="Einkauf diktieren"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></button>
       <input id="shop-in" maxlength="80" placeholder="Artikel hinzufügen" aria-label="Artikel" enterkeyhint="done">
@@ -2350,6 +2359,21 @@ function guessCat(t){
 function effCat(x){var c=x.cat;if(c==='Kühlsachen'&&guessCat(x.title)==='Tiefkühl')return 'Tiefkühl';return c;}
 function catOptions(sel){return CATS.map(function(c){return '<option'+(c===sel?' selected':'')+'>'+esc(c)+'</option>';}).join('');}
 var CHECK_SVG='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>';
+/* Reihenfolge: ohne Ziehen nach Kategorie. Wurde gezogen, gilt die eigene Reihenfolge (ord);
+   neue Artikel ohne ord kommen hinter den letzten Artikel ihrer Kategorie. */
+function hasOrd(x){return typeof x.ord==='number';}
+function shopOrder(open){
+  var byCat=function(p,q){return catIdx(effCat(p))-catIdx(effCat(q))||(p.created||0)-(q.created||0);};
+  var a=open.filter(hasOrd).sort(function(p,q){return p.ord-q.ord||(p.created||0)-(q.created||0);});
+  open.filter(function(x){return !hasOrd(x);}).sort(byCat).forEach(function(x){
+    var c=catIdx(effCat(x)),pos=-1,i;
+    for(i=a.length-1;i>=0;i--)if(catIdx(effCat(a[i]))===c){pos=i+1;break;}
+    if(pos<0){pos=a.length;for(i=0;i<a.length;i++)if(catIdx(effCat(a[i]))>c){pos=i;break;}}
+    a.splice(pos,0,x);
+  });
+  return a;
+}
+var GRIP_SVG='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.7"/><circle cx="15" cy="6" r="1.7"/><circle cx="9" cy="12" r="1.7"/><circle cx="15" cy="12" r="1.7"/><circle cx="9" cy="18" r="1.7"/><circle cx="15" cy="18" r="1.7"/></svg>';
 function shopRow(x){
   var q=x.done?{n:0,name:x.title}:qtyOf(x.title);
   var dis=S.canWrite?'':' disabled';
@@ -2360,7 +2384,8 @@ function shopRow(x){
     (S.shopEdit===x.id?'<select class="rowcat ecat" id="shopEditCat" aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(S.shopEditCat||effCat(x))+'</select>':OFFERS?ofChip(x):'<select class="rowcat"'+dis+' aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(effCat(x))+'</select>')+
     (x.url&&/^https:\/\//.test(x.url)?'<a class="slink" href="'+esc(x.url)+'" target="_blank" rel="noopener" aria-label="Produktseite öffnen: '+esc(x.title)+'"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>':'')+
     (x.done?'<span></span>':favBtn(x.title,'sm'))+
-    '<button type="button" class="sdel" data-act="shopdel"'+dis+' aria-label="Löschen: '+esc(x.title)+'">&times;</button></li>';
+    '<button type="button" class="sdel" data-act="shopdel"'+dis+' aria-label="Löschen: '+esc(x.title)+'">&times;</button>'+
+    (S.canWrite&&!x.done&&S.shopEdit!==x.id&&!(OFFERS&&S.shopSort==='store')?'<button type="button" class="sgrip" aria-label="'+esc(x.title)+' verschieben" title="Gedrückt halten und ziehen">'+GRIP_SVG+'</button>':'')+'</li>';
 }
 var DEF_LIST={id:'wocheneinkauf',name:'Wocheneinkauf',created:0};
 function allLists(){
@@ -2382,6 +2407,7 @@ function shopByStoreHtml(open){
   return h;
 }
 function renderShop(){
+  if(SD){SD.pending=true;return;}
   var L=curList();S.shopList=L.id;
   $('shopLists').innerHTML=allLists().map(function(l){
     var n=S.shop.filter(function(x){return listOf(x)===l.id&&!x.done;}).length;
@@ -2390,7 +2416,7 @@ function renderShop(){
   $('shopTitle').textContent=L.name;
   $('shopListDel').innerHTML=(S.canWrite&&L.id!==DEF_LIST.id)?'<button type="button" class="listdel" data-act="shoplistdel">'+(S.delList?'Wirklich löschen? Alle Artikel dieser Liste gehen verloren.':'Liste „'+esc(L.name)+'“ löschen')+'</button>':'';
   var mine=S.shop.filter(function(x){return listOf(x)===L.id;});
-  var open=mine.filter(function(x){return !x.done;}).sort(function(a,b){return catIdx(effCat(a))-catIdx(effCat(b))||(a.created||0)-(b.created||0);});
+  var open=shopOrder(mine.filter(function(x){return !x.done;}));
   var byStore=!!OFFERS&&S.shopSort==='store';
   var ss=$('shopSort');if(ss){ss.hidden=!OFFERS||!open.length;ss.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String((b.dataset.s==='store')===byStore));});}
   var done=mine.filter(function(x){return x.done;}).sort(function(a,b){return (b.doneAt||0)-(a.doneAt||0);});
@@ -2399,6 +2425,7 @@ function renderShop(){
   var edF=document.activeElement&&document.activeElement.id==='shopEditIn';
   $('shopList').innerHTML=open.length?(byStore?shopByStoreHtml(open):open.map(shopRow).join('')):'<li class="empty" style="margin:6px 0 8px">'+(S.loading?'Lädt …':'Die Liste ist leer.')+'</li>';
   $('shopForm').hidden=!S.canWrite;
+  var orr=$('shopOrdReset');if(orr)orr.hidden=!(S.canWrite&&!byStore&&open.some(hasOrd));
   if(S.shopEdit){var ei=$('shopEditIn');if(ei&&(edF||S.shopEditFocus)){S.shopEditFocus=false;ei.focus();try{ei.setSelectionRange(ei.value.length,ei.value.length);}catch(e){}}else if(!ei)S.shopEdit=null;}
   var h='';
   if(done.length){
@@ -5251,6 +5278,12 @@ document.addEventListener('click',function(ev){
       break;
     }
     case 'shopdonetoggle':S.shopDoneOpen=!S.shopDoneOpen;renderShop();break;
+    case 'shopordreset':{
+      var lid=curList().id,rs=S.shop.filter(function(x){return listOf(x)===lid&&hasOrd(x);});
+      rs.forEach(function(x){x.ord=null;});renderShop();
+      if(db)rs.forEach(function(x){db.collection('shopping').doc(x.id).update({ord:null}).catch(fail);});
+      toast('Wieder nach Kategorie sortiert.');break;
+    }
     case 'shopsort':S.shopSort=el.dataset.s==='store'?'store':'cat';try{localStorage.setItem('sommerhaus-shopsort',S.shopSort);}catch(e){}renderShop();break;
     case 'monsel':S.monSel=el.dataset.m;renderReport();break;
     case 'rbshop':S.rbShopOpen=!S.rbShopOpen;renderReport();break;
@@ -5325,6 +5358,68 @@ document.addEventListener('click',function(ev){
     }
   }
 });
+
+/* Einkaufsliste: Artikel am Griff rechts ziehen. Fällt ein Artikel zwischen zwei einer anderen Kategorie, wechselt er in diese Kategorie. */
+var SD=null;
+function sdRows(){return [].slice.call($('shopList').querySelectorAll('.shopitem:not(.done)'));}
+document.addEventListener('pointerdown',function(ev){
+  var g=ev.target.closest&&ev.target.closest('.sgrip');
+  if(!g||!S.canWrite||SD)return;
+  var li=g.closest('.shopitem');if(!li||!$('shopList').contains(li))return;
+  ev.preventDefault();
+  var rows=sdRows(),idx=rows.indexOf(li);if(idx<0)return;
+  SD={li:li,id:li.dataset.id,pid:ev.pointerId,y:ev.clientY,y0:ev.clientY,sy:window.scrollY,rows:rows,idx:idx,k:idx,h:li.getBoundingClientRect().height,
+    mids:rows.map(function(r){var b=r.getBoundingClientRect();return b.top+window.scrollY+b.height/2;})};
+  try{g.setPointerCapture(ev.pointerId);}catch(e){}
+  li.classList.add('sdragging');document.body.classList.add('sdrag');
+  rows.forEach(function(r){if(r!==li)r.classList.add('sshift');});
+  if(navigator.vibrate)try{navigator.vibrate(8);}catch(e){}
+  sdTick();
+},{passive:false});
+function sdLayout(){
+  if(!SD)return;
+  var dy=SD.y-SD.y0+(window.scrollY-SD.sy),c=SD.mids[SD.idx]+dy,k=0;
+  SD.li.style.transform='translateY('+dy+'px)';
+  SD.rows.forEach(function(r,j){if(j!==SD.idx&&SD.mids[j]<c)k++;});
+  SD.k=k;
+  var m=0;
+  SD.rows.forEach(function(r,j){
+    if(j===SD.idx)return;
+    var sh=(j>SD.idx&&m<k)?-SD.h:(j<SD.idx&&m>=k)?SD.h:0;
+    r.style.transform=sh?'translateY('+sh+'px)':'';m++;
+  });
+}
+function sdTick(){
+  if(!SD)return;
+  var vh=window.innerHeight,edge=90,v=0;
+  /* Nur am Rand und nur, wenn der Finger in diese Richtung gezogen wird (sonst rollt die Seite schon beim Anfassen unten los) */
+  var bot=vh-edge-60;
+  if(SD.y<edge&&SD.y<SD.y0-10)v=-Math.ceil((edge-SD.y)/6);else if(SD.y>bot&&SD.y>SD.y0+10)v=Math.ceil((SD.y-bot)/6);
+  if(v)window.scrollBy(0,v);
+  sdLayout();
+  SD.raf=requestAnimationFrame(sdTick);
+}
+document.addEventListener('pointermove',function(ev){if(!SD||ev.pointerId!==SD.pid)return;ev.preventDefault();SD.y=ev.clientY;},{passive:false});
+document.addEventListener('touchmove',function(ev){if(SD)ev.preventDefault();},{passive:false});
+function sdEnd(ev,cancel){
+  if(!SD||(ev&&ev.pointerId!==SD.pid))return;
+  var d=SD;SD=null;cancelAnimationFrame(d.raf);
+  document.body.classList.remove('sdrag');
+  d.rows.forEach(function(r){r.style.transform='';r.classList.remove('sshift','sdragging');});
+  if(cancel||d.k===d.idx){if(d.pending)renderShop();return;}
+  var find=function(id){return S.shop.find(function(x){return x.id===id;});};
+  var seq=d.rows.filter(function(r,j){return j!==d.idx;}).map(function(r){return find(r.dataset.id);});
+  var x=find(d.id);if(!x||seq.some(function(y){return !y;}))return;
+  seq.splice(d.k,0,x);
+  /* Ganze Liste neu durchnummerieren, nur geänderte Artikel speichern */
+  var ch=[];
+  seq.forEach(function(y,i){var o=(i+1)*1000;if(y.ord!==o){y.ord=o;ch.push(y);}});
+  renderShop();
+  if(db)ch.forEach(function(y){db.collection('shopping').doc(y.id).update({ord:y.ord}).catch(fail);});
+}
+document.addEventListener('pointerup',function(ev){sdEnd(ev,false);});
+document.addEventListener('pointercancel',function(ev){sdEnd(ev,false);});
+document.addEventListener('contextmenu',function(ev){if(ev.target.closest&&ev.target.closest('.sgrip'))ev.preventDefault();});
 
 /* Drag and drop (Maus, ab Tablet-Breite). Auf dem Handy: Eintrag antippen und das Datum ändern. */
 document.addEventListener('dragstart',function(ev){
