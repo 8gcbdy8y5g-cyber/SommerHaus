@@ -778,6 +778,27 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
 .fab:active{transform:scale(.95)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-property:opacity,background-color,color,border-color!important}}
 
+
+/* Lädt ein Foto nicht (kein Netz, Vorschau), steht die Art des Ausflugs in der grauen Fläche */
+.aust-ph{position:absolute;inset:0;display:grid;place-items:center;padding:8px;text-align:center;font-size:13px;font-weight:600;color:var(--fg2)}
+/* ===== Ausflüge ruhiger (Nov. 2026): Farbe nur noch im Foto, Rahmen und Schilder neutral ===== */
+.aust{background:var(--card);box-shadow:inset 0 0 0 1px var(--sep)}
+.aust-img{background:var(--fill)}
+.aust-t{border-top:0;gap:2px;padding:10px 12px 12px}
+.aust-n{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.5em;font-weight:600}
+.aust.open .aust-n{-webkit-line-clamp:unset;min-height:0}
+.aust-o{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aust-b{flex-wrap:nowrap;overflow:hidden;margin-top:6px}
+.aust-b i{flex:none;white-space:nowrap;background:var(--fill);color:var(--fg2)}
+.aust-b i.fr{background:var(--fill);color:var(--fg);font-weight:700}
+.aust.done{opacity:.55;filter:grayscale(1)}
+.ausk{background:var(--card);box-shadow:inset 0 0 0 1px var(--sep)}
+.ausk-i{background:var(--fill)}
+.ausk-i::after{display:none}
+.ausk.all .ausk-i{background:var(--fill);display:grid;place-items:center;color:var(--fg2)}
+.ausk[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--accent)}
+.rtcbtn{background:var(--card);color:var(--fg);box-shadow:inset 0 0 0 1px var(--sep),0 1px 2px rgba(0,0,0,.06);font-weight:600}
+.rtcbtn svg{color:#C8102E}
 /* ===== Feinschliff Bewegung (Nov. 2026): zwei Kurven für alles ===== */
 :root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-drawer:cubic-bezier(.32,.72,0,1)}
 /* Knöpfe geben beim Drücken leicht nach */
@@ -3524,7 +3545,7 @@ function ausDist(z){
   return Math.round(6371*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
 }
 function ausDoneYear(id){var v=(S.ausDone||{})[id];return !!(v&&String(v).slice(0,4)===todayIso().slice(0,4));}
-var AUS_TYP={drinnen:'drinnen',draussen:'draußen',beides:'drinnen & draußen'};
+var AUS_TYP={drinnen:'drinnen',draussen:'draußen',beides:'innen & außen'};
 /* Farben wie auf der RUHR.TOPCARD (Kategorien von ruhrtopcard.de) */
 var AUS_KAT=[['Bad & Therme','#76c5ba','Schwimmbad'],['Zoo & Tiere','#f3a4b8','Zoo & Tiere'],['Freizeitpark','#b2c65f','Freizeitpark'],['Museum','#f49a48','Museum'],['Industriekultur','#7dc085','Industriekultur'],['Sport & Action','#ce90bf','Sport & Action'],['Indoor-Spaß','#eedc6c','Indoor-Spaß'],['Schiff & Führung','#76c5ba','Schiff & Führung'],['Natur & Aussicht','#8fa4d1','Natur & Aussicht'],['Kultur & Bühne','#ee7577','Bühne & Show'],['Sonstiges','#eedc6c','Sonstiges']];
 function ausCol(k){for(var i=0;i<AUS_KAT.length;i++)if(AUS_KAT[i][0]===k)return AUS_KAT[i][1];return '#eedc6c';}
@@ -3542,10 +3563,10 @@ function ausTile(z,m,big,dv){
   var im=ausImg(z);
   var h='<article class="aust'+(done&&!dv?' done':'')+(open?' open':'')+(big?' big':'')+'" data-id="'+esc(z.id)+'" style="--kc:'+ausCol(z.kat)+'">'+
     '<button type="button" class="aust-h" data-act="ausopen" data-id="'+esc(z.id)+'" aria-expanded="'+open+'">'+
-      '<span class="aust-img">'+(im?'<img src="'+esc(im)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'<span class="aust-k">'+esc(z.kat||'')+(done?' · gemacht':'')+'</span></span>'+
+      '<span class="aust-img"><span class="aust-ph">'+esc(z.kat||'Ausflug')+'</span>'+(im?'<img src="'+esc(im)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</span>'+
       '<span class="aust-t">'+
       '<b class="aust-n">'+esc(z.name)+'</b>'+
-      '<span class="aust-o">'+esc(z.ort||'')+(km!=null?' · '+km+' km':'')+'</span>'+(dv&&S.ausDone[z.id]?'<span class="aust-o">gemacht am '+esc(dShort(String(S.ausDone[z.id]).slice(0,10)))+'</span>':'')+
+      '<span class="aust-o">'+esc(z.ort||'')+(km!=null?' · '+km+' km':'')+'</span>'+(S.ausK&&!done?'':'<span class="aust-o">'+(S.ausK?'':esc(z.kat||''))+(done&&!dv?(S.ausK?'':' · ')+'gemacht':'')+'</span>')+(dv&&S.ausDone[z.id]?'<span class="aust-o">gemacht am '+esc(dShort(String(S.ausDone[z.id]).slice(0,10)))+'</span>':'')+
       '<span class="aust-b"><i class="'+(z.leistung==='frei'?'fr':'hf')+'">'+(z.leistung==='frei'?'frei':'50 %')+'</i><i>'+esc(AUS_TYP[z.ort_typ]||'')+'</i>'+(shut?'<i class="sh">'+(ausState(z,m&&m.days[0]?m.days[0].d:null)==='vorbei'?'für '+todayIso().slice(0,4)+' vorbei':'Saisonpause')+'</i>':'')+'</span></span>'+
     '</button>';
   if(open){
@@ -3570,7 +3591,7 @@ function renderAus(){
   h+='<div class="kpis k22"><button type="button" class="kpi" data-act="ausf" data-f="frei"><b>'+freeOpen+'</b><span>frei, noch offen</span></button><button type="button" class="kpi'+(S.ausDoneV?' on':'')+'" data-act="ausdonev" aria-pressed="'+!!S.ausDoneV+'"><b>'+doneN+'</b><span>'+yr+' schon gemacht ›</span></button></div></section>';
   var sc={};all.forEach(function(z){sc[z.id]=ausScore(z,m);});
   var kats=AUS_KAT.filter(function(k){return all.some(function(z){return z.kat===k[0];});});
-  h='<div class="rtcbar"><button type="button" class="rtcbtn" data-act="rtcopen"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></svg>Meine RUHR.TOPCARD</button></div>'+'<div class="auskr" role="group" aria-label="Arten von Ausflügen"><button type="button" class="ausk all" data-act="ausk" data-k="" aria-pressed="'+!S.ausK+'"><span class="ausk-i"></span><b>Alle</b><em>'+all.length+'</em></button>'+
+  h='<div class="rtcbar"><button type="button" class="rtcbtn" data-act="rtcopen"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></svg>Meine RUHR.TOPCARD</button></div>'+'<div class="auskr" role="group" aria-label="Arten von Ausflügen"><button type="button" class="ausk all" data-act="ausk" data-k="" aria-pressed="'+!S.ausK+'"><span class="ausk-i"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></span><b>Alle</b><em>'+all.length+'</em></button>'+
     kats.map(function(k){var zs=all.filter(function(z){return z.kat===k[0];}),pic=zs.filter(function(z){return ausImg(z);}).sort(function(a,b){return (b.kinder?1:0)-(a.kinder?1:0)||(ausDist(a)||99)-(ausDist(b)||99);})[0];
       return '<button type="button" class="ausk" data-act="ausk" data-k="'+esc(k[0])+'" aria-pressed="'+(S.ausK===k[0])+'" style="--kc:'+k[1]+'"><span class="ausk-i">'+(pic?'<img src="'+esc(ausImg(pic))+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</span><b>'+esc(k[2])+'</b><em>'+zs.length+'</em></button>';}).join('')+'</div>'+h;
   var byS=function(a,b){return sc[b.id]-sc[a.id]||(ausDist(a)||99)-(ausDist(b)||99)||a.name.localeCompare(b.name,'de');};
