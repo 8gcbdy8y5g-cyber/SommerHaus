@@ -403,8 +403,8 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
 .rhy{display:flex;flex-wrap:wrap;gap:6px;padding-top:8px}
 .rhy .pair{display:inline-flex;align-items:center;background:var(--fill);border-radius:999px}
 .rhy .pair .sg{background:none;padding:0 6px 0 14px}
-.rhy .pair .sgx{border:0;background:none;color:var(--fg2);font-size:16px;min-width:32px;min-height:36px;cursor:pointer;padding:0 8px 0 2px}
-.rhy .sg.all{background:var(--accent);color:var(--on-accent)}
+.rhy .pair .sgx{border:0;background:none;color:var(--fg2);font-size:18px;min-width:44px;min-height:44px;cursor:pointer;padding:0 10px 0 4px}
+.rhy .sg.all{background:none;color:var(--accent);padding-inline:6px}
 .sg.fix{background:var(--accent);color:var(--on-accent)}
 .fixq{flex:none;align-self:center;font-size:15px;font-weight:500;margin-right:2px}
 .shopadd .go{width:36px;height:36px;background:var(--fill);color:var(--accent)}
@@ -728,7 +728,7 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
 .finish{margin-top:16px;border-top:1px solid var(--sep);padding-top:14px;display:grid;gap:10px}
 .finish .fbtn{min-height:48px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:700;cursor:pointer;padding:0 16px}
 .finish .fbtn:active{opacity:.8}
-.finish .fbtn.sec{background:var(--card);color:var(--fg);border:1px solid var(--sep)}
+.finish .fbtn.sec{background:var(--card);color:var(--fg);border:1px solid var(--sep);margin:0}
 .finish .fq{font-size:14px;line-height:1.4}
 .finish .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .finish .storebox{display:grid;gap:4px}
@@ -788,6 +788,9 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
 .trips .shopname{color:var(--fg);font-weight:600}
 .finish .fmeta{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;color:var(--fg2)}
 .finish .fmeta button{border:0;background:none;color:var(--fg2);font-size:13px;font-weight:600;cursor:pointer;min-height:32px;padding:0 4px}
+.histrow{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:48px;border:0;border-top:1px solid var(--sep);background:none;color:var(--fg);font:inherit;font-size:15px;padding:4px 2px 0;cursor:pointer;text-align:left}
+.histrow .hv{display:inline-flex;align-items:center;gap:6px;color:var(--fg2);font-size:14px}
+.histrow .chev{transition:transform .15s}.histrow .chev.open{transform:rotate(90deg)}
 .trips{margin:0;padding:0;list-style:none;display:grid;gap:8px}
 .trips li{font-size:13px;line-height:1.35;color:var(--fg2)}
 .trips b{color:var(--fg);font-weight:600}
@@ -1167,6 +1170,7 @@ body.ldragging{cursor:grabbing;-webkit-user-select:none;user-select:none}
         <div class="seg" id="shopKindSeg">
           <button type="button" data-act="shopkind" data-k="item" aria-pressed="true">Neuer Artikel</button>
           <button type="button" data-act="shopkind" data-k="list" aria-pressed="false">Neue Liste</button>
+          <button type="button" data-act="shopkind" data-k="spont" aria-pressed="false">Spontankauf</button>
         </div>
         <div class="fgroup" id="ssItem">
           <label class="frow text"><span class="sr">Artikel</span><input id="ss-title" maxlength="80" placeholder="z. B. Äpfel" autocomplete="off" autocapitalize="sentences"></label>
@@ -2603,6 +2607,7 @@ function renderShop(){
   var done=mine.filter(function(x){return x.done;}).sort(function(a,b){return (b.doneAt||0)-(a.doneAt||0);});
   $('shopCount').textContent=open.length?open.length+' offen':'';
   $('shopBest').innerHTML=ofBestHtml(open);
+  var dw=$('ofDockWrap');if(dw)dw.hidden=S.tab!=='shop'||(!S.ofDock&&S.ofBest.length>0);
   var edF=document.activeElement&&document.activeElement.id==='shopEditIn';
   $('shopList').innerHTML=open.length?(byStore?shopByStoreHtml(open):open.map(shopRow).join('')):'<li class="empty" style="margin:6px 0 8px">'+(S.loading?'Lädt …':'Die Liste ist leer.')+'</li>';
   $('shopForm').hidden=!S.canWrite;
@@ -2654,7 +2659,7 @@ function renderRhythm(L){
   var list=S.canWrite?rhythmDue(L):[];
   S.rhy=list;
   if(!list.length){box.innerHTML='';return;}
-  box.innerHTML='<div class="rhyhead">Laut deinem Rhythmus fällig</div><div class="rhy">'+
+  box.innerHTML='<div class="rhyhead">Bald wieder fällig</div><div class="rhy">'+
     list.map(function(x,i){return '<span class="pair"><button type="button" class="sg" data-act="rhyadd" data-i="'+i+'" title="zuletzt vor '+x.since+(x.since===1?' Tag':' Tagen')+' gekauft">+ '+esc(x.t)+'<i>'+rhEvery(x.every)+'</i></button><button type="button" class="sgx" data-act="rhyskip" data-i="'+i+'" aria-label="'+esc(x.t)+' vorerst nicht vorschlagen">×</button></span>';}).join('')+
     (list.length>1?'<button type="button" class="sg all" data-act="rhyall">Alle '+list.length+' hinzufügen</button>':'')+'</div>';
 }
@@ -4106,21 +4111,18 @@ function renderFinish(L,open,done){
         '<div class="frow"><button type="button" class="fbtn sec" data-act="shopfinishno">Abbrechen</button><button type="button" class="fbtn" data-act="shopfinishgo">Ja, abschließen</button></div>';
     }else{
       h+='<button type="button" class="fbtn" data-act="shopfinish">Einkauf abgeschlossen</button>'+
-        '<span class="fmeta">'+(done.length?done.length+' erledigt'+(open.length?' · '+open.length+' wandern in den nächsten Einkauf':''):'Mit Foto vom Kassenzettel hake ich die Artikel automatisch ab')+'</span>';
+        '<span class="fmeta">'+(done.length?done.length+' erledigt'+(open.length?' · '+open.length+' wandern in den nächsten Einkauf':''):'Mit Foto vom Kassenzettel werden die Artikel automatisch abgehakt.')+'</span>';
     }
   }
   if(S.canWrite){
     if(S.spontAsk){
       h+='<p class="fq"><b>Spontaner Einkauf</b><br><small>Ohne Liste, zum Beispiel Bäcker, Tankstelle oder ein Einkauf unterwegs.</small></p>'+finFields(true)+
         '<div class="frow"><button type="button" class="fbtn sec" data-act="spontno">Abbrechen</button><button type="button" class="fbtn" data-act="spontgo">Eintragen</button></div>';
-    }else{
-      h+='<button type="button" class="fbtn sec" data-act="spont">Spontaner Einkauf eintragen</button>';
     }
   }
   if(trips.length){
     var wk=weekStartIso(todayIso()),nw=trips.filter(function(x){return (x.date||'')>=wk;}).length;
-    h+='<div class="fmeta"><span>'+trips.length+(trips.length===1?' Einkauf':' Einkäufe')+' abgeschlossen · '+nw+' diese Woche</span>'+
-      '<button type="button" data-act="tripstoggle" aria-expanded="'+S.tripsOpen+'">'+(S.tripsOpen?'Verlauf ausblenden':'Verlauf')+'</button></div>';
+    h+='<button type="button" class="histrow" data-act="tripstoggle" aria-expanded="'+S.tripsOpen+'"><span>Verlauf</span><span class="hv">'+trips.length+(trips.length===1?' Einkauf':' Einkäufe')+' · '+nw+' diese Woche<svg class="chev'+(S.tripsOpen?' open':'')+'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></button>';
     if(S.tripsOpen)h+='<ul class="trips">'+trips.slice(0,30).map(function(x,i){
       var names=(x.items||[]).map(function(y){return y.t;}).join(', ');
       var tl=x.spont?' · spontan':' · '+(x.n||0)+' Artikel'+(x.carriedN?', '+x.carriedN+' übernommen':'');
@@ -4562,7 +4564,7 @@ function render(){
   $('shopView').hidden=S.tab!=='shop';
   $('moreView').hidden=S.tab!=='more';
   $('ausView').hidden=S.tab!=='aus';
-  $('ofDockWrap').hidden=S.tab!=='shop';
+  $('ofDockWrap').hidden=S.tab!=='shop'||(!S.ofDock&&!!(S.ofBest&&S.ofBest.length));
   $('offersView').hidden=!(S.tab==='shop'&&S.ofDock);
   if(S.tab==='shop')renderOfDock();
   $('tabOffers').hidden=true;document.querySelector('.tabbar').classList.add('t4');
@@ -5516,7 +5518,7 @@ document.addEventListener('click',function(ev){
       S.tab=['shop','more','aus'].indexOf(el.dataset.tab)>=0?el.dataset.tab:el.dataset.tab==='offers'?'shop':'cal';S.delList=false;
       try{localStorage.setItem('sommerhaus-tab',S.tab);}catch(e){}
       render();window.scrollTo(0,0);break;
-    case 'shopkind':setShopKind(el.dataset.k);break;
+    case 'shopkind':if(el.dataset.k==='spont'){closeSheet();resetFin();S.spontAsk=true;renderShop();setTimeout(function(){var f=$('shopFinish');if(f)f.scrollIntoView({behavior:'smooth',block:'center'});},60);break;}setShopKind(el.dataset.k);break;
     case 'shoplist':
       S.shopList=el.dataset.l;S.delList=false;resetFin();
       try{localStorage.setItem('sommerhaus-shoplist',S.shopList);}catch(e){}
