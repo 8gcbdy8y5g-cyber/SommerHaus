@@ -878,6 +878,14 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
 /* Louis' Wochenplan (Kalender > Louis): Nachbau des Klettplans */
 #calView.lmode{grid-template-areas:"cal";grid-template-columns:minmax(0,1fr)}
 #calView.lmode #day{display:none}
+/* Louis bekommt die volle Breite, ohne äußere Karte */
+#calView.lmode .panel.cal{background:none;padding:0}
+#calView.lmode .cal-head{padding-inline:4px}
+/* Dunkelmodus: Board und Karten nicht als hellste Fläche */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lboard{filter:brightness(.84)}:root:not([data-theme="light"]) .lpal .lcard{filter:brightness(.9)}}
+:root[data-theme="dark"] .lboard{filter:brightness(.84)}:root[data-theme="dark"] .lpal .lcard{filter:brightness(.9)}
+/* Fehlt das Kartenbild, steht der Anfangsbuchstabe auf getönter Fläche */
+.lcard.noill::before{content:attr(data-i);flex:1;min-height:0;display:grid;place-items:center;font:500 34cqw/1 var(--display);color:#8E4F4A;background:#F6E8D6;margin:7% 7% 3%;border-radius:12%}
 .lwrap{display:grid;gap:14px;grid-template-columns:minmax(0,1fr);margin-top:6px}
 @media (min-width:1000px){.lwrap{grid-template-columns:minmax(0,1fr) 270px;align-items:start}}
 .lboard{background:#F6E8D6;border-radius:18px;padding:14px clamp(6px,1.6vw,16px) 18px;box-shadow:inset 0 0 0 1px rgba(150,100,70,.14);color:#8E4F4A;-webkit-user-select:none;user-select:none}
@@ -886,7 +894,7 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
 .ltitle{flex:1;min-width:0;text-align:center;padding-right:clamp(0px,6vw,70px)}
 .ltitle b{display:block;font:500 clamp(16px,3.6vw,32px)/1.1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:#8E4F4A;white-space:nowrap}
 .ltitle span{display:inline-block;margin-top:4px;font:600 clamp(9px,1.3vw,12px) var(--display);letter-spacing:.16em;text-transform:uppercase;color:#8E4F4A}
-.ltitle span i{font-style:normal;font-family:"Marker Felt","Chalkboard SE","Comic Sans MS",cursive;letter-spacing:.06em;font-size:1.45em;color:#222;border-bottom:1.5px dotted #8E4F4A;padding:0 .8em}
+.ltitle span i{font-style:normal;font-family:"Marker Felt","Chalkboard SE",var(--display);letter-spacing:.06em;font-size:1.45em;color:#222;border-bottom:1.5px dotted #8E4F4A;padding:0 .8em}
 .lgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:clamp(4px,1.3vw,14px);margin-top:6px}
 .lcol{display:flex;flex-direction:column;align-items:stretch;min-width:0}
 .lpin{display:block;width:52%;max-width:44px;aspect-ratio:1;margin:0 auto 4px;border-radius:50%;
@@ -907,7 +915,7 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
   display:flex;flex-direction:column;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:grab}
 .lcard svg{flex:1;min-height:0;width:100%;padding:7% 5% 0;display:block}
 .lcard .lill{flex:1;min-height:0;width:100%;object-fit:contain;padding:8% 7% 3%;display:block;pointer-events:none}
-.lcard .lcap{font:600 7.4cqw/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:#3A3A3A;text-align:center;padding:2% 1% 9%;white-space:nowrap;overflow:hidden}
+.lcard .lcap{font:600 max(9px,7.4cqw)/1 var(--display);letter-spacing:.06em;text-overflow:ellipsis;text-transform:uppercase;color:#3A3A3A;text-align:center;padding:2% 1% 9%;white-space:nowrap;overflow:hidden}
 @container (max-width:58px){.lcard .lcap{display:none}.lcard svg,.lcard .lill{padding:7%}}
 .lcard.photo img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .lcard.gone{background:#eee;align-items:center;justify-content:center}.lcard.gone .lcap{font-size:30cqw;color:#aaa;padding:0}
@@ -923,7 +931,7 @@ body.ldragging{cursor:grabbing;-webkit-user-select:none;user-select:none}
 .lhint.on{color:var(--fg);font-size:14px}
 .lbtns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.lbtns:empty{display:none}
 .lpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:10px}
-@media (max-width:599px){.lpgrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.lpal .lcard .lcap{font-size:8.4cqw;letter-spacing:.06em}}
+@media (max-width:599px){.lpgrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.lpal .lcard .lcap{font-size:max(9.5px,8.4cqw);letter-spacing:0;text-overflow:ellipsis;padding-inline:4%}}
 @media (min-width:1000px){.lpgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .lpitem{position:relative;display:flex;flex-direction:column;gap:3px;border-radius:12px;cursor:pointer}
 .lpitem.sel .lcard{outline:3px solid var(--accent);outline-offset:2px}
@@ -5823,8 +5831,9 @@ function lCardHtml(id){
   if(!c)return '<div class="lcard gone" data-lc="'+esc(id)+'" title="Karte gelöscht"><span class="lcap">?</span></div>';
   if(c.img)return '<div class="lcard photo" data-lc="'+esc(id)+'" title="'+esc(c.t||'Fotokarte')+'"><img src="'+esc(c.img)+'" alt="" draggable="false"></div>';
   var pic=c.ill?'<img class="lill" src="'+esc(c.ill)+'" alt="" draggable="false">':'<svg viewBox="0 0 120 90" aria-hidden="true">'+(c.svg||'')+'</svg>';
-  return '<div class="lcard" data-lc="'+esc(id)+'" title="'+esc(c.t)+'">'+pic+'<span class="lcap">'+esc(c.t)+'</span></div>';
+  return '<div class="lcard" data-lc="'+esc(id)+'" data-i="'+esc((c.t||'?').charAt(0).toUpperCase())+'" title="'+esc(c.t)+'">'+pic+'<span class="lcap">'+esc(c.t)+'</span></div>';
 }
+document.addEventListener('error',function(ev){var t=ev.target;if(t&&t.classList&&t.classList.contains('lill')&&t.parentNode){t.parentNode.classList.add('noill');t.remove();}},true);
 function lName(id){var c=lFind(id);return c?(c.t||'Fotokarte'):'gelöschte Karte';}
 function calSeg(mode){
   var b=function(m,t){return '<button type="button" data-act="calmode" data-mode="'+m+'" aria-pressed="'+(mode===m)+'">'+t+'</button>';};
