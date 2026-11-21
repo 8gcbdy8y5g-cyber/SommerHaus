@@ -217,11 +217,10 @@ h2,h3{font-family:var(--display)}
 .row{--c:var(--accent);position:relative;display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center}
 .row.w{--c:var(--green)}.row.bw{--c:var(--yellow)}.row.m{--c:var(--blue)}.row.over{--c:var(--red)}
 .row.p0{--c:var(--m0)}.row.p1{--c:var(--m1)}.row.p2{--c:var(--m2)}.row.p3{--c:var(--m3)}
-.row.pp{background:color-mix(in srgb,var(--c) 16%,var(--card));border-radius:12px;margin-block:3px}
-.row.pp::before{display:none}
-.row.pp.ovs{box-shadow:inset 3px 0 0 var(--red)}
+.row.np{--c:color-mix(in srgb,var(--fg2) 75%,transparent)}
 .row+.row::before{content:'';position:absolute;left:48px;right:0;top:0;height:1px;background:var(--sep)}
 .row>.check,.row>.time{grid-column:1;grid-row:1}
+.time.allday{font-size:11px}
 .row>.rowmain{grid-column:2;grid-row:1}
 .row>.right{grid-column:3;grid-row:1}
 .row>.assign{grid-column:2/4;grid-row:2;padding-bottom:10px}
@@ -234,7 +233,7 @@ h2,h3{font-family:var(--display)}
 .right{display:flex;align-items:center;gap:8px;padding-left:8px;font-size:13px}
 .due{font-weight:500;color:var(--fg2);white-space:nowrap}
 .due.neg{color:var(--red)}
-.time{font-size:10.5px;font-weight:600;color:var(--purple);text-align:center;font-variant-numeric:tabular-nums;padding-inline:2px}
+.time{font-size:13px;font-weight:600;color:var(--fg2);text-align:center;font-variant-numeric:tabular-nums;padding-inline:2px}
 .check{position:relative;width:48px;height:48px;background:none;border:0;padding:0;cursor:pointer;display:grid;place-items:center}
 .check::before{content:'';width:24px;height:24px;border-radius:50%;border:2px solid var(--c);transition:background .15s}
 .check:focus-visible::before{background:color-mix(in srgb,var(--c) 20%,transparent)}
@@ -257,7 +256,7 @@ span.check{cursor:default}
 .group-head:first-of-type{margin-top:14px}
 .group-head h3{font-size:15px;font-weight:600}
 .group-head .count{font-size:13px;color:var(--fg2);font-variant-numeric:tabular-nums}
-.group-head.open h3{color:var(--purple)}
+.group-head.open h3{color:var(--fg2)}
 
 /* Eingabe-Sheet */
 .scrim{position:fixed;inset:0;z-index:50;background:var(--overlay);display:grid;align-items:end;justify-items:center;overflow:hidden;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
@@ -873,8 +872,6 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
 .cal-head h2 .wkr{font-family:var(--font);font-size:14px;font-weight:500;color:var(--fg2);margin-left:.5em;letter-spacing:0}
 .shoplist{overflow-x:clip}
 .cal-head .nav{flex:none}
-/* Überfällig: Rand bleibt, Fläche ruhiger */
-.row.pp.ovs{background:color-mix(in srgb,var(--c) 8%,var(--card))}
 /* Louis' Wochenplan (Kalender > Louis): Nachbau des Klettplans */
 #calView.lmode{grid-template-areas:"cal";grid-template-columns:minmax(0,1fr)}
 #calView.lmode #day{display:none}
@@ -2312,6 +2309,7 @@ var UNITS={day:['Tag','Tage'],week:['Woche','Wochen'],month:['Monat','Monate']};
 var fmtLong=new Intl.DateTimeFormat('de-DE',{weekday:'long',day:'numeric',month:'long'});
 var fmtDayMonth=new Intl.DateTimeFormat('de-DE',{day:'numeric',month:'long'});
 var fmtShort=new Intl.DateTimeFormat('de-DE',{weekday:'short',day:'numeric',month:'short'});
+var fmtDM=new Intl.DateTimeFormat('de-DE',{day:'2-digit',month:'2-digit'});
 var fmtMonth=new Intl.DateTimeFormat('de-DE',{month:'long',year:'numeric'});
 function $(id){return document.getElementById(id);}
 function pad(n){return String(n).padStart(2,'0');}
@@ -2417,12 +2415,12 @@ function taskRow(t,today,o){
   if(o.rel)sub.push('<span class="'+(over?'neg':'')+'">'+relDue(t.due,today)+'</span>');
   else if(over&&!o.right){var od=diffDays(t.due,today);sub.push('<span class="neg">seit '+od+(od===1?' Tag':' Tagen')+' offen</span>');}
   sub.push(esc(intervalLabel(t)));
-  if(o.last&&t.lastDone)sub.push('zuletzt '+fmtShort.format(parse(t.lastDone)));
+  if(o.last&&t.lastDone)sub.push('zuletzt '+fmtDM.format(parse(t.lastDone)));
   var right='';
   if(o.right)right+='<span class="due'+(over?' neg':'')+'">'+relDue(t.due,today)+'</span>';
-  right+=whoBadge(t.who);
+  if(!o.noWho)right+=whoBadge(t.who);
   var pc=personClass(t);
-  return '<div class="row task'+(over?' over':' '+freqClass(t))+(pc?' '+pc+' pp'+(over?' ovs':''):'')+'" data-kind="task" data-id="'+esc(t.id)+'">'+
+  return '<div class="row task'+(over?' over':(pc?'':' np'))+(pc?' '+pc+' pp'+(over?' ovs':''):'')+'" data-kind="task" data-id="'+esc(t.id)+'">'+
     '<button type="button" class="check" data-act="done"'+(S.canWrite?'':' disabled')+' aria-label="Erledigt: '+esc(t.title)+'"></button>'+
     '<button type="button" class="rowmain" data-act="open"><span class="title">'+binIcon(t.icon)+esc(t.title)+'</span><span class="meta">'+sub.join(' · ')+'</span></button>'+
     '<span class="right">'+right+'</span></div>';
@@ -2441,7 +2439,7 @@ function eventRow(e,o){
   if(e.note)sub.push(esc(e.note));
   var pc=personClass(e);
   return '<div class="row event'+(pc?' '+pc+' pp':'')+'" data-kind="event" data-id="'+esc(e.id)+'">'+
-    '<span class="time">'+(e.time?esc(e.time):'Ganztag')+'</span>'+
+    '<span class="time'+(e.time?'':' allday')+'">'+(e.time?esc(e.time):'Ganztag')+'</span>'+
     '<button type="button" class="rowmain" data-act="open"><span class="title">'+esc(e.title)+'</span><span class="meta">'+sub.join(' · ')+'</span></button>'+
     '<span class="right">'+whoBadge(e.who)+'</span></div>';
 }
@@ -4523,14 +4521,7 @@ function renderList(today){
     groups.forEach(function(g){
       h+='<div class="group-head'+(g.open?' open':'')+'">'+(g.open?'':whoBadge(g.name))+'<h3>'+esc(g.name)+'</h3><span class="count">'+g.items.length+'</span></div>';
       if(!g.items.length){h+='<p class="empty" style="margin:0 0 6px">'+(g.open?'Alle Aufgaben sind verteilt.':'Noch nichts zugeteilt.')+'</p>';return;}
-      h+=g.items.map(function(t){
-        var row=taskRow(t,today,{right:true,last:true});
-        if(g.open&&S.canWrite&&S.members.length){
-          var btns='<span class="assign">'+S.members.map(function(n){return '<button type="button" data-act="assign" data-who="'+esc(n)+'" aria-label="'+esc(n)+' übernimmt '+esc(t.title)+'">'+esc(n)+'</button>';}).join('')+'</span>';
-          row=row.replace('<span class="right">',btns+'<span class="right">');
-        }
-        return row;
-      }).join('');
+      h+=g.items.map(function(t){return taskRow(t,today,{right:true,last:true,noWho:true});}).join('');
     });
   }
   h+='</section><section class="panel"><h2>Kommende Termine</h2>';
