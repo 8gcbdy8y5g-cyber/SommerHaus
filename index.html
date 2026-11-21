@@ -142,7 +142,9 @@ h2,h3{font-family:var(--display)}
 @media (max-width:719px){
   .cal-grid.week{grid-template-columns:minmax(0,1fr);margin-top:6px}
   .cal-grid.week .dow{display:none}
-  .cal-grid.week .cell{flex-direction:row;align-items:flex-start;justify-content:flex-start;gap:8px;min-height:54px;padding:6px 6px;border-radius:12px}
+  .cal-grid.week .cell{flex-direction:row;align-items:flex-start;justify-content:flex-start;gap:8px;min-height:44px;padding:6px 6px;border-radius:12px}
+  .cal-grid.week .cell.empty{min-height:0;padding-block:2px}
+  .cal-grid.week .cell.empty .wd{padding-top:6px}
   .cal-grid.week .cell.sel{background:var(--accent-soft)}
   .cal-grid.week .cell.dropping{background:var(--accent-soft)}
   .cal-grid.week .wd{display:block}
@@ -198,11 +200,13 @@ h2,h3{font-family:var(--display)}
   .binmark .bin{width:18px;height:18px}
 }
 .chip{--c:var(--accent);font-size:12px;line-height:1.25;padding:3px 6px;border-radius:6px;font-weight:500;color:var(--fg);
-  background:color-mix(in srgb,var(--c) 22%,var(--card));cursor:grab;overflow:hidden;
+  background:var(--fill);cursor:grab;overflow:hidden;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
 .chip.w{--c:var(--green)}.chip.bw{--c:var(--yellow)}.chip.m{--c:var(--blue)}.chip.event{--c:var(--purple)}.chip.over{--c:var(--red)}
 .chip.p0{--c:var(--m0)}.chip.p1{--c:var(--m1)}.chip.p2{--c:var(--m2)}.chip.p3{--c:var(--m3)}
-.chip.ovs{box-shadow:inset 3px 0 0 var(--red)}
+.chip:not(.mu):not(.done)::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:.08em}
+.chip.np{--c:color-mix(in srgb,var(--fg2) 55%,transparent)}
+.chip.ovs,.chip.over{color:var(--red)}
 .chip .t{font-weight:700}
 .chip.done{background:transparent;color:var(--fg2);display:flex;align-items:center;gap:3px;cursor:pointer;padding-inline:2px}
 .chip.done .bin{opacity:.65;width:1.1em;height:1.1em}
@@ -2493,7 +2497,7 @@ function renderCal(today){
       var c=a.over?'over':(personClass(a.x)||'np');used[c]=1;
       return '<i class="dot '+c+'"></i>';
     }).join('')+it.m.map(function(k){used.mu=1;used['mu-'+k]=1;return '<i class="dot mu b-'+k+'"></i>';}).join('');
-    h+='<div class="cell'+(!wk&&d.getMonth()!==m?' out':'')+(ds===today?' today':'')+(ds===S.selected?' sel':'')+'" role="button" tabindex="0" data-act="day" data-date="'+ds+'" aria-label="'+esc(fmtLong.format(d))+', '+(all.length+it.m.length)+' Einträge">'+
+    h+='<div class="cell'+(wk&&!it.m.length&&!all.some(function(a){return a.k!=='done';})?' empty':'')+(!wk&&d.getMonth()!==m?' out':'')+(ds===today?' today':'')+(ds===S.selected?' sel':'')+'" role="button" tabindex="0" data-act="day" data-date="'+ds+'" aria-label="'+esc(fmtLong.format(d))+', '+(all.length+it.m.length)+' Einträge">'+
       (wk?'<span class="wd">'+WD[i]+'</span>':'')+'<span class="num">'+d.getDate()+'</span>'+binRow+'<div class="chips">'+chips+'</div><div class="dots">'+dots+'</div></div>';
   }
   h+='</div>';
