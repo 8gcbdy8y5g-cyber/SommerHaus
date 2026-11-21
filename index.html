@@ -4837,6 +4837,11 @@ $('form').addEventListener('submit',function(ev){
   if(!title){$('nameField').hidden=false;$('f-title').focus();toast('Bitte eine Aufgabe auswählen oder einen Namen eingeben.');return;}
   if(!date)return;
   var who=$('f-who').value,note=$('f-note').value.trim(),col,data;
+  var oldRec=F.id?(F.kind==='event'?S.events:S.tasks).find(function(x){return x.id===F.id;}):null;
+  var oldDate=oldRec?(oldRec.date||oldRec.due||''):'';
+  /* Bearbeiten: im Kalender auf dem Tag bleiben, von dem aus verschoben wird. Neu angelegt: zum Tag springen. */
+  var after=function(d,newMsg){closeSheet();if(!F.id)goTo(d);render();
+    toast(F.id?(oldDate&&d!==oldDate?'Verschoben auf '+fmtLong.format(parse(d))+'.':'Gespeichert.'):newMsg);};
   if(isBin){
     var dates=[date];
     if(!F.id)document.querySelectorAll('#moreDates input').forEach(function(i){if(i.value)dates.push(i.value);});
@@ -4845,8 +4850,7 @@ $('form').addEventListener('submit',function(ev){
     var jobs=F.id?[db.collection('tasks').doc(F.id).update(Object.assign({due:date},base))]
       :dates.map(function(d){return db.collection('tasks').add(Object.assign({due:d},base));});
     Promise.all(jobs).then(function(){
-      closeSheet();goTo(dates[0]);render();
-      toast(F.id?'Gespeichert.':(dates.length===1?BINS[F.bin].label+': 1 Termin eingetragen.':BINS[F.bin].label+': '+dates.length+' Termine eingetragen.'));
+      after(dates[0],dates.length===1?BINS[F.bin].label+': 1 Termin eingetragen.':BINS[F.bin].label+': '+dates.length+' Termine eingetragen.');
     },fail);
     return;
   }
@@ -4860,8 +4864,7 @@ $('form').addEventListener('submit',function(ev){
   var ref=F.id?db.collection(col).doc(F.id):null;
   var p=ref?ref.update(data):db.collection(col).add(data);
   p.then(function(){
-    closeSheet();goTo(date);render();
-    toast(F.id?'Gespeichert.':({task:'Aufgabe angelegt.',bin:'Mülltonne eingetragen.',event:'Termin angelegt.'}[F.kind]));
+    after(date,{task:'Aufgabe angelegt.',bin:'Mülltonne eingetragen.',event:'Termin angelegt.'}[F.kind]);
   },fail);
 });
 $('namesForm').addEventListener('submit',function(ev){
