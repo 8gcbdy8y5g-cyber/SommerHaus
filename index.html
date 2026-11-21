@@ -315,8 +315,9 @@ span.check{cursor:default}
 .chip .bin{width:1.35em;height:1.35em;vertical-align:-.3em;margin-right:.15em}
 
 .shop-head{display:flex;align-items:baseline;gap:10px}
-.shop-head .count{font-size:13px;color:var(--fg2);font-variant-numeric:tabular-nums}
-.sortrow{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:8px 0 2px;font-size:12px;color:var(--fg2)}
+.shop-head .count{font-size:13px;color:var(--fg2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sorttog{margin-left:auto;align-self:center;display:inline-flex;align-items:center;gap:5px;border:0;background:none;color:var(--fg2);font:inherit;font-size:14px;font-weight:500;min-height:44px;padding:0 2px;cursor:pointer;white-space:nowrap}
+.sorttog:active{opacity:.6}
 .sortrow .sortseg{padding:2px;font-size:12px;width:auto}
 .sortrow .sortseg button{padding:5px 10px;min-height:28px;font-size:12px}
 .shopgrp{list-style:none;padding:10px 0 2px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px}
@@ -369,11 +370,18 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
 .ofchip:active{opacity:.6}
 .shopitem.long .ofchip{white-space:normal;max-width:92px;text-align:center;line-height:1.2;padding:4px 9px}
 .shopitem.long .ofchip i{display:block;margin:0}
-.scheck.q::before{content:attr(data-q);display:grid;place-items:center;font-size:11px;font-weight:800;line-height:1;color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
-.ofbest{display:flex;align-items:center;gap:10px;width:100%;margin:2px 0 8px;border:0;border-radius:12px;background:var(--accent-soft);color:var(--fg);font:inherit;font-size:14px;line-height:1.35;text-align:left;padding:10px 12px;cursor:pointer}
+.smain{display:flex;flex-direction:column;justify-content:center;min-width:0;min-height:44px;padding:5px 0}
+.smain .stitle{padding:0;min-height:0}
+.smain .stitle.sbtn{padding:2px 0}
+.qty{color:var(--fg2);font-weight:500;font-variant-numeric:tabular-nums}
+.ofline{align-self:flex-start;border:0;background:none;padding:2px 0;font:inherit;font-size:13px;color:var(--fg2);cursor:pointer;text-align:left;font-variant-numeric:tabular-nums}
+.ofline.best{color:var(--accent);font-weight:500}
+.shopitem:not(.editing){-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.ofbest{display:flex;align-items:center;gap:10px;width:100%;margin:10px 0 4px;border:0;border-radius:12px;background:var(--fill);color:var(--fg);font:inherit;font-size:14px;line-height:1.35;text-align:left;padding:10px 12px;cursor:pointer}
 .ofbest .ofbi{flex:none;color:var(--accent);display:grid}
 .ofbest .ofbt{flex:1;min-width:0}
-.ofbest .chev{flex:none;color:var(--accent)}
+.ofbest .chev{flex:none;color:var(--fg2)}
+.ofbest .ofbi{display:none}
 .ofbest:active{opacity:.7}
 .sdel{width:36px;height:44px;border:0;background:none;color:var(--fg2);font-size:22px;line-height:1;cursor:pointer}
 @media (hover:hover) and (pointer:fine){.sdel:hover{color:var(--red)}}
@@ -423,10 +431,10 @@ body.sdrag,body.sdrag *{-webkit-user-select:none;user-select:none;cursor:grabbin
 .tabbar button{border:0;background:none;color:var(--fg2);display:grid;justify-items:center;gap:2px;padding:8px 0 6px;min-height:58px;font-size:11px;font-weight:600;cursor:pointer}
 .tabbar button[aria-selected="true"]{color:var(--accent)}
 .tabbar button:active{opacity:.6}
-.listchips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:none}
+.listchips{display:flex;gap:2px;overflow-x:auto;padding:3px;margin-bottom:16px;scrollbar-width:none;background:var(--fill);border-radius:12px;max-width:520px}
 .listchips::-webkit-scrollbar{display:none}
-.listchips button{flex:none;border:0;border-radius:999px;background:var(--fill);color:var(--fg);font-weight:600;font-size:14px;min-height:36px;padding:0 16px;cursor:pointer;white-space:nowrap}
-.listchips button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.listchips button{flex:1 0 auto;border:0;border-radius:9px;background:transparent;color:var(--fg);font-weight:600;font-size:14px;min-height:38px;padding:0 16px;cursor:pointer;white-space:nowrap}
+.listchips button[aria-pressed="true"]{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.16),0 .5px 0 rgba(0,0,0,.04)}
 .rgrid{display:grid;gap:12px}
 .rtcv .rtc-only{flex:1;display:grid;place-items:center;align-content:center;gap:14px;padding:16px;cursor:pointer}
 .rtcv .rtc-only img{max-width:100%;max-height:calc(100vh - 140px);border-radius:3.72%/5.89%;box-shadow:0 8px 30px rgba(0,0,0,.55);cursor:default}
@@ -965,9 +973,8 @@ body.ldragging{cursor:grabbing;-webkit-user-select:none;user-select:none}
   <div id="shopView" hidden>
   <div class="listchips" id="shopLists" role="group" aria-label="Einkaufslisten"></div>
   <section class="panel shop" id="shop" aria-label="Einkaufsliste">
-    <div class="shop-head"><h2 id="shopTitle">Wocheneinkauf</h2><span class="count" id="shopCount"></span></div>
+    <div class="shop-head"><h2 id="shopTitle">Wocheneinkauf</h2><span class="count" id="shopCount"></span><button type="button" class="sorttog" id="shopSort" data-act="shopsort" data-s="store" hidden></button></div>
     <div id="shopBest"></div>
-    <div class="sortrow" id="shopSort" hidden><span>Sortiert nach</span><div class="seg sortseg" role="group" aria-label="Sortierung"><button type="button" data-act="shopsort" data-s="cat" aria-pressed="true">Kategorie</button><button type="button" data-act="shopsort" data-s="store" aria-pressed="false">Laden</button></div></div>
     <ul class="shoplist" id="shopList"></ul>
     <button type="button" class="ordreset" id="shopOrdReset" data-act="shopordreset" hidden>Wieder nach Kategorie sortieren</button>
     <form class="shopadd" id="shopForm" autocomplete="off">
@@ -2551,15 +2558,15 @@ function shopRow(x){
   var dis=S.canWrite?'':' disabled';
   var ed=S.shopEdit===x.id;
   return '<li class="shopitem'+(x.done?' done':'')+(ed?' editing':'')+(qName(x.title).length>11?' long':'')+'" data-id="'+esc(x.id)+'">'+
-    '<button type="button" class="scheck'+(x.done?' done':'')+(q.n&&!x.done?' q':'')+'"'+(q.n&&!x.done?' data-q="'+q.n+'"':'')+' data-act="'+(x.done?'shopundo':'shopdone')+'"'+dis+' aria-label="'+(x.done?'Wieder offen: ':'Erledigt: ')+esc(x.title)+'">'+CHECK_SVG+'</button>'+
+    '<button type="button" class="scheck'+(x.done?' done':'')+'" data-act="'+(x.done?'shopundo':'shopdone')+'"'+dis+' aria-label="'+(x.done?'Wieder offen: ':'Erledigt: ')+esc(x.title)+'">'+CHECK_SVG+'</button>'+
     (S.shopEdit===x.id?'<input class="stitle sedit" id="shopEditIn" value="'+esc(S.shopEditVal)+'" maxlength="80" enterkeyhint="done" aria-label="Neuer Name für '+esc(x.title)+'">':
-      (S.canWrite&&!x.done?'<button type="button" class="stitle sbtn" data-act="shopedit" aria-label="'+esc(x.title)+' umbenennen">'+esc(q.name)+'</button>':'<span class="stitle">'+esc(q.name)+'</span>'))+
-    (S.shopEdit===x.id?'<select class="rowcat ecat" id="shopEditCat" aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(S.shopEditCat||effCat(x))+'</select>':OFFERS?ofChip(x):'<select class="rowcat"'+dis+' aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(effCat(x))+'</select>')+
+      '<div class="smain">'+(S.canWrite&&!x.done?'<button type="button" class="stitle sbtn" data-act="shopedit" aria-label="'+esc(x.title)+' umbenennen">'+qtyHtml(q)+esc(q.name)+'</button>':'<span class="stitle">'+qtyHtml(q)+esc(q.name)+'</span>')+ofLine(x)+'</div>')+
+    (S.shopEdit===x.id?'<select class="rowcat ecat" id="shopEditCat" aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(S.shopEditCat||effCat(x))+'</select>':OFFERS?'<span></span>':'<select class="rowcat"'+dis+' aria-label="Kategorie von '+esc(x.title)+'">'+catOptions(effCat(x))+'</select>')+
     (x.url&&/^https:\/\//.test(x.url)?'<a class="slink" href="'+esc(x.url)+'" target="_blank" rel="noopener" aria-label="Produktseite öffnen: '+esc(x.title)+'"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>':'')+
     /* Stern nur bei Favoriten, sonst im Bearbeiten. Löschen: nach links wischen oder im Bearbeiten */
     (x.done?'':(ed||isFav(x.title))?favBtn(x.title,'sm'):'<span></span>')+
     (ed?'<button type="button" class="sdel trash" data-act="shopdel"'+dis+' aria-label="Löschen: '+esc(x.title)+'" title="Löschen"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button>':'')+
-    (S.canWrite&&!x.done&&S.shopEdit!==x.id&&!(OFFERS&&S.shopSort==='store')?'<button type="button" class="sgrip" aria-label="'+esc(x.title)+' verschieben" title="Gedrückt halten und ziehen">'+GRIP_SVG+'</button>':'')+'</li>';
+    '</li>';
 }
 var DEF_LIST={id:'wocheneinkauf',name:'Wocheneinkauf',created:0};
 function allLists(){
@@ -2592,7 +2599,7 @@ function renderShop(){
   var mine=S.shop.filter(function(x){return listOf(x)===L.id;});
   var open=shopOrder(mine.filter(function(x){return !x.done;}));
   var byStore=!!OFFERS&&S.shopSort==='store';
-  var ss=$('shopSort');if(ss){ss.hidden=!OFFERS||!open.length;ss.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String((b.dataset.s==='store')===byStore));});}
+  var ss=$('shopSort');if(ss){ss.hidden=!OFFERS||!open.length;ss.dataset.s=byStore?'cat':'store';ss.innerHTML=(byStore?'Laden':'Kategorie')+'<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M3.5 7.5 7 4l3.5 3.5M17 20V4M13.5 16.5 17 20l3.5-3.5"/></svg>';ss.setAttribute('aria-label','Sortiert nach '+(byStore?'Laden':'Kategorie')+', umschalten');}
   var done=mine.filter(function(x){return x.done;}).sort(function(a,b){return (b.doneAt||0)-(a.doneAt||0);});
   $('shopCount').textContent=open.length?open.length+' offen':'';
   $('shopBest').innerHTML=ofBestHtml(open);
@@ -3489,6 +3496,14 @@ function ofFrequent(){
 }
 function ofPrice(v){return fmtEur(v);}
 function ofShort(s){return s==='Netto Marken-Discount'?'Netto MD':s;}
+function qtyHtml(q){return q.n?'<span class="qty">'+q.n+'×</span> ':'';}
+/* Unter dem Artikel: günstigstes Angebot als kleine Zeile, farbig nur beim empfohlenen Laden */
+function ofLine(x){
+  if(x.done||!OFFERS)return '';
+  var l=ofFor(x.title);if(!l.length)return '';
+  var best=(S.ofBest||[]).indexOf(l[0].store)>=0;
+  return '<button type="button" class="ofline'+(best?' best':'')+'" data-act="ofgo" aria-label="Am günstigsten bei '+esc(l[0].store)+' für '+esc(ofPrice(l[0].price))+'">'+(S.shopSort==='store'?'':esc(ofShort(l[0].store))+' · ')+esc(ofPrice(l[0].price))+'</button>';
+}
 function ofChip(x){
   if(x.done)return '<span></span>';
   var l=ofFor(x.title);
@@ -3496,14 +3511,16 @@ function ofChip(x){
   return '<button type="button" class="ofchip" data-act="ofgo" title="'+esc(l[0].product)+'" aria-label="Am günstigsten bei '+esc(l[0].store)+' für '+esc(ofPrice(l[0].price))+'">'+esc(ofShort(l[0].store))+'<i>'+esc(ofPrice(l[0].price))+'</i></button>';
 }
 function ofBestHtml(open){
+  S.ofBest=[];
   if(!OFFERS||!open.length)return '';
   var st={};
   open.forEach(function(x){var l=ofFor(x.title);if(!l.length)return;var s=l[0].store;(st[s]=st[s]||[]).push(qName(x.title));});
   var r=Object.keys(st).map(function(k){return {s:k,l:st[k]};}).sort(function(a,b){return b.l.length-a.l.length;});
   if(!r.length)return '';
   var best=r[0],tie=r.length>1&&r[1].l.length===best.l.length;
+  S.ofBest=tie?[best.s,r[1].s]:[best.s];
   return '<button type="button" class="ofbest" data-act="ofgo"><span class="ofbi" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.6V4.5a1 1 0 0 1 1-1h8.1l8 8a1.4 1.4 0 0 1 0 2l-7.1 7.1a1.4 1.4 0 0 1-2 0z"/><circle cx="8.2" cy="8.2" r="1.6"/></svg></span><span class="ofbt">'+
-    (tie?'Gleichauf: <b>'+esc(best.s)+'</b> und <b>'+esc(r[1].s)+'</b> mit je '+plural(best.l.length,'Artikel','Artikeln')+' im Angebot':'Am ehesten lohnt sich <b>'+esc(best.s)+'</b>: '+plural(best.l.length,'Artikel','Artikel')+' im Angebot ('+esc(best.l.join(', '))+')')+
+    (tie?'<b>'+esc(ofShort(best.s))+'</b> und <b>'+esc(ofShort(r[1].s))+'</b>: je '+plural(best.l.length,'Angebot','Angebote'):'<b>'+esc(ofShort(best.s))+'</b> lohnt sich: '+plural(best.l.length,'Angebot','Angebote'))+
     '</span><svg class="chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>';
 }
 /* Favoriten: Produkte mit Stern, gespeichert in settings/favs (gemeinsam für beide). */
@@ -5562,12 +5579,22 @@ document.addEventListener('click',function(ev){
 /* Einkaufsliste: Artikel am Griff rechts ziehen. Fällt ein Artikel zwischen zwei einer anderen Kategorie, wechselt er in diese Kategorie. */
 var SD=null;
 function sdRows(){return [].slice.call($('shopList').querySelectorAll('.shopitem:not(.done)'));}
+/* Artikel lange drücken (gut 0,4 s ohne zu bewegen), dann ziehen. Bewegt sich der Finger vorher, wird gescrollt oder gewischt. */
+var LP=null;
 document.addEventListener('pointerdown',function(ev){
-  var g=ev.target.closest&&ev.target.closest('.sgrip');
-  if(!g||!S.canWrite||SD)return;
-  var li=g.closest('.shopitem');if(!li||!$('shopList').contains(li))return;
-  ev.preventDefault();
+  if(SD||!S.canWrite||(ev.pointerType==='mouse'&&ev.button!==0)||(OFFERS&&S.shopSort==='store'))return;
+  var li=ev.target.closest&&ev.target.closest('.shopitem');
+  if(!li||!$('shopList').contains(li)||li.classList.contains('done')||li.classList.contains('editing')||ev.target.closest('input,select,textarea,a,.scheck,.favbtn,.sdel'))return;
+  if(LP)clearTimeout(LP.t);
+  LP={pid:ev.pointerId,x:ev.clientX,y:ev.clientY,t:setTimeout(function(){var l=LP;LP=null;if(!l||SD||(SW&&SW.on))return;SW=null;sdBegin(li,l.pid,l.y);},420)};
+},true);
+document.addEventListener('pointermove',function(ev){if(LP&&ev.pointerId===LP.pid){LP.y2=ev.clientY;if(Math.abs(ev.clientX-LP.x)>8||Math.abs(ev.clientY-LP.y)>8){clearTimeout(LP.t);LP=null;}}},true);
+['pointerup','pointercancel'].forEach(function(n){document.addEventListener(n,function(ev){if(LP&&ev.pointerId===LP.pid){clearTimeout(LP.t);LP=null;}},true);});
+document.addEventListener('contextmenu',function(ev){if(ev.target.closest&&ev.target.closest('.shopitem:not(.editing)'))ev.preventDefault();});
+function sdBegin(li,pid,y){
+  var g=li;
   var rows=sdRows(),idx=rows.indexOf(li);if(idx<0)return;
+  var ev={pointerId:pid,clientY:y};
   SD={li:li,id:li.dataset.id,pid:ev.pointerId,y:ev.clientY,y0:ev.clientY,sy:window.scrollY,rows:rows,idx:idx,k:idx,h:li.getBoundingClientRect().height,
     mids:rows.map(function(r){var b=r.getBoundingClientRect();return b.top+window.scrollY+b.height/2;})};
   try{g.setPointerCapture(ev.pointerId);}catch(e){}
@@ -5575,7 +5602,7 @@ document.addEventListener('pointerdown',function(ev){
   rows.forEach(function(r){if(r!==li)r.classList.add('sshift');});
   if(navigator.vibrate)try{navigator.vibrate(8);}catch(e){}
   sdTick();
-},{passive:false});
+}
 function sdLayout(){
   if(!SD)return;
   var dy=SD.y-SD.y0+(window.scrollY-SD.sy),c=SD.mids[SD.idx]+dy,k=0;
@@ -5603,7 +5630,7 @@ document.addEventListener('pointermove',function(ev){if(!SD||ev.pointerId!==SD.p
 document.addEventListener('touchmove',function(ev){if(SD)ev.preventDefault();},{passive:false});
 function sdEnd(ev,cancel){
   if(!SD||(ev&&ev.pointerId!==SD.pid))return;
-  var d=SD;SD=null;cancelAnimationFrame(d.raf);
+  var d=SD;SD=null;cancelAnimationFrame(d.raf);swLast=Date.now();
   document.body.classList.remove('sdrag');
   var clear=function(){d.rows.forEach(function(r){r.style.transform='';r.classList.remove('sshift','sdragging','settle');});};
   /* Zielplatz berechnen und den Artikel dorthin gleiten lassen */
